@@ -1,0 +1,23 @@
+# Node and frontend build output
+node_modules/
+.next/
+out/
+coverage/
+
+# Python environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Local services and secrets
+.env
+.env.*
+!.env.example
+postgres-data/
+
+# Generated application artifacts
+uploads/
+data/documents/
+*.log
