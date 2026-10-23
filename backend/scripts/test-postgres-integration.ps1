@@ -9,7 +9,12 @@ function Invoke-Psql([string]$url, [string]$query) {
   if ($LASTEXITCODE -ne 0) { throw 'PostgreSQL command failed.' }
 }
 
-if (-not $MaintenanceDatabaseUrl -or -not (Get-Command psql -ErrorAction SilentlyContinue)) {
+if (-not $MaintenanceDatabaseUrl) {
+  Write-Error 'POSTGRES_MAINTENANCE_URL is required.'
+  exit 1
+}
+
+if (-not (Get-Command psql -ErrorAction SilentlyContinue)) {
   Write-Output 'SKIPPED: PostgreSQL client tooling or service unavailable'
   exit 0
 }

@@ -8,7 +8,7 @@ const text = (value: unknown) => value === undefined || value === null || value 
 const FieldList = ({ value }: { value: unknown }) => <ul>{fields(value).map(([name, item]) => <li key={name}><strong>{name.replaceAll('_', ' ')}:</strong> {text(item)}</li>)}</ul>
 
 export function ReportView({ report }: { report: Report }) {
-  const p = report.payload ?? report; const assessment = (p.assessment ?? {}) as Data
+  const p: Data = report.payload ?? report; const assessment = (p.assessment ?? {}) as Data
   return <section className="report print:text-black" aria-label="Consolidated market-entry report">
     <header className="report-header"><p className="eyebrow">Offline consolidated report</p><h2>India market-entry recommendation</h2><p>{report.label ?? 'Cached illustrative offline report'} — all compliance and partner data requires human verification.</p><dl className="report-meta"><div><dt>Generated</dt><dd>{text(report.created_at ?? p.generated_at)}</dd></div><div><dt>Formula version</dt><dd>{text(report.formula_version ?? p.formula_version)}</dd></div><div><dt>Data version</dt><dd>{text(report.data_version ?? p.data_version)}</dd></div></dl></header>
     <section><h3>Assessment intake</h3><dl className="report-grid"><div><dt>Product</dt><dd>{text(assessment.product)}</dd></div><div><dt>Sector</dt><dd>{text(assessment.sector)}</dd></div><div><dt>Target customer</dt><dd>{text(assessment.target_customer)}</dd></div><div><dt>HS code</dt><dd>{text(assessment.hs_code ?? 'Unresolved — verify classification')}</dd></div></dl></section>
