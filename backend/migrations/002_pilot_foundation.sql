@@ -114,12 +114,38 @@ CREATE INDEX report_snapshots_org_assessment_idx ON report_snapshots(org_id, ass
 CREATE INDEX audit_events_org_created_idx ON audit_events(org_id, created_at DESC);
 CREATE INDEX source_passages_version_idx ON source_passages(source_version_id);
 
+-- Partner records and their evidence are tenant/assessment assignments, never
+-- a process-global catalogue response.  A curator may copy approved catalogue
+-- facts into these rows, but every read remains tied to one assessment/org.
+CREATE TABLE assessment_partners (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  org_id uuid NOT NULL REFERENCES organizations(id),
+  assessment_id uuid NOT NULL,
+  name text NOT NULL, fictional boolean NOT NULL DEFAULT false, region_id text NOT NULL,
+  fit jsonb NOT NULL, evidence jsonb NOT NULL, coverage numeric NOT NULL,
+  unknowns jsonb NOT NULL DEFAULT '[]'::jsonb, verification_state text NOT NULL,
+  verification_date date, missing_checks jsonb NOT NULL DEFAULT '[]'::jsonb,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  FOREIGN KEY (assessment_id, org_id) REFERENCES assessments(id, org_id)
+);
+CREATE TABLE partner_evidence (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  org_id uuid NOT NULL REFERENCES organizations(id), partner_id uuid NOT NULL REFERENCES assessment_partners(id) ON DELETE CASCADE,
+  evidence_type text NOT NULL, content_hash text NOT NULL CHECK (content_hash ~ '^[A-Fa-f0-9]{64}$'),
+  reviewer_id uuid, reviewed_at timestamptz, status text NOT NULL CHECK (status IN ('draft','approved','rejected')),
+  UNIQUE (partner_id, content_hash)
+);
+CREATE INDEX assessment_partners_org_assessment_idx ON assessment_partners(org_id, assessment_id);
+CREATE INDEX partner_evidence_org_partner_idx ON partner_evidence(org_id, partner_id);
+
 ALTER TABLE organizations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE memberships ENABLE ROW LEVEL SECURITY;
 ALTER TABLE assessments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE assessment_revisions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE report_snapshots ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE assessment_partners ENABLE ROW LEVEL SECURITY;
+ALTER TABLE partner_evidence ENABLE ROW LEVEL SECURITY;
 -- Sources are global approved editorial material; access is controlled by the API.
 CREATE POLICY organization_tenant ON organizations USING (id = current_setting('app.org_id', true)::uuid);
 CREATE POLICY membership_tenant ON memberships USING (org_id = current_setting('app.org_id', true)::uuid);
@@ -127,3 +153,5 @@ CREATE POLICY assessment_tenant ON assessments USING (org_id = current_setting('
 CREATE POLICY revision_tenant ON assessment_revisions USING (org_id = current_setting('app.org_id', true)::uuid) WITH CHECK (org_id = current_setting('app.org_id', true)::uuid);
 CREATE POLICY report_tenant ON report_snapshots USING (org_id = current_setting('app.org_id', true)::uuid) WITH CHECK (org_id = current_setting('app.org_id', true)::uuid);
 CREATE POLICY audit_tenant ON audit_events USING (org_id = current_setting('app.org_id', true)::uuid) WITH CHECK (org_id = current_setting('app.org_id', true)::uuid);
+CREATE POLICY assessment_partner_tenant ON assessment_partners USING (org_id = current_setting('app.org_id', true)::uuid) WITH CHECK (org_id = current_setting('app.org_id', true)::uuid);
+CREATE POLICY partner_evidence_tenant ON partner_evidence USING (org_id = current_setting('app.org_id', true)::uuid) WITH CHECK (org_id = current_setting('app.org_id', true)::uuid);

@@ -26,8 +26,12 @@ def patch_assessment(assessment_id: UUID, payload: AssessmentUpdate, request: Re
                      if_match: int = Header(alias='If-Match', ge=1),
                      principal: Principal = Depends(require_role(Role.MEMBER, Role.ADVISOR, Role.ADMIN)),
                      repository: PilotRepository = Depends(_repository)):
+ # Visibility is checked before applying the version predicate.  A caller must
+ # never be able to distinguish an invisible ID from a stale visible revision.
+ if not repository.get_assessment(assessment_id, principal.org_id):
+  raise HTTPException(status.HTTP_404_NOT_FOUND, 'Assessment not found')
  item=repository.update_assessment(assessment_id,payload,if_match,principal,request.headers.get('X-Request-ID',''))
- if not item: raise HTTPException(status.HTTP_409_CONFLICT,'Assessment is absent or its version is stale')
+ if not item: raise HTTPException(status.HTTP_409_CONFLICT,'Assessment version is stale')
  return item
 
 @router.post('/{assessment_id}/report',response_model=ReportSnapshot, status_code=status.HTTP_201_CREATED)

@@ -7,10 +7,14 @@ from app.schemas.pilot import Principal, Role, SourceVersion, SourceVersionCreat
 router=APIRouter(prefix='/sources',tags=['sources'])
 @router.post('/{source_id}/versions', response_model=SourceVersion, status_code=status.HTTP_201_CREATED)
 def create_source_version(source_id: UUID, payload: SourceVersionCreate,
+                          request: Request,
                           principal: Principal = Depends(require_role(Role.REVIEWER, Role.ADMIN)),
                           repository: PilotRepository = Depends(_repository)):
- value = repository.create_source_version(source_id, payload, principal, request.headers.get('X-Request-ID', ''))
- if not value: raise HTTPException(status.HTTP_404_NOT_FOUND, 'Source record not found or version already exists')
+ try:
+  value = repository.create_source_version(source_id, payload, principal, request.headers.get('X-Request-ID', ''))
+ except PilotRepository.DuplicateSourceHash:
+  raise HTTPException(status.HTTP_409_CONFLICT, 'A version with this content hash already exists')
+ if not value: raise HTTPException(status.HTTP_404_NOT_FOUND, 'Source record not found')
  return value
 
 @router.patch('/versions/{version_id}', response_model=SourceVersion)
