@@ -24,4 +24,4 @@ class GtmScenarioCreate(DecimalModel):
 class GtmLineItem(DecimalModel):label:str;amount:Decimal
 class ModeResult(DecimalModel):assumptions:ModeAssumptions;line_items:list[GtmLineItem];total:Decimal
 class GtmScenarioResult(DecimalModel):
- id:str|None=None;generated_at:str;assumptions:dict[str,ModeAssumptions];direct:ModeResult;distributor:ModeResult;comparison:dict[str,Decimal];sensitivity:dict[str,Decimal];formula_version:str='gtm-v2';data_version:str='seed-2026-10'
+ id:str|None=None;generated_at:str;assumptions:dict[str,ModeAssumptions];direct:ModeResult;distributor:ModeResult;comparison:dict[str,Decimal];sensitivity_field:str;sensitivity:dict[str,Decimal];formula_version:str='gtm-v2';data_version:str='seed-2026-10'

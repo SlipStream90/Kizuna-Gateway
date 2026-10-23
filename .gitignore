@@ -1,5 +1,6 @@
 # Node and frontend build output
 node_modules/
+.npm-cache/
 .next/
 out/
 coverage/

@@ -26,8 +26,17 @@ class AssessmentCreate(DecimalModel):
             raise ValueError('weights must be non-negative and total exactly 1')
         return self
 class AssessmentUpdate(DecimalModel):
-    weights: dict[str, Decimal] | None = None; budget: Decimal | None = Field(default=None, ge=0); horizon_months: int | None = Field(default=None, ge=1, le=120)
-    @field_validator('budget', mode='before')
+    product: str | None = Field(default=None, min_length=1, max_length=200)
+    sector: str | None = Field(default=None, min_length=1)
+    target_customer: str | None = Field(default=None, min_length=1)
+    budget: Decimal | None = Field(default=None, ge=0)
+    horizon_months: int | None = Field(default=None, ge=1, le=120)
+    preferred_modes: list[str] | None = Field(default=None, min_length=1)
+    hs_code: str | None = None
+    unit_value: Decimal | None = Field(default=None, ge=0)
+    volume: int | None = Field(default=None, ge=1)
+    weights: dict[str, Decimal] | None = None
+    @field_validator('budget', 'unit_value', mode='before')
     @classmethod
     def budget_string_only(cls, value):
         if value is not None and not isinstance(value, (str, Decimal)): raise ValueError('decimal values must be strings')

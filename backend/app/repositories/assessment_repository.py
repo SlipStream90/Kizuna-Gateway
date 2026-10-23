@@ -27,6 +27,6 @@ class AssessmentRepository:
   if not item:return None
   updated=Assessment.model_validate({**item.model_dump(),**payload.model_dump(exclude_none=True),'version':item.version+1,'updated_at':datetime.now(timezone.utc)})
   if conn:=self._connection():
-   with conn:conn.execute('UPDATE assessments SET weights=%s,budget=%s,horizon_months=%s,version=%s,updated_at=%s WHERE id=%s',(__import__('json').dumps(updated.model_dump(mode='json')['weights']),updated.budget,updated.horizon_months,updated.version,updated.updated_at,id))
+   with conn:conn.execute('UPDATE assessments SET product=%s,sector=%s,target_customer=%s,budget=%s,horizon_months=%s,preferred_modes=%s,hs_code=%s,unit_value=%s,volume=%s,weights=%s,version=%s,updated_at=%s WHERE id=%s',(updated.product,updated.sector,updated.target_customer,updated.budget,updated.horizon_months,__import__('json').dumps(updated.preferred_modes),updated.hs_code,updated.unit_value,updated.volume,__import__('json').dumps(updated.model_dump(mode='json')['weights']),updated.version,updated.updated_at,id))
    conn.close()
   self.items[id]=updated;return updated

@@ -1,1 +1,1 @@
-export default function ReportPage(){return <><h1>Report</h1><p>Open a saved assessment report through the API. Results are cached and illustrative; review sources and assumptions before action.</p></>}
+import {Workflow} from '../../components/workflow'; export default function ReportPage(){return <><h1>Report workflow</h1><p>Generate a saved assessment then render its cached illustrative report.</p><Workflow/></>}
