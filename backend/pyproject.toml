@@ -2,7 +2,7 @@
 name = "kizuna-gateway-api"
 version = "0.1.0"
 requires-python = ">=3.10"
-dependencies = ["fastapi==0.161.1", "pydantic==2.14.1", "uvicorn==0.54.0", "psycopg[binary]==3.3.6"]
+dependencies = ["fastapi==0.161.1", "pydantic==2.12.5", "uvicorn==0.54.0", "psycopg[binary]==3.3.6", "psycopg-pool==3.3.0", "PyJWT[crypto]==2.11.0"]
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
