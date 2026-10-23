@@ -13,7 +13,12 @@ class AssessmentCreate(DecimalModel):
     @field_validator('budget','unit_value', mode='before')
     @classmethod
     def no_float(cls, value):
-        if isinstance(value, float): raise ValueError('decimal values must be strings')
+        if value is not None and not isinstance(value, (str, Decimal)): raise ValueError('decimal values must be strings')
+        return value
+    @field_validator('weights', mode='before')
+    @classmethod
+    def weight_strings_only(cls, value):
+        if value is not None and (not isinstance(value, dict) or any(not isinstance(item, (str, Decimal)) for item in value.values())): raise ValueError('weight values must be decimal strings')
         return value
     @model_validator(mode='after')
     def valid_weights(self):
@@ -22,6 +27,16 @@ class AssessmentCreate(DecimalModel):
         return self
 class AssessmentUpdate(DecimalModel):
     weights: dict[str, Decimal] | None = None; budget: Decimal | None = Field(default=None, ge=0); horizon_months: int | None = Field(default=None, ge=1, le=120)
+    @field_validator('budget', mode='before')
+    @classmethod
+    def budget_string_only(cls, value):
+        if value is not None and not isinstance(value, (str, Decimal)): raise ValueError('decimal values must be strings')
+        return value
+    @field_validator('weights', mode='before')
+    @classmethod
+    def weight_strings_only(cls, value):
+        if value is not None and (not isinstance(value, dict) or any(not isinstance(item, (str, Decimal)) for item in value.values())): raise ValueError('weight values must be decimal strings')
+        return value
     @model_validator(mode='after')
     def valid_weights(self):
         if self.weights is not None and (not self.weights or any(v < 0 for v in self.weights.values()) or sum(self.weights.values()) != Decimal('1')): raise ValueError('weights must be non-negative and total exactly 1')
