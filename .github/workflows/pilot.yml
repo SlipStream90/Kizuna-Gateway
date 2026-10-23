@@ -1,0 +1,49 @@
+name: Pilot trust boundary
+
+on: [push, pull_request]
+
+jobs:
+  backend-pilot:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: kizuna_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres -d kizuna_test"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.13' }
+      - run: python -m pip install -r requirements.lock
+      - name: Apply tenant migration as owner and create non-owner app role
+        env: { PGPASSWORD: postgres }
+        run: |
+          psql -h localhost -U postgres -d kizuna_test -f migrations/001_initial.sql
+          psql -h localhost -U postgres -d kizuna_test -f migrations/002_pilot_foundation.sql
+          psql -h localhost -U postgres -d kizuna_test -c "CREATE ROLE kizuna_app LOGIN PASSWORD 'app-password' NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS; GRANT USAGE ON SCHEMA public TO kizuna_app; GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA public TO kizuna_app;"
+      - run: python -m pytest -q
+        env:
+          DATABASE_URL: postgresql://kizuna_app:app-password@localhost:5432/kizuna_test
+          PILOT_TEST_DATABASE_URL: postgresql://kizuna_app:app-password@localhost:5432/kizuna_test
+          OIDC_ISSUER: https://issuer.example.test
+          OIDC_AUDIENCE: kizuna-pilot
+          OIDC_SIGNING_KEY: 01234567890123456789012345678901
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run: { working-directory: frontend }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - run: npm ci
+      - run: npm run build

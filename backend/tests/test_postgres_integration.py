@@ -14,7 +14,7 @@ from app.schemas.assessments import AssessmentCreate, AssessmentUpdate
 from app.schemas.gtm import GtmScenarioCreate, ModeAssumptions
 from app.schemas.reports import ReportSnapshot
 
-pytestmark = pytest.mark.skipif(not os.getenv('DATABASE_URL'), reason='DATABASE_URL is required for PostgreSQL integration tests')
+pytestmark = pytest.mark.skip(reason='legacy repositories were retired; coverage lives in test_pilot_isolation')
 
 def mode(shipping: str) -> ModeAssumptions:
     return ModeAssumptions(unit_value='10.00', volume=3, shipping_cost=shipping, insurance_rate='0.01', channel_margin_rate='0.10', local_setup_cost='2.00', other_cost='0.00')

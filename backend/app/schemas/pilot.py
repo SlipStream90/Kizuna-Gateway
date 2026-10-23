@@ -40,6 +40,8 @@ class AssessmentUpdate(BaseModel):
     hs_code: str | None = Field(default=None, pattern=r"^\d{4,10}$")
     value: str | None = Field(default=None, pattern=r"^-?\d+(?:\.\d+)?$")
     volume: str | None = Field(default=None, pattern=r"^-?\d+(?:\.\d+)?$")
+    jurisdiction: str | None = Field(default=None, min_length=2, max_length=64)
+    origin: str | None = Field(default=None, min_length=2, max_length=64)
 
     @field_validator("modes")
     @classmethod
@@ -47,6 +49,17 @@ class AssessmentUpdate(BaseModel):
         if value is not None and len(value) != len(set(value)):
             raise ValueError("modes must not contain duplicates")
         return value
+
+
+class AssessmentCreate(AssessmentUpdate):
+    """Required intake fields for a tenant-scoped assessment."""
+
+    product: str = Field(min_length=1, max_length=500)
+    sector: str = Field(min_length=1, max_length=200)
+    buyer: str = Field(min_length=1, max_length=500)
+    budget: str = Field(pattern=r"^-?\d+(?:\.\d+)?$")
+    horizon_months: int = Field(ge=1, le=120)
+    modes: list[Literal["direct", "distributor"]] = Field(min_length=1)
 
 
 class Assessment(BaseModel):
@@ -82,6 +95,7 @@ class AbstentionReason(str, Enum):
     OUT_OF_JURISDICTION = "out_of_jurisdiction"
     INSUFFICIENT_COVERAGE = "insufficient_coverage"
     EXPIRED_SOURCE = "expired_source"
+    UNAPPROVED_SOURCE = "unapproved_source"
 
 
 class ComplianceSearchResult(BaseModel):
@@ -105,6 +119,13 @@ class SourceVersionCreate(BaseModel):
     expires_at: date | None = None
     content_hash: str = Field(pattern=r"^[a-fA-F0-9]{64}$")
     status: Literal["draft", "approved", "rejected"] = "draft"
+
+
+class SourceVersionReview(BaseModel):
+    """Editorial reviewer transition for a draft source version."""
+
+    model_config = ConfigDict(extra="forbid")
+    status: Literal["approved", "rejected"]
 
 
 class SourceVersion(BaseModel):

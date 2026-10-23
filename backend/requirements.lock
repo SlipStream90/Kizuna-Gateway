@@ -1,0 +1,10 @@
+# Reproducible backend test/runtime dependency set. Install with:
+#   python -m pip install --requirement requirements.lock
+fastapi==0.161.1
+pydantic==2.12.5
+uvicorn==0.54.0
+psycopg[binary]==3.3.6
+psycopg-pool==3.3.0
+PyJWT[crypto]==2.11.0
+pytest==9.1.1
+httpx==0.28.1

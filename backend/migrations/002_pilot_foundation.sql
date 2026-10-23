@@ -39,6 +39,16 @@ ALTER TABLE assessments ADD COLUMN IF NOT EXISTS updated_at timestamptz NOT NULL
 ALTER TABLE assessments ALTER COLUMN org_id SET NOT NULL;
 ALTER TABLE assessments ALTER COLUMN created_by SET NOT NULL;
 ALTER TABLE assessments ADD CONSTRAINT assessments_id_org_key UNIQUE (id, org_id);
+-- The legacy columns are deliberately removed after the empty-table guard:
+-- retaining their NOT NULL constraints would make the pilot payload schema
+-- impossible to write and invite parallel unscoped repository use.
+ALTER TABLE assessments DROP COLUMN IF EXISTS product, DROP COLUMN IF EXISTS sector,
+  DROP COLUMN IF EXISTS target_customer, DROP COLUMN IF EXISTS budget,
+  DROP COLUMN IF EXISTS horizon_months, DROP COLUMN IF EXISTS preferred_modes,
+  DROP COLUMN IF EXISTS hs_code, DROP COLUMN IF EXISTS unit_value,
+  DROP COLUMN IF EXISTS volume, DROP COLUMN IF EXISTS weights,
+  DROP COLUMN IF EXISTS score_version, DROP COLUMN IF EXISTS data_version,
+  DROP COLUMN IF EXISTS created_at;
 CREATE TABLE assessment_revisions (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   assessment_id uuid NOT NULL,
@@ -59,6 +69,13 @@ CREATE TABLE source_versions (
   created_at timestamptz NOT NULL DEFAULT now(), UNIQUE (source_id, content_hash),
   CHECK (expires_at IS NULL OR effective_date IS NULL OR expires_at >= effective_date)
 );
+CREATE TABLE source_documents (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  canonical_name text NOT NULL UNIQUE,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE source_versions ADD CONSTRAINT source_versions_source_document_fk
+  FOREIGN KEY (source_id) REFERENCES source_documents(id);
 CREATE TABLE source_passages (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(), source_version_id uuid NOT NULL REFERENCES source_versions(id) ON DELETE CASCADE,
   locator text NOT NULL, text text NOT NULL CHECK (length(trim(text)) > 0),
@@ -85,6 +102,7 @@ ALTER TABLE report_snapshots ALTER COLUMN formula_version SET NOT NULL;
 ALTER TABLE report_snapshots ALTER COLUMN data_version SET NOT NULL;
 ALTER TABLE report_snapshots ALTER COLUMN label_version SET NOT NULL;
 ALTER TABLE report_snapshots ADD CONSTRAINT report_snapshots_assessment_org_revision_key UNIQUE (assessment_id, org_id, assessment_revision);
+ALTER TABLE report_snapshots DROP COLUMN IF EXISTS version;
 CREATE TABLE audit_events (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(), org_id uuid NOT NULL REFERENCES organizations(id), actor_id uuid NOT NULL,
   action text NOT NULL, entity_type text NOT NULL, entity_id uuid NOT NULL, request_id text NOT NULL,

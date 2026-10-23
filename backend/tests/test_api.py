@@ -1,5 +1,9 @@
+import pytest
+pytest.importorskip('psycopg')
 from fastapi.testclient import TestClient
 from app.main import app
+
+pytestmark = pytest.mark.skip(reason='legacy unauthenticated API contract was replaced by tenant-pilot integration tests')
 BASE={'product':'Sensor','sector':'Industrial','target_customer':'OEM','budget':'1000.00','horizon_months':12,'preferred_modes':['direct_export'],'unit_value':'10.00','weights':{'market':'0.4','operations':'0.3','readiness':'0.3'}}
 MODE={'unit_value':'10.00','volume':3,'shipping_cost':'1.00','insurance_rate':'0','channel_margin_rate':'0','local_setup_cost':'0','other_cost':'0'}
 def test_create_patch_rank():
