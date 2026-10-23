@@ -1,0 +1,1 @@
+'use client'; export function ReportView({report}:{report:any}){return <section><p>Cached illustrative offline report — all compliance and partner data requires human verification.</p><pre>{JSON.stringify(report,null,2)}</pre></section>}

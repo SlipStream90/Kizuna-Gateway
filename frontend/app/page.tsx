@@ -1,0 +1,1 @@
+import {AssessmentForm} from '../components/assessment-form'; export default function Home(){return <><h1>Kizuna Gateway</h1><p>Offline, illustrative market-entry workflow. No legal, tariff, origin, or partner-trust conclusions.</p><AssessmentForm/></>}

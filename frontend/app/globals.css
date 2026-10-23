@@ -1,0 +1,2 @@
+@import "tailwindcss";
+@media print { button { display:none } main { max-width:none; padding:0 } }
