@@ -32,8 +32,8 @@ export function GtmControls({ assessmentId }: { assessmentId: string }) {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-5"
     >
-      <h2 className="text-lg font-bold text-sumi">GTM Scenario Comparison</h2>
-      <div className="glass-panel p-5 rounded-xl space-y-4">
+      <h2 className="jp-heading text-lg text-sumi">GTM Scenario Comparison</h2>
+      <div className="glass-panel p-5 space-y-4">
         <p className="text-sm text-sumi/60">Compare direct export vs distributor entry modes for India.</p>
         <button
           disabled={loading}
@@ -49,7 +49,7 @@ export function GtmControls({ assessmentId }: { assessmentId: string }) {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-4 rounded-xl bg-washi/40 border border-white/30 card-lift"
+              className="p-4 bg-washi/40 border border-hairline card-lift"
             >
             <h3 className="text-sm font-bold text-sumi mb-2">Direct: {r.direct.total}</h3>
               <ul className="text-xs text-sumi/60 space-y-1 mt-2">
@@ -62,7 +62,7 @@ export function GtmControls({ assessmentId }: { assessmentId: string }) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="p-4 rounded-xl bg-washi/40 border border-white/30 card-lift"
+              className="p-4 bg-washi/40 border border-hairline card-lift"
             >
             <h3 className="text-sm font-bold text-sumi mb-2">Distributor: {r.distributor.total}</h3>
               <ul className="text-xs text-sumi/60 space-y-1 mt-2">
@@ -72,7 +72,7 @@ export function GtmControls({ assessmentId }: { assessmentId: string }) {
               </ul>
             </motion.div>
           </div>
-          <div className="p-4 rounded-xl bg-washi/30 border border-white/30">
+          <div className="p-4 bg-washi/30 border border-hairline">
             <p className="text-xs font-medium text-sumi/70 uppercase tracking-wider mb-2">Comparison & Sensitivity</p>
             <p className="text-xs text-sumi/60 break-all">{JSON.stringify(r.comparison)}</p>
             <p className="text-xs text-sumi/60 break-all">Sensitivity ({r.sensitivity_field}): {JSON.stringify(r.sensitivity)}</p>

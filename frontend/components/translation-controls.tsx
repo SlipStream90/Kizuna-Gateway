@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { api } from '../lib/api'
+import { useI18n } from '../lib/i18n'
 
 type Language = { code: string; label: string }
 
@@ -17,6 +18,7 @@ const LANGUAGES: Language[] = [
  * sealed session server-side — no token reaches client JavaScript.
  */
 export function TranslationControls() {
+  const { t } = useI18n()
   const [text, setText] = useState('')
   const [sourceLang, setSourceLang] = useState('ja')
   const [targetLang, setTargetLang] = useState('en')
@@ -68,8 +70,7 @@ export function TranslationControls() {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-5"
     >
-      <h2 className="text-lg font-bold text-sumi">Japanese ↔ English translation</h2>
-      <div className="glass-panel p-5 rounded-xl space-y-4">
+      <div className="space-y-4">
         <div className="flex items-center gap-3">
           <select
             aria-label="Source language"
@@ -79,14 +80,14 @@ export function TranslationControls() {
           >
             {LANGUAGES.map((lang) => (
               <option key={lang.code} value={lang.code}>
-                {lang.label}
+                {t(lang.code === 'ja' ? 'tr.ja' : 'tr.en')}
               </option>
             ))}
           </select>
           <button
             aria-label="Swap languages"
             onClick={swap}
-            className="px-3 py-1.5 rounded-lg bg-white/40 border border-white/40 text-sumi/70 hover:bg-white/60 transition-colors"
+            className="px-3 py-1.5 border border-hairline text-sumi/70 hover:border-sumi transition-colors"
           >
             ↷
           </button>
@@ -98,7 +99,7 @@ export function TranslationControls() {
           >
             {LANGUAGES.map((lang) => (
               <option key={lang.code} value={lang.code}>
-                {lang.label}
+                {t(lang.code === 'ja' ? 'tr.ja' : 'tr.en')}
               </option>
             ))}
           </select>
@@ -107,7 +108,7 @@ export function TranslationControls() {
           aria-label="Text to translate"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Enter Japanese or English text…"
+          placeholder={t('tr.placeholder')}
           className="glass-input w-full min-h-[120px] px-3 py-2.5 text-sm rounded-lg resize-none"
           rows={4}
         />
@@ -116,7 +117,7 @@ export function TranslationControls() {
           onClick={translate}
           className="glass-button w-full py-2.5 text-sm font-semibold disabled:opacity-60"
         >
-          {loading ? 'Translating…' : 'Translate'}
+          {loading ? t('tr.loading') : t('tr.submit')}
         </button>
         {error && (
           <p className="text-sm text-akaneiro bg-akaneiro/10 rounded-lg p-3 border border-akaneiro/30">
@@ -125,8 +126,8 @@ export function TranslationControls() {
         )}
         {result !== null && (
           <div className="space-y-3">
-            <h3 className="text-sm font-bold text-sumi">Translation</h3>
-            <p className="text-sm text-sumi break-words rounded-lg bg-washi/50 p-3 border border-white/40">
+            <h3 className="text-sm font-bold text-sumi">{t('tr.result')}</h3>
+            <p className="text-sm text-sumi break-words rounded-lg bg-washi/50 p-3 border border-hairline">
               {result}
             </p>
             <p className="text-xs text-sumi/50">

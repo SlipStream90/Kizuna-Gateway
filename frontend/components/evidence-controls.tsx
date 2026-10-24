@@ -34,8 +34,8 @@ export function EvidenceControls({ assessmentId }: { assessmentId: string }) {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-5"
     >
-      <h2 className="text-lg font-bold text-sumi">Partners and Compliance</h2>
-      <div className="glass-panel p-5 rounded-xl space-y-4">
+      <h2 className="jp-heading text-lg text-sumi">Partners and Compliance</h2>
+      <div className="glass-panel p-5 space-y-4">
         <div className="flex gap-2">
           <button
             disabled={loading}
@@ -54,7 +54,7 @@ export function EvidenceControls({ assessmentId }: { assessmentId: string }) {
         </div>
 
         {partners.length > 0 && (
-          <div className="space-y-3 pt-2 border-t border-white/40">
+          <div className="space-y-3 pt-2 border-t border-hairline">
             <p className="text-xs font-medium text-sumi/70 uppercase tracking-wider">Fictional Partners</p>
             {partners.map((p) => (
                 <motion.div
@@ -62,7 +62,7 @@ export function EvidenceControls({ assessmentId }: { assessmentId: string }) {
                   whileHover={{ backgroundColor: 'rgba(244, 241, 222, 0.5)' }}
                   role="button"
                   aria-label={p.name}
-                  className="p-3 rounded-lg bg-washi/30 border border-white/30 cursor-pointer transition-colors"
+                  className="p-3 rounded-lg bg-washi/30 border border-hairline cursor-pointer transition-colors"
                   onClick={async () => setScorecard(await api(`/partners/${p.id}`))}
                 >
                 <div className="flex justify-between items-start mb-1">
@@ -78,7 +78,7 @@ export function EvidenceControls({ assessmentId }: { assessmentId: string }) {
         )}
 
         {scorecard && (
-          <aside className="pt-4 border-t border-white/40">
+          <aside className="pt-4 border-t border-hairline">
             <h3 className="text-sm font-bold text-sumi mb-2">{scorecard.name} Scorecard</h3>
             <p className="text-xs text-sumi/60 mb-2">{scorecard.disclosure}</p>
             <p className="text-xs text-sumi/60">Missing checks: {scorecard.missing_checks.join(', ')}</p>
@@ -86,10 +86,10 @@ export function EvidenceControls({ assessmentId }: { assessmentId: string }) {
         )}
 
         {compliance && (
-          <div className="pt-4 border-t border-white/40">
+          <div className="pt-4 border-t border-hairline">
             <p className="text-xs font-medium text-sumi/70 uppercase tracking-wider">Compliance Passages</p>
             {compliance.items?.map((item: any) => (
-              <article key={item.citation.source_id} className="p-3 rounded-lg bg-washi/30 border border-white/30 mb-3">
+              <article key={item.citation.source_id} className="p-3 rounded-lg bg-washi/30 border border-hairline mb-3">
                 <h4 className="text-sm font-bold text-sumi">{item.item}</h4>
                 <p className="text-xs text-sumi/60">{item.applicability} — human review: {String(item.review_required)}</p>
                 <button
@@ -101,7 +101,7 @@ export function EvidenceControls({ assessmentId }: { assessmentId: string }) {
               </article>
             ))}
             {source && (
-              <aside className="pt-3 border-t border-white/30 mt-3">
+              <aside className="pt-3 border-t border-hairline mt-3">
                 <h4 className="text-sm font-bold text-sumi">{source.authority}</h4>
                 <a href={source.canonical_url} className="text-xs text-aijiro underline break-all">{source.canonical_url}</a>
                 <p className="text-xs text-sumi/60">{source.passage} (page {source.page})</p>

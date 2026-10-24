@@ -2,14 +2,14 @@ import { test, expect } from '@playwright/test'
 
 test.use({ baseURL: 'http://localhost:3000' })
 
-test.describe('Kizuna Gateway frontend', () => {
+test.describe('Nishi Link frontend', () => {
   test('home page loads with no CSS errors', async ({ page }) => {
     const errors: string[] = []
     page.on('console', msg => {
       if (msg.type() === 'error') errors.push(msg.text())
     })
     await page.goto('/')
-    await expect(page.getByText('Kizuna Gateway')).toBeVisible()
+    await expect(page.getByText('Nishi Link')).toBeVisible()
     const cssErrors = errors.filter(e => e.includes('CSS') || e.includes('tailwind') || e.includes('postcss'))
     expect(cssErrors).toEqual([])
   })
@@ -62,7 +62,27 @@ test.describe('Kizuna Gateway frontend', () => {
 
   test('navigation links work', async ({ page }) => {
     await page.goto('/')
-    await page.getByRole('link', { name: /Market/ }).click()
-    await expect(page).toHaveURL(/\/#market/)
+    await page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: 'Engines' }).click()
+    await expect(page).toHaveURL(/\/#features/)
+    await expect(page.locator('#features')).toBeInViewport()
+  })
+})
+
+test.describe('Nishi Link ⇄ JIG-OS', () => {
+  test('landing links into JIG-OS and back', async ({ page }) => {
+    await page.goto('/')
+    await page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: /JIG-OS/ }).click()
+    await expect(page).toHaveURL(/\/jig-os/)
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Ringi-sho')
+    await page.getByRole('link', { name: /Back to Nishi Link|Nishi Link/ }).first().click()
+    await expect(page).toHaveURL(/\/$/)
+  })
+
+  test('preview hands its inputs to JIG-OS and auto-generates', async ({ page }) => {
+    await page.goto('/#preview', { waitUntil: 'domcontentloaded' })
+    await page.getByRole('button', { name: 'Sri City' }).click()
+    await page.getByRole('link', { name: /Draft the full Ringi-sho in JIG-OS/ }).click()
+    await expect(page).toHaveURL(/state=sricity.*autogen=1/)
+    await expect(page.locator('article')).toContainText('Sri City')
   })
 })

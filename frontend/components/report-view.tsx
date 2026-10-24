@@ -17,15 +17,15 @@ export function ReportView({ report }: { report: Report }) {
         <h2 className="text-2xl font-bold text-sumi mb-2">India Market-Entry Recommendation</h2>
         <p className="text-sumi/60 text-sm">{report.label ?? 'Cached illustrative offline report'} — all compliance and partner data requires human verification.</p>
         <dl className="report-meta grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
-          <div className="p-3 rounded-lg bg-washi/40 border border-white/30">
+          <div className="p-3 rounded-lg bg-washi/40 border border-hairline">
             <dt className="text-[10px] uppercase tracking-wider text-sumi/50 font-bold">Generated</dt>
             <dd className="font-mono text-sm text-sumi">{text(report.created_at ?? p.generated_at)}</dd>
           </div>
-          <div className="p-3 rounded-lg bg-washi/40 border border-white/30">
+          <div className="p-3 rounded-lg bg-washi/40 border border-hairline">
             <dt className="text-[10px] uppercase tracking-wider text-sumi/50 font-bold">Formula Version</dt>
             <dd className="font-mono text-sm text-sumi">{text(report.formula_version ?? p.formula_version)}</dd>
           </div>
-          <div className="p-3 rounded-lg bg-washi/40 border border-white/30">
+          <div className="p-3 rounded-lg bg-washi/40 border border-hairline">
             <dt className="text-[10px] uppercase tracking-wider text-sumi/50 font-bold">Data Version</dt>
             <dd className="font-mono text-sm text-sumi">{text(report.data_version ?? p.data_version)}</dd>
           </div>
@@ -33,21 +33,21 @@ export function ReportView({ report }: { report: Report }) {
       </header>
 
       <section className="space-y-4">
-        <h3 className="text-lg font-bold text-sumi">Assessment Intake</h3>
+        <h3 className="jp-heading text-lg text-sumi">Assessment Intake</h3>
         <dl className="report-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-3 rounded-lg bg-washi/40 border border-white/30">
+          <div className="p-3 rounded-lg bg-washi/40 border border-hairline">
             <dt className="text-[10px] uppercase tracking-wider text-sumi/50 font-bold">Product</dt>
             <dd className="font-mono text-sm text-sumi">{text(assessment.product)}</dd>
           </div>
-          <div className="p-3 rounded-lg bg-washi/40 border border-white/30">
+          <div className="p-3 rounded-lg bg-washi/40 border border-hairline">
             <dt className="text-[10px] uppercase tracking-wider text-sumi/50 font-bold">Sector</dt>
             <dd className="font-mono text-sm text-sumi">{text(assessment.sector)}</dd>
           </div>
-          <div className="p-3 rounded-lg bg-washi/40 border border-white/30">
+          <div className="p-3 rounded-lg bg-washi/40 border border-hairline">
             <dt className="text-[10px] uppercase tracking-wider text-sumi/50 font-bold">Target Customer</dt>
             <dd className="font-mono text-sm text-sumi">{text(assessment.target_customer)}</dd>
           </div>
-          <div className="p-3 rounded-lg bg-washi/40 border border-white/30">
+          <div className="p-3 rounded-lg bg-washi/40 border border-hairline">
             <dt className="text-[10px] uppercase tracking-wider text-sumi/50 font-bold">HS Code</dt>
             <dd className="font-mono text-sm text-sumi">{text(assessment.hs_code ?? 'Unresolved — verify classification')}</dd>
           </div>
@@ -55,7 +55,7 @@ export function ReportView({ report }: { report: Report }) {
       </section>
 
       <section className="space-y-4">
-        <h3 className="text-lg font-bold text-sumi">Market rankings</h3>
+        <h3 className="jp-heading text-lg text-sumi">Market rankings</h3>
         <div className="table-scroll overflow-x-auto print:overflow-visible">
           <table className="w-full text-left border-collapse print:break-inside-avoid">
             <thead>
@@ -86,11 +86,11 @@ export function ReportView({ report }: { report: Report }) {
       </section>
 
       <section className="space-y-4">
-        <h3 className="text-lg font-bold text-sumi">Fictional partner evidence</h3>
+        <h3 className="jp-heading text-lg text-sumi">Fictional partner evidence</h3>
         {list(p.partners).map((partner, i) => {
           const x = partner as Data
           return (
-            <article key={text(x.id ?? i)} className="p-4 rounded-xl bg-washi/40 border border-white/30 card-lift">
+            <article key={text(x.id ?? i)} className="p-4 bg-washi/40 border border-hairline card-lift">
               <div className="flex justify-between items-start mb-2">
                 <h4 className="font-bold text-sumi">{text(x.name)}</h4>
                 <span className="text-[10px] uppercase tracking-wider text-akaneiro font-bold">Fictional: {text(x.fictional)}</span>
@@ -108,12 +108,12 @@ export function ReportView({ report }: { report: Report }) {
       </section>
 
       <section className="space-y-4">
-        <h3 className="text-lg font-bold text-sumi">Compliance checklist and source references</h3>
+        <h3 className="jp-heading text-lg text-sumi">Compliance checklist and source references</h3>
         {list((p.compliance_checklist as Data | undefined)?.items).map((item, i) => {
           const x = item as Data
           const citation = (x.citation ?? {}) as Data
           return (
-            <article key={text(citation.source_id ?? i)} className="p-4 rounded-xl bg-washi/40 border border-white/30 card-lift">
+            <article key={text(citation.source_id ?? i)} className="p-4 bg-washi/40 border border-hairline card-lift">
               <h4 className="font-bold text-sumi mb-2">{text(x.item)}</h4>
               <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div>
@@ -136,7 +136,7 @@ export function ReportView({ report }: { report: Report }) {
           {list(p.sources).map((source, i) => {
             const x = source as Data
             return (
-              <li key={text(x.id ?? i)} className="p-2 rounded-lg bg-washi/30 border border-white/30">
+              <li key={text(x.id ?? i)} className="p-2 rounded-lg bg-washi/30 border border-hairline">
                 <a href={text(x.canonical_url)} className="text-xs text-aijiro underline break-all">{text(x.id)} — {text(x.authority)}</a>
                 <p className="text-[10px] text-sumi/50">Checked {text(x.checked_at)}</p>
               </li>
@@ -146,11 +146,11 @@ export function ReportView({ report }: { report: Report }) {
       </section>
 
       <section className="space-y-4">
-        <h3 className="text-lg font-bold text-sumi">GTM scenarios and assumptions</h3>
+        <h3 className="jp-heading text-lg text-sumi">GTM scenarios and assumptions</h3>
         {list(p.gtm).map((scenario, i) => {
           const x = scenario as Data
           return (
-            <article key={text(x.id ?? i)} className="p-4 rounded-xl bg-washi/40 border border-white/30 card-lift">
+            <article key={text(x.id ?? i)} className="p-4 bg-washi/40 border border-hairline card-lift">
               <h4 className="font-bold text-sumi mb-2">Two-Mode Comparison</h4>
               <p className="text-xs text-sumi/60 mb-3">Generated: {text(x.generated_at)}; Sensitivity: {text(x.sensitivity_field)}.</p>
               <div className="table-scroll overflow-x-auto print:overflow-visible">
@@ -206,7 +206,7 @@ export function ReportView({ report }: { report: Report }) {
       </section>
 
       <section className="space-y-4 pt-4 border-t border-aijiro/20">
-        <h3 className="text-lg font-bold text-sumi">Risks and next steps</h3>
+        <h3 className="jp-heading text-lg text-sumi">Risks and next steps</h3>
         <div className="report-grid grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
             <h4 className="text-sm font-bold text-sumi mb-2">Risks</h4>

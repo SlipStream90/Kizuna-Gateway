@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useSyncExternalStore } from 'react'
 import { motion } from 'framer-motion'
 import { api } from '../lib/api'
+import { useI18n } from '../lib/i18n'
 
 type Status = 'idle' | 'recording' | 'processing'
 
@@ -14,6 +15,7 @@ type Status = 'idle' | 'recording' | 'processing'
  * beyond the recorder itself.
  */
 export function SpeechControls() {
+  const { t } = useI18n()
   const [status, setStatus] = useState<Status>('idle')
   const [transcript, setTranscript] = useState<string | null>(null)
   const [translated, setTranslated] = useState<string | null>(null)
@@ -55,7 +57,12 @@ export function SpeechControls() {
     }
   }, [status])
 
-  const isSupported = typeof MediaRecorder !== 'undefined'
+  // Read on the client only; the server snapshot assumes support so hydration matches.
+  const isSupported = useSyncExternalStore(
+    () => () => undefined,
+    () => typeof MediaRecorder !== 'undefined',
+    () => true,
+  )
 
   async function processAudio(blob: Blob) {
     try {
@@ -90,7 +97,7 @@ export function SpeechControls() {
     }
   }
 
-  const label = status === 'recording' ? 'Stop recording' : status === 'processing' ? 'Translating…' : 'Record Japanese audio'
+  const label = status === 'recording' ? t('sp.stop') : status === 'processing' ? t('sp.loading') : t('sp.record')
 
   return (
     <motion.div
@@ -98,12 +105,9 @@ export function SpeechControls() {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-5"
     >
-      <h2 className="text-lg font-bold text-sumi">Japanese speech → English translation</h2>
-      <div className="glass-panel p-5 rounded-xl space-y-4">
+      <div className="space-y-4">
         <p className="text-sm text-sumi/60">
-          Speak Japanese into the microphone. Audio is sent through the BFF proxy to a local
-          llama.cpp server running LiquidAI LFM2.5-Audio-1.5B-JP-GGUF. Falls back to an
-          illustrative placeholder when no local endpoint is running.
+          {t('sp.intro')}
         </p>
         {!isSupported && (
           <p className="text-sm text-akaneiro bg-akaneiro/10 rounded-lg p-3 border border-akaneiro/30">
@@ -126,12 +130,12 @@ export function SpeechControls() {
         )}
         {transcript !== null && (
           <div className="space-y-3">
-            <h3 className="text-sm font-bold text-sumi">Transcript (Japanese)</h3>
+            <h3 className="text-sm font-bold text-sumi">{t('sp.transcript')}</h3>
             <p className="text-sm text-sumi break-words rounded-lg bg-sakura/40 p-3 border border-aijiro/30">
               {transcript}
             </p>
-            <h3 className="text-sm font-bold text-sumi">Translation (English)</h3>
-            <p className="text-sm text-sumi break-words rounded-lg bg-washi/50 p-3 border border-white/40">
+            <h3 className="text-sm font-bold text-sumi">{t('sp.translation')}</h3>
+            <p className="text-sm text-sumi break-words rounded-lg bg-washi/50 p-3 border border-hairline">
               {translated}
             </p>
             <p className="text-xs text-sumi/50">

@@ -1,189 +1,154 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { Calculator, Handshake, MapPinned, ScrollText } from 'lucide-react';
 import { Workflow } from '../components/workflow';
-import { SessionControls } from '../components/session-controls';
 import { TranslationControls } from '../components/translation-controls';
 import { SpeechControls } from '../components/speech-controls';
+import { FanHero } from '../components/landing/FanHero';
+import { EvidenceBand } from '../components/landing/EvidenceBand';
+import { RingiPreview } from '../components/landing/RingiPreview';
+import { FeatureTour } from '../components/watermelon/feature-tour';
+import { ScrollIsland } from '../components/watermelon/scroll-island';
+import { Reveal, RevealItem } from '../components/watermelon/reveal';
+import { useI18n, type MessageKey } from '../lib/i18n';
+import { jigHref, type JigScreen } from '../lib/jig/handoff';
 
-const features = [
-  {
-    title: 'Market Intelligence',
-    desc: 'Weighted regional ranking for Japan SMEs evaluating India expansion.',
-    icon: '🗾',
-  },
-  {
-    title: 'Partner Trust Engine',
-    desc: 'Fictional partner fit scores with separately displayed verification evidence.',
-    icon: '🤝',
-  },
-  {
-    title: 'Compliance Copilot',
-    desc: 'Curated source retrieval with explicit provenance and review status.',
-    icon: '📜',
-  },
-  {
-    title: 'GTM Simulator',
-    desc: 'Decimal-safe direct vs distributor comparisons with line items.',
-    icon: '📊',
-  },
+// Each engine opens the JIG-OS screen that shows it working.
+const engines: { key: string; kanji: string; icon: typeof MapPinned; image: string; screen: JigScreen }[] = [
+  { key: 'market', kanji: '市場', icon: MapPinned, image: '/media/gateway-of-india.webp', screen: 'matrix' },
+  { key: 'partner', kanji: '信頼', icon: Handshake, image: '/media/howrah-bridge.webp', screen: 'evidence' },
+  { key: 'compliance', kanji: '法令', icon: ScrollText, image: '/media/torii-path.webp', screen: 'ringi' },
+  { key: 'gtm', kanji: '戦略', icon: Calculator, image: '/media/shinkansen-fuji.webp', screen: 'ringi' },
 ];
 
+function SectionHeading({ index, kanji, title, children }: { index: string; kanji: string; title: string; children?: React.ReactNode }) {
+  return (
+    <Reveal className="mb-12 grid gap-4 md:grid-cols-[10rem_1fr]">
+      <RevealItem>
+        <p className="eyebrow pt-2">
+          {index} <span className="ml-2 font-serif normal-case tracking-normal text-akaneiro">{kanji}</span>
+        </p>
+      </RevealItem>
+      <RevealItem>
+        <h2 className="jp-heading text-3xl md:text-4xl text-sumi">{title}</h2>
+        {children && <p className="mt-4 max-w-2xl text-sumi/70 jp-body">{children}</p>}
+      </RevealItem>
+    </Reveal>
+  );
+}
+
 export default function Home() {
+  const { t } = useI18n();
   const authError =
     typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('auth_error')
 
+  const topics = [
+    { id: 'features', title: t('features.title') },
+    { id: 'preview', title: t('preview.title') },
+    { id: 'workflow', title: t('workflow.title') },
+    { id: 'translation', title: t('translation.title') },
+    { id: 'speech', title: t('speech.title') },
+  ];
+
   return (
-    <section className="relative min-h-screen flex flex-col">
+    <>
       {authError && (
-        <div role="alert" className="mx-auto mt-2 rounded-lg border border-akaneiro/30 bg-akaneiro/10 px-4 py-2 text-sm text-akaneiro">
+        <div role="alert" className="mx-auto max-w-6xl px-5 pt-4 text-sm text-akaneiro md:px-10">
           {authError}
         </div>
       )}
-      <nav className="glass-panel px-6 py-4 flex items-center justify-between sticky top-4 z-30 mx-0">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-2"
-        >
-          <div className="w-8 h-8 rounded-full bg-akaneiro flex items-center justify-center text-white font-bold text-lg">K</div>
-          <span className="text-xl font-bold text-sumi tracking-tight jp-heading">Kizuna Gateway</span>
-        </motion.div>
-        <div className="hidden md:flex gap-8 text-sm font-medium text-sumi/80">
-          <a href="#market" className="hover:text-aijiro transition-colors">Market</a>
-          <a href="#partners" className="hover:text-aijiro transition-colors">Partners</a>
-          <a href="#compliance" className="hover:text-aijiro transition-colors">Compliance</a>
-          <a href="#gtm" className="hover:text-aijiro transition-colors">GTM</a>
-        </div>
-        <SessionControls />
-      </nav>
 
-      <section className="relative py-20 px-4 text-center">
-        <div className="max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="inline-block px-4 py-1.5 rounded-full bg-sakura/50 border border-aijiro/20 text-akaneiro text-sm font-semibold uppercase tracking-wider mb-6"
-          >
-            Market Entry Decision Support
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-bold text-sumi leading-tight jp-heading mb-6"
-          >
-            Japan<span className="text-akaneiro"> → </span>India
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg md:text-xl text-sumi/70 max-w-xl mx-auto jp-body mb-10"
-          >
-            A demo-safe market-entry decision-support platform for Japanese SMEs evaluating expansion into India.
-            Market Intelligence, Partner Trust, Compliance Copilot, and GTM Simulator — with full provenance and
-            human verification.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          >
-            <button className="glass-button px-8 py-3 text-lg font-semibold flex items-center gap-2 hover:scale-105 transition-transform">
-              Start Assessment
-              <span className="text-xl">▸</span>
-            </button>
-            <button className="glass-button secondary px-8 py-3 text-lg font-semibold">
-              View Documentation
-            </button>
-          </motion.div>
-        </div>
-      </section>
+      <FanHero />
+      <ScrollIsland topics={topics} label={t('island.label')} />
 
-      <section id="features" className="py-24 px-4 bg-sakura/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-sumi mb-4 jp-heading">Four Connected Engines</h2>
-            <p className="text-sumi/60 max-w-2xl mx-auto">Each engine produces traceable, auditable output with explicit assumptions and limitations.</p>
+      <div className="mx-auto max-w-6xl px-5 md:px-10">
+        <section id="features" className="scroll-mt-24 py-24">
+          <SectionHeading index="01" kanji="四" title={t('features.title')}>{t('features.body')}</SectionHeading>
+          <Reveal>
+            <RevealItem>
+              <FeatureTour
+                label={t('tour.label')}
+                steps={engines.map((e) => ({
+                  id: e.key,
+                  kanji: e.kanji,
+                  title: t(`feature.${e.key}.title` as MessageKey),
+                  description: t(`feature.${e.key}.desc` as MessageKey),
+                  icon: <e.icon className="size-7" strokeWidth={1.5} aria-hidden />,
+                  image: e.image,
+                  href: jigHref({ screen: e.screen }),
+                  hrefLabel: t('tour.open'),
+                }))}
+              />
+            </RevealItem>
+          </Reveal>
+        </section>
+      </div>
+
+      <EvidenceBand />
+
+      <div className="mx-auto max-w-6xl px-5 md:px-10">
+        <section id="preview" className="scroll-mt-24 py-24">
+          <SectionHeading index="02" kanji="稟" title={t('preview.title')}>{t('preview.body')}</SectionHeading>
+          <Reveal className="md:ml-[11rem]">
+            <RevealItem>
+              <RingiPreview />
+            </RevealItem>
+          </Reveal>
+        </section>
+
+        <div className="kumiko-divider" />
+
+        <section id="workflow" className="scroll-mt-24 py-24">
+          <SectionHeading index="03" kanji="始" title={t('workflow.title')}>{t('workflow.body')}</SectionHeading>
+          <Reveal className="md:ml-[11rem]">
+            <RevealItem>
+              <Workflow />
+            </RevealItem>
+          </Reveal>
+        </section>
+
+        <div className="kumiko-divider" />
+
+        <section id="translation" className="scroll-mt-24 py-24">
+          <SectionHeading index="04" kanji="訳" title={t('translation.title')}>{t('translation.body')}</SectionHeading>
+          <Reveal className="md:ml-[11rem]">
+            <RevealItem className="glass-panel p-6 md:p-8">
+              <TranslationControls />
+            </RevealItem>
+          </Reveal>
+        </section>
+
+        <div className="kumiko-divider" />
+
+        <section id="speech" className="scroll-mt-24 py-24">
+          <SectionHeading index="05" kanji="声" title={t('speech.title')}>{t('speech.body')}</SectionHeading>
+          <Reveal className="md:ml-[11rem]">
+            <RevealItem className="glass-panel p-6 md:p-8">
+              <SpeechControls />
+            </RevealItem>
+          </Reveal>
+        </section>
+      </div>
+
+      <footer className="border-t border-hairline">
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-12 text-sm text-sumi/60 md:flex-row md:justify-between md:px-10">
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <span className="hanko h-6 w-6 text-xs" aria-hidden>西</span>
+              <span className="jp-heading text-sumi">{t('footer.tagline')}</span>
+            </div>
+            <a href="/jig-os" className="inline-flex items-center gap-1.5 text-sumi underline decoration-hairline underline-offset-4 hover:decoration-akaneiro">
+              <span className="rounded-[2px] bg-sumi px-1.5 py-0.5 font-mono text-[10px] text-white no-underline">OS</span>
+              {t('hero.jigos')}
+            </a>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((f) => (
-              <motion.div
-                key={f.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                whileHover={{ y: -4 }}
-                className="glass-panel p-8 rounded-2xl card-lift hover:border-aijiro/40 transition-all"
-              >
-                <div className="text-3xl mb-4">{f.icon}</div>
-                <h3 className="text-lg font-bold text-sumi mb-2">{f.title}</h3>
-                <p className="text-sumi/60 text-sm leading-relaxed">{f.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <div className="kumiko-divider my-16" />
-
-      <section id="workflow" className="py-24 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-12 h-12 rounded-full bg-aijiro flex items-center justify-center text-white font-bold">1</div>
-            <h2 className="text-2xl font-bold text-sumi">Begin Your Market Entry Assessment</h2>
-          </div>
-          <p className="text-sumi/60 mb-10 jp-body">
-            Create a tenant-scoped assessment to compare Indian regions for your product. All data is deterministic
-            and illustrative — verification required before business decisions.
-          </p>
-          <Workflow />
-        </div>
-      </section>
-
-      <section id="translation" className="py-24 px-4 bg-sakura/30">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-sumi mb-4 jp-heading">Japanese ↔ English Translation</h2>
-            <p className="text-sumi/60 max-w-xl mx-auto">
-              Bearer-protected translation through the BFF proxy. The access token stays in the sealed
-              server-side session; no token reaches client JavaScript. Falls back to a deterministic
-              illustrative placeholder when no translation model is available — never presented as verified content.
-            </p>
-          </div>
-          <div className="glass-panel p-8 rounded-2xl">
-            <TranslationControls />
+          <div className="max-w-xl space-y-2 jp-body">
+            <p><strong className="font-medium text-sumi">{t('footer.demoStrong')}</strong> {t('footer.demo')}</p>
+            <p>{t('footer.provenance')}</p>
+            <p className="text-xs text-sumi/45">{t('footer.credits')}</p>
           </div>
         </div>
-      </section>
-
-      <section id="speech" className="py-24 px-4 bg-sakura/30">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-sumi mb-4 jp-heading">Japanese Speech → English Translation</h2>
-            <p className="text-sumi/60 max-w-xl mx-auto">
-              Bearer-protected speech-to-speech translation. Capture Japanese audio in the browser; it is sent through
-              the BFF proxy to a local llama.cpp server running LiquidAI LFM2.5-Audio-1.5B-JP-GGUF. Falls back to an
-              illustrative placeholder when no local endpoint is running — never presented as verified content.
-            </p>
-          </div>
-          <div className="glass-panel p-8 rounded-2xl">
-            <SpeechControls />
-          </div>
-        </div>
-      </section>
-
-      <section className="py-12 px-4 border-t border-aijiro/20 bg-washi/30">
-        <div className="max-w-4xl mx-auto text-sm text-sumi/50 jp-body">
-          <p className="mb-2"><strong>Demo-safe MVP.</strong> No live government integrations, real partner credentials, or definite legal/tariff claims without verified inputs.</p>
-          <p>Every source and claim has explicit provenance and status. Scores, calculations, and citations are testable and traceable.</p>
-        </div>
-      </section>
-    </section>
+      </footer>
+    </>
   );
 }

@@ -15,8 +15,8 @@ export function ReportControls({ assessmentId }: { assessmentId: string }) {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-5"
     >
-      <h2 className="text-lg font-bold text-sumi">Consolidated Report</h2>
-      <div className="glass-panel p-5 rounded-xl space-y-3">
+      <h2 className="jp-heading text-lg text-sumi">Consolidated Report</h2>
+      <div className="glass-panel p-5 space-y-3">
         <p className="text-sm text-sumi/60">Generate a cached illustrative report for this assessment.</p>
         <button
           disabled={loading}

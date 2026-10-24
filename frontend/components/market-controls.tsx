@@ -27,12 +27,12 @@ export function MarketControls({ assessmentId }: { assessmentId: string }) {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-5"
     >
-      <h2 className="text-lg font-bold text-sumi">Market Ranking</h2>
-      <div className="glass-panel p-5 rounded-xl space-y-4">
+      <h2 className="jp-heading text-lg text-sumi">Market Ranking</h2>
+      <div className="glass-panel p-5 space-y-4">
         <p className="text-sm text-sumi/60">Adjust regional weights to rank Indian markets.</p>
         <div className="space-y-3">
           {Object.entries(weights).map(([key, value]) => (
-            <label key={key} className="flex items-center justify-between gap-3 p-2.5 rounded-lg bg-washi/50 border border-white/40">
+            <label key={key} className="flex items-center justify-between gap-3 p-2.5 rounded-lg bg-washi/50 border border-hairline">
               <span className="text-sm font-medium text-sumi">{key.charAt(0).toUpperCase() + key.slice(1)}</span>
               <input
                 aria-label={`${key} weight`}
@@ -56,7 +56,7 @@ export function MarketControls({ assessmentId }: { assessmentId: string }) {
             key={row.region_id}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            className="p-3 rounded-lg bg-washi/40 border border-white/30 card-lift"
+            className="p-3 rounded-lg bg-washi/40 border border-hairline card-lift"
           >
             <h3 className="font-bold text-sumi">#{row.rank} {row.name}: {row.score}</h3>
             <p className="text-xs text-sumi/60">

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { useI18n } from '../lib/i18n'
 
 type Session = { authenticated: boolean; user?: string; roles?: string[] }
 
@@ -11,6 +12,7 @@ type Session = { authenticated: boolean; user?: string; roles?: string[] }
  */
 
 export function SessionControls() {
+  const { t } = useI18n()
   const [session, setSession] = useState<Session | null>(null)
 
   useEffect(() => {
@@ -23,7 +25,7 @@ export function SessionControls() {
   }, [])
 
   if (session === null) {
-    return <span className="text-xs text-sumi/40">Checking session…</span>
+    return <span className="text-xs text-sumi/40">{t('session.checking')}</span>
   }
 
   if (!session.authenticated) {
@@ -34,7 +36,7 @@ export function SessionControls() {
         animate={{ opacity: 1 }}
         className="glass-button px-4 py-2 text-sm font-semibold"
       >
-        Sign in
+        {t('session.signIn')}
       </motion.a>
     )
   }
@@ -43,7 +45,7 @@ export function SessionControls() {
     <div className="flex items-center gap-3 text-sm">
       <span className="text-sumi/70">{session.user}</span>
       <a href="/api/auth/logout" className="text-sumi/60 hover:text-aijiro transition-colors">
-        Sign out
+        {t('session.signOut')}
       </a>
     </div>
 
