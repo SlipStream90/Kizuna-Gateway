@@ -1,0 +1,54 @@
+{
+  "documents": [
+    {
+      "file": "rbi-md-foreign-investment.pdf",
+      "code": "RBI-MD-FI",
+      "title": "RBI Master Direction — Foreign Investment in India",
+      "short_title": "RBI Master Direction (FI)",
+      "authority": "RBI",
+      "reference_style": "paragraph",
+      "source_url": "https://www.rbi.org.in/",
+      "last_verified_date": null
+    },
+    {
+      "file": "dpiit-consolidated-fdi-policy-2020.pdf",
+      "code": "DPIIT-FDI-2020",
+      "title": "DPIIT Consolidated FDI Policy (effective 15 October 2020)",
+      "short_title": "Consolidated FDI Policy 2020",
+      "authority": "DPIIT",
+      "reference_style": "paragraph",
+      "source_url": "https://dpiit.gov.in/",
+      "last_verified_date": null
+    },
+    {
+      "file": "fema-non-debt-instruments-rules-2019.pdf",
+      "code": "FEMA-NDI-2019",
+      "title": "Foreign Exchange Management (Non-debt Instruments) Rules, 2019",
+      "short_title": "FEMA (NDI) Rules 2019",
+      "authority": "Ministry of Finance",
+      "reference_style": "rule",
+      "source_url": "https://www.indiacode.nic.in/",
+      "last_verified_date": null
+    },
+    {
+      "file": "companies-act-2013.pdf",
+      "code": "CA-2013",
+      "title": "Companies Act, 2013",
+      "short_title": "Companies Act 2013",
+      "authority": "MCA",
+      "reference_style": "section",
+      "source_url": "https://www.indiacode.nic.in/",
+      "last_verified_date": null
+    },
+    {
+      "file": "pli-auto-components-guidelines.pdf",
+      "code": "MHI-PLI-AUTO",
+      "title": "PLI Scheme for Automobile and Auto Component Industry — Guidelines",
+      "short_title": "PLI Auto Guidelines",
+      "authority": "MHI",
+      "reference_style": "clause",
+      "source_url": "https://heavyindustries.gov.in/",
+      "last_verified_date": null
+    }
+  ]
+}

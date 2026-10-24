@@ -9,9 +9,39 @@ import { useL } from '../../lib/jig/useL'
 import type { Lang, RingiAnalysis, RingiInput, RingiSections, Sector, StateId } from '../../lib/jig/types'
 import { ringiMeta, ringiSections, SECTION_TITLES } from '../../lib/ringiTemplates'
 import { cn } from '../../lib/utils'
+import { askStatutes, FAILURE_TEXT, ringiQuestion, StatuteError, type StatuteAnswer, type StatuteFailure } from '../../lib/jig/statutes'
 import { CitationBadge } from './CitationBadge'
 import { FrictionIndex } from './FrictionIndex'
 import { DEPTS, NemawashiGraph, status } from './NemawashiGraph'
+
+/** Live statutory analysis from the backend RAG engine (POST /api/v1/compliance/answer). */
+type Live = { state: 'loading' } | { state: 'ok'; data: StatuteAnswer } | { state: 'failed'; kind: StatuteFailure }
+
+const LIVE_TITLE = { en: '4. Regulatory Analysis (from ingested statutes)', ja: '四、法令に基づく検討（取込済み法令）' }
+const CITATIONS_TITLE_WITH_LIVE = { en: '5. Regulatory Citation Index', ja: '五、規制根拠一覧' }
+
+function LiveStatus({ live, lang }: { live: Live; lang: Lang }) {
+  let text: string
+  let tone = 'text-sumi/55'
+  if (live.state === 'loading') {
+    text = lang === 'ja' ? '取込済み法令を照会中…' : 'Checking ingested statutes…'
+  } else if (live.state === 'failed') {
+    text = FAILURE_TEXT[live.kind][lang]
+  } else if (live.data.status === 'answered') {
+    const n = new Set(live.data.answer.flatMap((p) => p.citations)).size
+    text = lang === 'ja' ? `取込済み法令から ${n} 条項を引用して検討を追加しました。` : `Added a regulatory analysis citing ${n} clause(s) from ingested statutes.`
+    tone = 'text-bamboo'
+  } else {
+    text = live.data.notice ?? (lang === 'ja' ? '取込済み法令から根拠を得られませんでした。' : 'No grounded analysis from ingested statutes.')
+    tone = 'text-[#7a6230]'
+  }
+  return (
+    <p className={cn('flex items-center gap-1.5 border-b border-hairline px-4 py-1.5 font-mono text-[10px]', tone)}>
+      <span className={cn('size-1.5 rounded-full', live.state === 'loading' ? 'animate-pulse bg-sumi/40' : tone === 'text-bamboo' ? 'bg-bamboo' : 'bg-gold')} aria-hidden />
+      {text}
+    </p>
+  )
+}
 
 const DEFAULT_INPUT: RingiInput = {
   stateId: 'mandal',
@@ -47,6 +77,26 @@ export function RingiGenerator({ preset }: { preset?: { input: Partial<RingiInpu
 
   // The interface toggle also flips the document; the document toggle can then diverge.
   useEffect(() => setDocLang(lang), [lang])
+
+  // Ask the ingested statutes the proposal's regulatory question, in the document's language.
+  const [live, setLive] = useState<Live | null>(null)
+  useEffect(() => {
+    if (!analysis) return
+    const ctrl = new AbortController()
+    const st = STATES.find((x) => x.id === analysis.input.stateId)!
+    setLive({ state: 'loading' })
+    askStatutes(
+      { query: ringiQuestion(docLang, SECTOR_LABEL[analysis.input.sector][docLang], `${st.jit[docLang]}, ${st.state[docLang]}`), lang: docLang, k: 8 },
+      ctrl.signal,
+    )
+      .then((data) => setLive({ state: 'ok', data }))
+      .catch((e: Error) => {
+        if (e.name !== 'AbortError') setLive({ state: 'failed', kind: e instanceof StatuteError ? e.kind : 'offline' })
+      })
+    return () => ctrl.abort()
+  }, [analysis, docLang])
+  const liveAnswer = live?.state === 'ok' && live.data.status === 'answered' && live.data.lang === docLang ? live.data : null
+  const liveCited = liveAnswer ? liveAnswer.sources.filter((x) => liveAnswer.answer.some((p) => p.citations.includes(x.citation_id))) : []
 
   useEffect(() => {
     fetch('/api/ringi/refine')
@@ -88,8 +138,15 @@ export function RingiGenerator({ preset }: { preset?: { input: Partial<RingiInpu
 
   async function copyDoc() {
     if (!meta || !sections) return
+    const curatedCount = analysis?.citationIds.length ?? 0
+    const liveBlock = liveAnswer
+      ? [LIVE_TITLE[docLang], ...liveAnswer.answer.map((p) => `${p.text} ${p.badges.map((b) => b.label[docLang]).join(' ')}`), '']
+      : []
+    const liveIndex = liveCited.map((x, j) => `[${curatedCount + j + 1}] ${x.authority} — ${x.document_title}, ${x.badge.clause[docLang]}`)
     const text = [meta.subject, `${meta.docNo} · ${meta.date}`, meta.opening, '',
-      ...(Object.keys(SECTION_TITLES) as (keyof RingiSections)[]).flatMap((k) => [SECTION_TITLES[k][docLang], sections[k], '']),
+      ...(['overview', 'capital', 'exitGates'] as const).flatMap((k) => [SECTION_TITLES[k][docLang], sections[k], '']),
+      ...liveBlock,
+      (liveAnswer ? CITATIONS_TITLE_WITH_LIVE : SECTION_TITLES.citations)[docLang], sections.citations, ...liveIndex, '',
       meta.closing].join('\n')
     try { await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1500) } catch { /* clipboard blocked */ }
   }
@@ -181,6 +238,7 @@ export function RingiGenerator({ preset }: { preset?: { input: Partial<RingiInpu
                 </div>
               )}
             </div>
+            {analysis && live && <LiveStatus live={live} lang={docLang} />}
             {llm.error && <p role="alert" className="border-b border-hairline bg-akaneiro/5 px-4 py-2 text-xs text-akaneiro">{llm.error}</p>}
 
             {!analysis || !meta || !sections ? (
@@ -227,8 +285,39 @@ export function RingiGenerator({ preset }: { preset?: { input: Partial<RingiInpu
                           <p className="mt-2 whitespace-pre-wrap text-[13px] leading-[1.9] text-sumi/90">{sections[k]}</p>
                         </section>
                       ))}
+                      {liveAnswer && (
+                        <section>
+                          <h3 className="jp-heading flex items-center gap-2 border-b border-hairline pb-1 text-[15px] text-sumi">
+                            {LIVE_TITLE[docLang]}
+                            <span className="size-1.5 rounded-full bg-bamboo" aria-hidden />
+                          </h3>
+                          <div className="mt-2 space-y-3">
+                            {liveAnswer.answer.map((p, i) => (
+                              <div key={i}>
+                                <p className="whitespace-pre-wrap text-[13px] leading-[1.9] text-sumi/90">{p.text}</p>
+                                <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
+                                  {p.badges.map((b) => (
+                                    <span key={b.id} className="inline-flex items-center gap-1">
+                                      <CitationBadge live={b} />
+                                      <span className="font-mono text-[10px] text-sumi/55">{b.clause[docLang]}</span>
+                                    </span>
+                                  ))}
+                                </div>
+                                {!p.figures_verified && (
+                                  <p className="mt-1 text-[11px] text-[#7a6230]">
+                                    {docLang === 'ja' ? '※ この段落の数値は引用条項の本文で確認できません。原文で確認してください。' : '* A figure here does not appear in the cited text; check the original.'}
+                                  </p>
+                                )}
+                              </div>
+                            ))}
+                            <p className="font-mono text-[10px] text-sumi/45">
+                              {liveAnswer.generation_model} · {docLang === 'ja' ? '取込済み法令のみを根拠に生成 · 要人的確認' : 'generated only from ingested statutes · human review required'}
+                            </p>
+                          </div>
+                        </section>
+                      )}
                       <section>
-                        <h3 className="jp-heading border-b border-hairline pb-1 text-[15px] text-sumi">{SECTION_TITLES.citations[docLang]}</h3>
+                        <h3 className="jp-heading border-b border-hairline pb-1 text-[15px] text-sumi">{(liveAnswer ? CITATIONS_TITLE_WITH_LIVE : SECTION_TITLES.citations)[docLang]}</h3>
                         <ol className="mt-2 space-y-1.5">
                           {analysis.citationIds.map((id, i) => {
                             const s = SOURCE_BY_ID.get(id)
@@ -241,6 +330,13 @@ export function RingiGenerator({ preset }: { preset?: { input: Partial<RingiInpu
                               </li>
                             )
                           })}
+                          {liveCited.map((x, j) => (
+                            <li key={x.id} className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[12px] leading-snug text-sumi/85">
+                              <CitationBadge live={x.badge} index={analysis.citationIds.length + j + 1} />
+                              <span>{x.document_title}</span>
+                              <span className="text-sumi/50">— {x.badge.clause[docLang]}</span>
+                            </li>
+                          ))}
                         </ol>
                       </section>
                     </motion.div>

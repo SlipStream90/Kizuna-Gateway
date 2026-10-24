@@ -1,0 +1,6 @@
+# Statutory RAG engine (app/rag). Install alongside requirements.lock.
+pypdf>=5.0
+# Local multilingual embeddings (pulls in torch, already required by the speech pipeline).
+sentence-transformers>=3.0
+# Grounded answer generation (POST /api/v1/compliance/answer) calls Groq over HTTP.
+httpx>=0.27

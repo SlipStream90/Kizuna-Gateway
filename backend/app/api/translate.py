@@ -1,13 +1,16 @@
 """Bearer-protected Japanese<->English translation endpoint.
 
 Uses an optional NLLB-200 model (lazy-loaded) when ``transformers`` and model
-weights are available; otherwise returns a deterministic illustrative
-placeholder so the endpoint works offline. Every response states the provider
+weights are available locally (``TRANSLATE_NLLB_DOWNLOAD=1`` allows fetching
+them); otherwise returns a deterministic illustrative placeholder so the
+endpoint works offline. Every response states the provider
 and whether a fallback was used, so translations are never mistaken for
 verified content. Requires a valid OIDC bearer token.
 """
 
 from __future__ import annotations
+
+import os
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
@@ -27,11 +30,15 @@ def _load_nllb():
     global _model, _tokenizer
     if _model is not None:
         return _model, _tokenizer
+    # `transformers` is also installed by the RAG embedding stack, so its presence must not
+    # trigger a multi-GB weight download inside a request: use locally cached weights unless
+    # downloading is explicitly enabled.
+    local_only = os.getenv("TRANSLATE_NLLB_DOWNLOAD", "").strip().lower() not in {"1", "true", "yes", "on"}
     try:
         from transformers import AutoModelForSeq2SeqLM, AutoTokenizer  # type: ignore
 
-        _tokenizer = AutoTokenizer.from_pretrained(_MODEL_NAME)
-        _model = AutoModelForSeq2SeqLM.from_pretrained(_MODEL_NAME)
+        _tokenizer = AutoTokenizer.from_pretrained(_MODEL_NAME, local_files_only=local_only)
+        _model = AutoModelForSeq2SeqLM.from_pretrained(_MODEL_NAME, local_files_only=local_only)
     except Exception:
         _model, _tokenizer = None, None
     return _model, _tokenizer

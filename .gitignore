@@ -20,7 +20,10 @@ postgres-data/
 
 # Generated application artifacts
 uploads/
-data/documents/
+# Statutory PDFs are downloaded locally, never committed; keep the docs.
+**/data/documents/*
+!**/data/documents/README.md
+!**/data/documents/manifest.example.json
 *.log
 
 # Tooling artifacts
