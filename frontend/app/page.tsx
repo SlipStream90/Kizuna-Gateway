@@ -2,6 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { Workflow } from '../components/workflow';
+import { SessionControls } from '../components/session-controls';
+import { TranslationControls } from '../components/translation-controls';
+import { SpeechControls } from '../components/speech-controls';
 
 const features = [
   {
@@ -27,8 +30,16 @@ const features = [
 ];
 
 export default function Home() {
+  const authError =
+    typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('auth_error')
+
   return (
     <section className="relative min-h-screen flex flex-col">
+      {authError && (
+        <div role="alert" className="mx-auto mt-2 rounded-lg border border-akaneiro/30 bg-akaneiro/10 px-4 py-2 text-sm text-akaneiro">
+          {authError}
+        </div>
+      )}
       <nav className="glass-panel px-6 py-4 flex items-center justify-between sticky top-4 z-30 mx-0">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -45,6 +56,7 @@ export default function Home() {
           <a href="#compliance" className="hover:text-aijiro transition-colors">Compliance</a>
           <a href="#gtm" className="hover:text-aijiro transition-colors">GTM</a>
         </div>
+        <SessionControls />
       </nav>
 
       <section className="relative py-20 px-4 text-center">
@@ -131,6 +143,38 @@ export default function Home() {
             and illustrative — verification required before business decisions.
           </p>
           <Workflow />
+        </div>
+      </section>
+
+      <section id="translation" className="py-24 px-4 bg-sakura/30">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-sumi mb-4 jp-heading">Japanese ↔ English Translation</h2>
+            <p className="text-sumi/60 max-w-xl mx-auto">
+              Bearer-protected translation through the BFF proxy. The access token stays in the sealed
+              server-side session; no token reaches client JavaScript. Falls back to a deterministic
+              illustrative placeholder when no translation model is available — never presented as verified content.
+            </p>
+          </div>
+          <div className="glass-panel p-8 rounded-2xl">
+            <TranslationControls />
+          </div>
+        </div>
+      </section>
+
+      <section id="speech" className="py-24 px-4 bg-sakura/30">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-sumi mb-4 jp-heading">Japanese Speech → English Translation</h2>
+            <p className="text-sumi/60 max-w-xl mx-auto">
+              Bearer-protected speech-to-speech translation. Capture Japanese audio in the browser; it is sent through
+              the BFF proxy to a local llama.cpp server running LiquidAI LFM2.5-Audio-1.5B-JP-GGUF. Falls back to an
+              illustrative placeholder when no local endpoint is running — never presented as verified content.
+            </p>
+          </div>
+          <div className="glass-panel p-8 rounded-2xl">
+            <SpeechControls />
+          </div>
         </div>
       </section>
 

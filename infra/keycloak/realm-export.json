@@ -1,0 +1,120 @@
+{
+  "realm": "kizuna",
+  "displayName": "Kizuna Gateway",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "resetPasswordAllowed": false,
+  "bruteForceProtected": false,
+  "roles": {
+    "realm": [
+      { "name": "member", "description": "Default member of an organization", "composite": false },
+      { "name": "advisor", "description": "May create and revise assessments", "composite": false },
+      { "name": "reviewer", "description": "May review source passages", "composite": false },
+      { "name": "admin", "description": "Organization administrator", "composite": false }
+    ]
+  },
+  "clientScopes": [
+    {
+      "name": "roles",
+      "description": "Maps realm roles onto a flat roles claim",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "foo",
+            "access.token.claim": "true",
+            "claim.name": "roles",
+            "jsonType.label": "String",
+            "multivalued": "true"
+          }
+        }
+      ]
+    },
+    {
+      "name": "kizuna",
+      "description": "Kizuna JWT audience and organization claim",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true"
+      },
+      "protocolMappers": [
+        {
+          "name": "audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.custom.audience": "kizuna-pilot",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        },
+        {
+          "name": "org id",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "org_id",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "org_id",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "kizuna-web",
+      "name": "Kizuna Gateway Web (BFF)",
+      "description": "Confidential OIDC client used by the Next.js BFF proxy. No browser receives a token directly.",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "kizuna-web-dev-secret",
+      "redirectUris": ["http://localhost:3000/api/auth/callback/*"],
+      "webOrigins": ["http://localhost:3000"],
+      "baseUrl": "http://localhost:3000",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "fullScopeAllowed": false,
+      "nodeReRegistrationTimeout": 0,
+      "defaultClientScopes": ["roles", "web-origins", "profile", "email"],
+      "optionalClientScopes": ["kizuna", "address", "phone", "offline_access", "microprofile-jwt"],
+      "attributes": {
+        "post.logout.redirect.uris": "http://localhost:3000/*",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "backchannel.logout.session.required": "true"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "demo",
+      "email": "demo@kizuna.example",
+      "emailVerified": true,
+      "firstName": "Demo",
+      "lastName": "Administrator",
+      "enabled": true,
+      "credentials": [
+        { "type": "password", "value": "kizuna-demo-2026", "temporary": false }
+      ],
+      "realmRoles": ["member", "advisor", "reviewer", "admin"],
+      "attributes": { "org_id": ["11111111-1111-1111-1111-111111111111"] }
+    }
+  ]
+}

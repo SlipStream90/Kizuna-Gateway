@@ -2,7 +2,7 @@ import os
 from fastapi import Depends, FastAPI,Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from app.api import assessments,market,partners,compliance,sources,gtm,reports,dev
+from app.api import assessments,market,partners,compliance,sources,gtm,reports,dev,translate,speech
 from app.repositories.database import lifespan
 from app.auth.dependencies import require_principal
 app=FastAPI(title='Kizuna Gateway',lifespan=lifespan)
@@ -13,4 +13,4 @@ _authenticated = [Depends(require_principal)]
 # Local development only: mints a token, so it must never sit behind the very
 # verifier it issues tokens for. It self-disables unless DEV_AUTH_ENABLED is set.
 app.include_router(dev.router,prefix='/api/v1')
-app.include_router(assessments.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(market.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(partners.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(compliance.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(sources.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(gtm.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(reports.router,prefix='/api/v1',dependencies=_authenticated)
+app.include_router(assessments.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(market.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(partners.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(compliance.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(sources.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(gtm.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(reports.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(translate.router,prefix='/api/v1',dependencies=_authenticated);app.include_router(speech.router,prefix='/api/v1',dependencies=_authenticated)

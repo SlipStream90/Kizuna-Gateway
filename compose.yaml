@@ -1,0 +1,39 @@
+# Local identity provider for the OIDC login flow.
+#
+# Brings up Keycloak on http://localhost:8080 with the `kizuna` realm
+# pre-imported, so a teammate can sign in without any console setup:
+#
+#   docker compose up -d
+#   open http://localhost:8080/realms/kizuna/.well-known/openid-configuration
+#
+# Then sign in at http://localhost:3000 with demo/kizuna-demo-2026.
+#
+# Production uses a real provider; nothing here should run in front of users.
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HTTP_ENABLED: "true"
+      KC_HEALTH_ENABLED: "true"
+    ports:
+      - "8080:8080"
+      - "9000:9000"
+    volumes:
+      - ./infra/keycloak/realm-export.json:/opt/keycloak/data/import/kizuna-realm.json:ro
+
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: kizuna
+    ports:
+      - "5432:5432"
+    volumes:
+      - kizuna-db:/var/lib/postgresql/data
+
+volumes:
+  kizuna-db:
