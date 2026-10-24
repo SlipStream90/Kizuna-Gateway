@@ -18,11 +18,12 @@ All regions, partners and results are deterministic offline seeds. The platform 
 3. [Backend setup](#backend-setup)
 4. [Frontend setup](#frontend-setup)
 5. [Running the stack](#running-the-stack)
-6. [Verifying the API](#verifying-the-api)
-7. [Tests and checks](#tests-and-checks)
-8. [Environment variable reference](#environment-variable-reference)
-9. [Troubleshooting](#troubleshooting)
-10. [Known limitations](#known-limitations)
+6. [Authentication](#authentication)
+7. [Verifying the API](#verifying-the-api)
+8. [Tests and checks](#tests-and-checks)
+9. [Environment variable reference](#environment-variable-reference)
+10. [Troubleshooting](#troubleshooting)
+11. [Known limitations](#known-limitations)
 
 ---
 
@@ -148,9 +149,11 @@ OIDC_ISSUER=https://issuer.example.test
 OIDC_AUDIENCE=kizuna-pilot
 OIDC_SIGNING_KEY=01234567890123456789012345678901
 OIDC_JWT_ALGORITHM=HS256
+DEV_AUTH_ENABLED=1
+DEV_ORG_ID=11111111-1111-1111-1111-111111111111
 ```
 
-`OIDC_SIGNING_KEY` must be **at least 32 characters** when using HS256, or every request fails with `401 OIDC verifier is not configured`.
+`OIDC_SIGNING_KEY` must be **at least 32 characters** when using HS256, or every request fails with `401 OIDC verifier is not configured`. `DEV_AUTH_ENABLED=1` lets the web client mint its own token; see [Authentication](#authentication).
 
 The backend does not load `.env` automatically — export the values in your shell or use your process manager. For example:
 
@@ -222,9 +225,38 @@ Then open <http://localhost:3000>.
 
 ---
 
+## Authentication
+
+Every `/api/v1` route except `/api/v1/dev/session` requires a bearer JWT whose claims match the configured issuer and audience. There are two supported paths:
+
+### Local development (default)
+
+With `DEV_AUTH_ENABLED=1` the backend exposes `POST /api/v1/dev/session`, which mints a short-lived HS256 token for the seeded organisation:
+
+```bash
+TOKEN=$(curl -s -X POST http://localhost:8000/api/v1/dev/session | python -c "import sys,json;print(json.load(sys.stdin)['access_token'])")
+```
+
+The web client uses this automatically: `frontend/lib/api.ts` requests a token on first call, caches it until shortly before expiry, and retries once on `401`. You only need to set `NEXT_PUBLIC_DEV_AUTH=1` (the default) in `frontend/.env.local` and `DEV_AUTH_ENABLED=1` in the backend environment.
+
+Guards built into the endpoint:
+
+- returns `404` unless `DEV_AUTH_ENABLED` is truthy, so it does not advertise itself in deployed environments
+- refuses to mint (`503`) when `OIDC_JWT_ALGORITHM` is `RS256`/`ES256`, because those keys cannot sign symmetric tokens
+- refuses to mint when the signing key is shorter than 32 characters
+- token lifetime is capped at 24 hours; tokens default to `admin` on `DEV_ORG_ID`
+
+Never enable `DEV_AUTH_ENABLED` where real users authenticate.
+
+### Production
+
+Set `DEV_AUTH_ENABLED=0` and `NEXT_PUBLIC_DEV_AUTH=0`, then supply tokens from your OIDC provider. The verifier requires `exp`, `iss`, `aud`, `sub` (user UUID) and `org_id` (organisation UUID) claims, and accepts only the algorithm named in `OIDC_JWT_ALGORITHM`. The browser-side token handoff (login redirect, session cookie or token exchange) is **not implemented yet** — that is the remaining integration work.
+
+---
+
 ## Verifying the API
 
-All `/api/v1` routes require a bearer JWT whose claims match the configured issuer/audience. Mint a local development token with the same signing key:
+Beyond the dev session above, you can mint a token manually with the same signing key:
 
 ```python
 # backend/mint_dev_token.py  (local only, do not commit)
@@ -248,7 +280,7 @@ curl -H "Authorization: Bearer $TOKEN" \
   "http://localhost:8000/api/v1/market-ranking?assessment_id=<id>"
 ```
 
-Create an assessment (decimal values must be **strings**, never JSON numbers):
+Create an assessment (decimal values must be **strings**, never JSON numbers, and `modes` accepts `direct` or `distributor`):
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/assessments \
@@ -257,11 +289,10 @@ curl -X POST http://localhost:8000/api/v1/assessments \
   -d '{
         "product": "Sensor",
         "sector": "Industrial",
-        "target_customer": "OEM",
+        "buyer": "OEM",
         "budget": "1000.00",
         "horizon_months": 12,
-        "preferred_modes": ["direct_export"],
-        "weights": {"market": "0.4", "operations": "0.3", "readiness": "0.3"}
+        "modes": ["direct"]
       }'
 ```
 
@@ -340,7 +371,11 @@ Reproduce that job locally before opening a PR.
 | `OIDC_JWT_ALGORITHM` | backend | no | `HS256` | One of `HS256`, `RS256`, `ES256` |
 | `PILOT_TEST_DATABASE_URL` | tests | for tests | — | Database used by pilot integration tests |
 | `POSTGRES_MAINTENANCE_URL` | script | for script | — | Privileged URL used to create/drop the temp database |
+| `DEV_AUTH_ENABLED` | backend | for local UI | unset (`404`) | Enables `POST /api/v1/dev/session` |
+| `DEV_ORG_ID` | backend | no | `11111111-…-1111` | Organisation the dev token is scoped to |
+| `DEV_TOKEN_TTL_SECONDS` | backend | no | `3600` | Dev token lifetime, clamped to 60–86400 |
 | `NEXT_PUBLIC_API_BASE_URL` | frontend | no | `http://localhost:8000/api/v1` | API origin used by the web client |
+| `NEXT_PUBLIC_DEV_AUTH` | frontend | no | `1` | Set `0` to stop the client requesting dev tokens |
 
 JWT claims required: `exp`, `iss`, `aud`, `sub` (user UUID), `org_id` (organisation UUID), optional `roles` (`member`, `advisor`, `reviewer`, `admin`).
 
@@ -352,6 +387,7 @@ JWT claims required: `exp`, `iss`, `aud`, `sub` (user UUID), `org_id` (organisat
 | --- | --- | --- |
 | `401 OIDC verifier is not configured` | Missing OIDC env vars, or key shorter than 32 chars for HS256 | Load all four OIDC variables |
 | `401 Invalid bearer token` | `iss`/`aud`/`exp` mismatch, wrong signing key, or malformed claims | Re-mint the token with matching values |
+| UI shows `401` while `curl` works | `DEV_AUTH_ENABLED` unset, so `/dev/session` returns `404`, or `NEXT_PUBLIC_DEV_AUTH=0` | Enable dev sessions and restart uvicorn |
 | `KeyError: 'DATABASE_URL'` at startup | Environment not loaded into the uvicorn process | Export variables in the same shell |
 | Queries return empty lists unexpectedly | Connected as table owner or superuser, so RLS is bypassed/misapplied — or `app.org_id` is unset | Connect as `kizuna_app`; keep `transaction_for_org` usage |
 | `002_pilot_foundation requires empty legacy assessment/report tables` | Legacy rows from `001_initial.sql` | Recreate the database and re-apply migrations |
@@ -365,7 +401,7 @@ JWT claims required: `exp`, `iss`, `aud`, `sub` (user UUID), `org_id` (organisat
 
 ## Known limitations
 
-- The web client (`frontend/lib/api.ts`) does **not** attach a bearer token yet, so UI calls against the authenticated API return `401`. Use the minted token with `curl` or `/docs` until auth wiring lands.
+- Local demos authenticate through the gated `POST /api/v1/dev/session` endpoint, which issues an `admin` token. Real deployments still need a browser-side OIDC login/token handoff; set `DEV_AUTH_ENABLED=0` there.
 - All partner, compliance and market data is deterministic seed data. Partners are fictional and never verified; compliance passages require human review and do not establish legal, customs, tariff, origin, CEPA or classification outcomes.
 - No live government integrations or external credentials are required or used.
 - Background video files (~33 MB) are **not committed**; see `frontend/public/videos/README.md` to restore them. The UI renders a gradient fallback without them.

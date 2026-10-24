@@ -23,6 +23,11 @@ def _settings() -> tuple[str, str, str, str]:
     return issuer, audience, key, algorithm
 
 
+def oidc_settings() -> tuple[str, str, str, str]:
+    """Return the configured issuer, audience, signing key and algorithm."""
+    return _settings()
+
+
 def require_principal(
     credentials: HTTPAuthorizationCredentials | None = Depends(_bearer),
 ) -> Principal:
