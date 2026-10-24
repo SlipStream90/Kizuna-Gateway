@@ -1,19 +1,21 @@
 import './globals.css';
-import { BackgroundVideo, SakuraOverlay } from '../components/BackgroundVideo';
+import { LanguageProvider } from '../lib/i18n';
 
 export const metadata = {
-  title: 'Kizuna Gateway - Japan-India Market Entry',
-  description: 'Demo-safe market-entry decision-support MVP for Japanese SMEs evaluating expansion into India.',
+  title: 'Nishi Link — Japan → India Market Entry',
+  description: 'Decision support for Japanese SMEs evaluating expansion into India: regions, partners, compliance and go-to-market cost, with sources in plain view.',
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="min-h-screen antialiased selection:bg-aijiro selection:text-white">
-        <BackgroundVideo />
-        <SakuraOverlay count={24} />
-        <main className="relative z-10 mx-auto max-w-7xl p-4 md:p-8">
-          {children}
+      <head>
+        {/* Self-hosted so the demo never waits on an external CDN (see public/fonts/README.md). */}
+        <link rel="stylesheet" href="/fonts/noto.css" />
+      </head>
+      <body className="min-h-screen antialiased selection:bg-akaneiro selection:text-white">
+        <main className="relative">
+          <LanguageProvider>{children}</LanguageProvider>
         </main>
       </body>
     </html>

@@ -1,0 +1,50 @@
+{
+  "notice": {
+    "en": "Simulated streams. Module 1 and Module 3 are not connected in this demo; records below are recorded fixtures used to show how evidence links into Ringi-sho claims.",
+    "ja": "シミュレーションデータです。本デモではモジュール1・3は接続されておらず、以下は証拠が稟議書の主張に紐づく仕組みを示すための記録済みサンプルです。"
+  },
+  "claims": [
+    { "id": "C1", "section": "overview", "text": { "en": "Local demand supports a first-phase plant within the stated horizon.", "ja": "現地需要は、所定の期間内における第一期工場の設立を裏付けている。" } },
+    { "id": "C2", "section": "capital", "text": { "en": "Capital commitment can be staged against measurable gates.", "ja": "資本投下は、測定可能なゲートに沿って段階的に実行できる。" } },
+    { "id": "C3", "section": "exitGates", "text": { "en": "Shop-floor quality can reach JIS-equivalent tolerance before scale-up.", "ja": "量産移行前に、現場品質をJIS相当の公差水準に到達させることができる。" } },
+    { "id": "C4", "section": "overview", "text": { "en": "The local partner is operationally ready for joint launch.", "ja": "現地パートナーは共同立ち上げに向けた運営体制を備えている。" } }
+  ],
+  "streams": [
+    {
+      "id": "m1-001", "module": 1, "kind": "kiosk", "at": "2026-09-14T10:12:00+05:30",
+      "site": { "en": "PoC kiosk — Gurugram dealer expo", "ja": "PoCキオスク — グルグラム販売店展示会" },
+      "metric": { "en": "Purchase intent 4.1 / 5 (n = 212)", "ja": "購入意向 4.1／5（n = 212）" },
+      "sentiment": 0.78, "claims": ["C1"]
+    },
+    {
+      "id": "m1-002", "module": 1, "kind": "kiosk", "at": "2026-09-21T15:40:00+05:30",
+      "site": { "en": "PoC kiosk — Ahmedabad supplier meet", "ja": "PoCキオスク — アーメダバード サプライヤー会" },
+      "metric": { "en": "Price acceptance 62% at target price (n = 148)", "ja": "目標価格での価格受容率 62％（n = 148）" },
+      "sentiment": 0.61, "claims": ["C1", "C2"]
+    },
+    {
+      "id": "m1-003", "module": 1, "kind": "kiosk", "at": "2026-10-02T11:05:00+05:30",
+      "site": { "en": "PoC kiosk — Chennai OEM tech day", "ja": "PoCキオスク — チェンナイ OEM技術デー" },
+      "metric": { "en": "Lead-time concern raised by 38% of respondents", "ja": "回答者の38％がリードタイムへの懸念を表明" },
+      "sentiment": 0.44, "claims": ["C1", "C4"]
+    },
+    {
+      "id": "m3-101", "module": 3, "kind": "ar-audit", "at": "2026-10-05T09:30:00+05:30",
+      "site": { "en": "AR audit — partner line 2, machining", "ja": "AR監査 — パートナー第2ライン 機械加工" },
+      "metric": { "en": "Cpk 1.21 on bore diameter (target ≥ 1.33)", "ja": "内径のCpk 1.21（目標 1.33以上）" },
+      "sentiment": 0.52, "claims": ["C3"]
+    },
+    {
+      "id": "m3-102", "module": 3, "kind": "ar-audit", "at": "2026-10-06T14:10:00+05:30",
+      "site": { "en": "AR audit — 5S / kaizen walk", "ja": "AR監査 — 5S・改善巡回" },
+      "metric": { "en": "5S score 78 / 100; 4 kaizen tags open", "ja": "5Sスコア 78／100、改善タグ 4件未完了" },
+      "sentiment": 0.66, "claims": ["C3", "C4"]
+    },
+    {
+      "id": "m3-103", "module": 3, "kind": "ar-audit", "at": "2026-10-08T16:45:00+05:30",
+      "site": { "en": "AR audit — incoming inspection", "ja": "AR監査 — 受入検査" },
+      "metric": { "en": "Supplier lot acceptance 96.5% (3 lots held)", "ja": "サプライヤーロット合格率 96.5％（3ロット保留）" },
+      "sentiment": 0.74, "claims": ["C2", "C3"]
+    }
+  ]
+}

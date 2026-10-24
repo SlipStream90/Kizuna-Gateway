@@ -1,0 +1,753 @@
+{
+  "disclaimer": {
+    "en": "Demonstration data. Instruments named here are real; metric values marked 'illustrative' are demo figures, and any clause marked 'verify' must be checked against the current official text before use in a Ringi-sho.",
+    "ja": "デモ用データです。記載の法令・制度は実在しますが、「例示」と表示した数値はデモ用の値です。「要確認」の条項は、稟議書に用いる前に必ず最新の公式条文で確認してください。"
+  },
+  "sources": [
+    {
+      "id": "dpiit-fdi-2020",
+      "authority": "DPIIT",
+      "title": {
+        "en": "Consolidated FDI Policy (effective 15 Oct 2020)",
+        "ja": "統合FDI政策（2020年10月15日施行）"
+      },
+      "clause": {
+        "en": "Ch. 5 — Manufacturing (automatic route)",
+        "ja": "第5章 — 製造業（自動承認ルート）"
+      },
+      "clauseVerified": false,
+      "url": "https://dpiit.gov.in",
+      "summary": {
+        "en": "Manufacturing is open to 100% foreign direct investment under the automatic route, subject to sector conditions.",
+        "ja": "製造業は、業種別条件のもとで自動承認ルートによる100％外国直接投資が認められています。"
+      },
+      "tags": [
+        "fdi",
+        "automatic",
+        "route",
+        "manufacturing",
+        "equity",
+        "legal",
+        "auto",
+        "fmcg",
+        "robotics"
+      ]
+    },
+    {
+      "id": "dpiit-pn3-2020",
+      "authority": "DPIIT",
+      "title": {
+        "en": "Press Note 3 (2020 Series)",
+        "ja": "プレスノート3（2020年シリーズ）"
+      },
+      "clause": {
+        "en": "Land-border country investors require Government approval",
+        "ja": "陸上国境を接する国の投資家には政府承認が必要"
+      },
+      "clauseVerified": true,
+      "url": "https://dpiit.gov.in",
+      "summary": {
+        "en": "Investment from an entity of a country sharing a land border with India, or whose beneficial owner is from such a country, needs prior Government approval.",
+        "ja": "インドと陸上国境を接する国の主体、またはその国に実質的支配者がいる主体からの投資には、事前の政府承認が必要です。"
+      },
+      "tags": [
+        "fdi",
+        "approval",
+        "beneficial",
+        "owner",
+        "land",
+        "border",
+        "legal",
+        "partner"
+      ]
+    },
+    {
+      "id": "fema-ndi-2019",
+      "authority": "Ministry of Finance",
+      "title": {
+        "en": "FEMA (Non-debt Instruments) Rules, 2019",
+        "ja": "外国為替管理法（非債務性証券）規則 2019"
+      },
+      "clause": {
+        "en": "Schedule I",
+        "ja": "別表I"
+      },
+      "clauseVerified": true,
+      "url": "https://www.indiacode.nic.in",
+      "summary": {
+        "en": "Governs purchase and sale of equity instruments of an Indian company by a person resident outside India, including pricing guidelines.",
+        "ja": "インド国外居住者によるインド企業の資本性証券の取得・売却（価格算定指針を含む）を規定しています。"
+      },
+      "tags": [
+        "fema",
+        "equity",
+        "pricing",
+        "valuation",
+        "legal",
+        "finance",
+        "capital",
+        "exit",
+        "repatriation"
+      ]
+    },
+    {
+      "id": "rbi-md-fi",
+      "authority": "RBI",
+      "title": {
+        "en": "Master Direction — Foreign Investment in India",
+        "ja": "マスターディレクション — インドにおける外国投資"
+      },
+      "clause": {
+        "en": "Reporting: Form FC-GPR within 30 days of allotment (FIRMS portal)",
+        "ja": "報告：割当後30日以内に様式FC-GPRを提出（FIRMSポータル）"
+      },
+      "clauseVerified": false,
+      "url": "https://www.rbi.org.in",
+      "summary": {
+        "en": "Issue of equity instruments to a foreign investor must be reported to RBI on Form FC-GPR through the FIRMS portal.",
+        "ja": "外国投資家への資本性証券の発行は、FIRMSポータルを通じて様式FC-GPRによりインド準備銀行へ報告する必要があります。"
+      },
+      "tags": [
+        "rbi",
+        "reporting",
+        "fc-gpr",
+        "fema",
+        "legal",
+        "finance",
+        "capital",
+        "remittance"
+      ]
+    },
+    {
+      "id": "companies-act-149",
+      "authority": "MCA",
+      "title": {
+        "en": "Companies Act, 2013 — s.149(3)",
+        "ja": "2013年会社法 第149条(3)"
+      },
+      "clause": {
+        "en": "At least one director resident in India (≥182 days in the financial year)",
+        "ja": "インド居住の取締役を1名以上（事業年度に182日以上滞在）"
+      },
+      "clauseVerified": true,
+      "url": "https://www.mca.gov.in",
+      "summary": {
+        "en": "Every company must have at least one director who stayed in India for at least 182 days in the financial year.",
+        "ja": "すべての会社は、当該事業年度にインドに182日以上滞在した取締役を少なくとも1名置く必要があります。"
+      },
+      "tags": [
+        "director",
+        "resident",
+        "governance",
+        "subsidiary",
+        "legal",
+        "indiadesk",
+        "incorporation"
+      ]
+    },
+    {
+      "id": "companies-act-135",
+      "authority": "MCA",
+      "title": {
+        "en": "Companies Act, 2013 — s.135 (CSR)",
+        "ja": "2013年会社法 第135条（CSR）"
+      },
+      "clause": {
+        "en": "CSR applies above net worth ₹500 cr, turnover ₹1,000 cr or net profit ₹5 cr",
+        "ja": "純資産50億ルピー、売上高100億ルピー、または純利益5千万ルピー超でCSRを適用"
+      },
+      "clauseVerified": true,
+      "url": "https://www.mca.gov.in",
+      "summary": {
+        "en": "Companies crossing any CSR threshold must spend 2% of average net profits on CSR activities.",
+        "ja": "いずれかのCSR基準を超える会社は、平均純利益の2％をCSR活動に支出する必要があります。"
+      },
+      "tags": [
+        "csr",
+        "profit",
+        "finance",
+        "cost",
+        "governance",
+        "large"
+      ]
+    },
+    {
+      "id": "dtaa-india-japan",
+      "authority": "CBDT",
+      "title": {
+        "en": "India–Japan Double Taxation Avoidance Agreement",
+        "ja": "日印租税条約"
+      },
+      "clause": {
+        "en": "Article 10 (Dividends)",
+        "ja": "第10条（配当）"
+      },
+      "clauseVerified": true,
+      "url": "https://incometaxindia.gov.in",
+      "summary": {
+        "en": "Caps withholding tax on dividends paid by the Indian subsidiary to the Japanese parent; treaty relief requires a Tax Residency Certificate.",
+        "ja": "インド子会社から日本の親会社への配当に係る源泉税率に上限を設けています。条約上の軽減には居住者証明書が必要です。"
+      },
+      "tags": [
+        "tax",
+        "dividend",
+        "withholding",
+        "repatriation",
+        "finance",
+        "fx",
+        "exit"
+      ]
+    },
+    {
+      "id": "ijcepa-2011",
+      "authority": "Department of Commerce",
+      "title": {
+        "en": "India–Japan CEPA (2011)",
+        "ja": "日印包括的経済連携協定（2011年）"
+      },
+      "clause": {
+        "en": "Tariff schedules & rules of origin",
+        "ja": "関税譲許表および原産地規則"
+      },
+      "clauseVerified": false,
+      "url": "https://commerce.gov.in",
+      "summary": {
+        "en": "Preferential tariffs on qualifying goods traded between Japan and India, subject to rules-of-origin certification.",
+        "ja": "原産地規則に基づく証明を条件に、日印間で取引される適格品に特恵関税が適用されます。"
+      },
+      "tags": [
+        "tariff",
+        "customs",
+        "import",
+        "origin",
+        "finance",
+        "auto",
+        "robotics",
+        "components"
+      ]
+    },
+    {
+      "id": "pli-auto-2021",
+      "authority": "MHI",
+      "title": {
+        "en": "PLI Scheme — Automobile & Auto Component Industry (2021)",
+        "ja": "PLIスキーム — 自動車・自動車部品産業（2021年）"
+      },
+      "clause": {
+        "en": "Component Champion incentive on Determined Sales Value",
+        "ja": "部品チャンピオン奨励金（判定売上高ベース）"
+      },
+      "clauseVerified": false,
+      "url": "https://heavyindustries.gov.in",
+      "summary": {
+        "en": "Incentive on incremental sales of eligible advanced-technology auto components; eligibility depends on group revenue and minimum new investment.",
+        "ja": "適格な先端技術自動車部品の増分売上に対するインセンティブ。適格性はグループ売上高と最低新規投資額により判断されます。"
+      },
+      "tags": [
+        "pli",
+        "incentive",
+        "auto",
+        "components",
+        "finance",
+        "subsidy"
+      ]
+    },
+    {
+      "id": "pli-food-2021",
+      "authority": "MoFPI",
+      "title": {
+        "en": "PLI Scheme for Food Processing Industry (2021)",
+        "ja": "食品加工産業向けPLIスキーム（2021年）"
+      },
+      "clause": {
+        "en": "Category-specific incentive rates",
+        "ja": "カテゴリー別の奨励率"
+      },
+      "clauseVerified": false,
+      "url": "https://www.mofpi.gov.in",
+      "summary": {
+        "en": "Incentives for eligible food-processing categories and branding abroad; rates and thresholds vary by category.",
+        "ja": "適格な食品加工カテゴリーおよび海外ブランディングに対するインセンティブ。率と基準はカテゴリーごとに異なります。"
+      },
+      "tags": [
+        "pli",
+        "incentive",
+        "fmcg",
+        "food",
+        "finance",
+        "subsidy"
+      ]
+    },
+    {
+      "id": "rips-2024",
+      "authority": "Government of Rajasthan",
+      "title": {
+        "en": "Rajasthan Investment Promotion Scheme (RIPS) 2024",
+        "ja": "ラジャスタン州投資促進スキーム（RIPS）2024"
+      },
+      "clause": {
+        "en": "Investment subsidy & duty reimbursement annexures",
+        "ja": "投資補助金・税還付に関する付属書"
+      },
+      "clauseVerified": false,
+      "url": "https://invest.rajasthan.gov.in",
+      "summary": {
+        "en": "State-level incentives for eligible manufacturing investment; quantum depends on investment size and location category.",
+        "ja": "適格な製造業投資に対する州レベルの優遇措置。額は投資規模と立地区分により異なります。"
+      },
+      "tags": [
+        "state",
+        "incentive",
+        "rajasthan",
+        "neemrana",
+        "subsidy",
+        "finance"
+      ]
+    },
+    {
+      "id": "gujarat-ip-2020",
+      "authority": "Government of Gujarat",
+      "title": {
+        "en": "Gujarat Industrial Policy 2020",
+        "ja": "グジャラート州産業政策2020"
+      },
+      "clause": {
+        "en": "Capital & interest subsidy schedules",
+        "ja": "資本補助・利子補給の表"
+      },
+      "clauseVerified": false,
+      "url": "https://ic.gujarat.gov.in",
+      "summary": {
+        "en": "State incentives for manufacturing investment, with schedules by investment class and taluka category.",
+        "ja": "製造業投資に対する州の優遇措置。投資区分および郡区分ごとの表が定められています。"
+      },
+      "tags": [
+        "state",
+        "incentive",
+        "gujarat",
+        "mandal",
+        "subsidy",
+        "finance"
+      ]
+    },
+    {
+      "id": "ap-idp-2023",
+      "authority": "Government of Andhra Pradesh",
+      "title": {
+        "en": "Andhra Pradesh Industrial Development Policy 2023–27",
+        "ja": "アーンドラ・プラデーシュ州産業開発政策2023–27"
+      },
+      "clause": {
+        "en": "Incentive matrix for large & mega projects",
+        "ja": "大規模・メガプロジェクト向け優遇措置一覧"
+      },
+      "clauseVerified": false,
+      "url": "https://apiic.in",
+      "summary": {
+        "en": "State incentives for large and mega manufacturing projects, including power-cost and SGST reimbursements.",
+        "ja": "大規模・メガ製造プロジェクトに対する州の優遇措置（電力費およびSGSTの還付を含む）。"
+      },
+      "tags": [
+        "state",
+        "incentive",
+        "andhra",
+        "sricity",
+        "subsidy",
+        "finance",
+        "power"
+      ]
+    },
+    {
+      "id": "customs-act-46",
+      "authority": "CBIC",
+      "title": {
+        "en": "Customs Act, 1962 — s.46",
+        "ja": "1962年関税法 第46条"
+      },
+      "clause": {
+        "en": "Entry of goods on importation (bill of entry)",
+        "ja": "輸入貨物の申告（輸入申告書）"
+      },
+      "clauseVerified": true,
+      "url": "https://www.cbic.gov.in",
+      "summary": {
+        "en": "Importers must file a bill of entry; advance filing shortens release time for capital equipment and components.",
+        "ja": "輸入者は輸入申告書を提出する必要があります。事前申告により設備・部品の通関時間を短縮できます。"
+      },
+      "tags": [
+        "customs",
+        "import",
+        "clearance",
+        "plant",
+        "equipment",
+        "logistics"
+      ]
+    },
+    {
+      "id": "cbic-ntrs",
+      "authority": "CBIC",
+      "title": {
+        "en": "National Time Release Study (CBIC)",
+        "ja": "全国通関所要時間調査（CBIC）"
+      },
+      "clause": {
+        "en": "Methodology for average release time by port type",
+        "ja": "港湾種別ごとの平均引取時間の算定方法"
+      },
+      "clauseVerified": false,
+      "url": "https://www.cbic.gov.in",
+      "summary": {
+        "en": "CBIC's periodic study of cargo release time at seaports, air cargo complexes and ICDs — the basis for comparing clearance days.",
+        "ja": "海港・航空貨物ターミナル・ICDにおける貨物引取時間に関するCBICの定期調査で、通関日数比較の基礎となります。"
+      },
+      "tags": [
+        "customs",
+        "clearance",
+        "days",
+        "logistics",
+        "port",
+        "icd"
+      ]
+    },
+    {
+      "id": "elec-consumer-rules-2020",
+      "authority": "Ministry of Power",
+      "title": {
+        "en": "Electricity (Rights of Consumers) Rules, 2020",
+        "ja": "電力（需要家の権利）規則 2020"
+      },
+      "clause": {
+        "en": "Reliability of supply & compensation",
+        "ja": "供給信頼度および補償"
+      },
+      "clauseVerified": false,
+      "url": "https://powermin.gov.in",
+      "summary": {
+        "en": "Sets standards of performance and reliability-of-supply indices that distribution licensees report against.",
+        "ja": "配電事業者が報告すべきサービス基準および供給信頼度指標を定めています。"
+      },
+      "tags": [
+        "power",
+        "electricity",
+        "sla",
+        "reliability",
+        "plant",
+        "utility"
+      ]
+    },
+    {
+      "id": "bis-act-2016",
+      "authority": "BIS",
+      "title": {
+        "en": "Bureau of Indian Standards Act, 2016 — Quality Control Orders",
+        "ja": "2016年インド規格局法 — 品質管理令"
+      },
+      "clause": {
+        "en": "Mandatory certification for notified products",
+        "ja": "告示製品に対する強制認証"
+      },
+      "clauseVerified": false,
+      "url": "https://www.bis.gov.in",
+      "summary": {
+        "en": "Products notified under a Quality Control Order need BIS certification; JIS-equivalent specifications must be mapped to the Indian standard.",
+        "ja": "品質管理令の対象製品にはBIS認証が必要です。JIS相当の仕様はインド規格に対応付ける必要があります。"
+      },
+      "tags": [
+        "quality",
+        "standards",
+        "jis",
+        "bis",
+        "plant",
+        "certification",
+        "robotics",
+        "fmcg"
+      ]
+    },
+    {
+      "id": "jetro-jit",
+      "authority": "METI / JETRO",
+      "title": {
+        "en": "Japan Industrial Townships (JIT) programme",
+        "ja": "日本工業団地（JIT）プログラム"
+      },
+      "clause": {
+        "en": "Designated JITs incl. Neemrana, Mandal-Becharaji, Sri City",
+        "ja": "ニムラナ、マンダル・ベチャラジ、スリシティ等の指定JIT"
+      },
+      "clauseVerified": true,
+      "url": "https://www.jetro.go.jp/en/",
+      "summary": {
+        "en": "Government-to-government programme designating industrial townships with infrastructure and support tailored to Japanese investors.",
+        "ja": "日本企業向けのインフラと支援を備えた工業団地を指定する政府間プログラムです。"
+      },
+      "tags": [
+        "jit",
+        "township",
+        "japan",
+        "neemrana",
+        "mandal",
+        "sricity",
+        "indiadesk",
+        "land"
+      ]
+    }
+  ],
+  "states": [
+    {
+      "id": "neemrana",
+      "jit": {
+        "en": "Neemrana JIT (Japanese Zone)",
+        "ja": "ニムラナJIT（日本人向け工業団地）"
+      },
+      "state": {
+        "en": "Rajasthan",
+        "ja": "ラジャスタン州"
+      },
+      "gateway": {
+        "en": "ICD / NCR rail via DFC",
+        "ja": "ICD・貨物専用鉄道経由（NCR）"
+      },
+      "metrics": {
+        "pli": {
+          "value": null,
+          "display": {
+            "en": "National PLI (sector-based)",
+            "ja": "国のPLI（業種別）"
+          },
+          "illustrative": false,
+          "citations": [
+            "pli-auto-2021",
+            "pli-food-2021"
+          ]
+        },
+        "stateIncentive": {
+          "value": null,
+          "display": {
+            "en": "RIPS 2024",
+            "ja": "RIPS 2024"
+          },
+          "illustrative": false,
+          "citations": [
+            "rips-2024"
+          ]
+        },
+        "land": {
+          "value": 52,
+          "display": {
+            "en": "$52 / m²",
+            "ja": "52ドル／㎡"
+          },
+          "illustrative": true,
+          "citations": [
+            "jetro-jit"
+          ]
+        },
+        "power": {
+          "value": 98.4,
+          "display": {
+            "en": "98.4%",
+            "ja": "98.4％"
+          },
+          "illustrative": true,
+          "citations": [
+            "elec-consumer-rules-2020"
+          ]
+        },
+        "water": {
+          "value": 95.8,
+          "display": {
+            "en": "95.8%",
+            "ja": "95.8％"
+          },
+          "illustrative": true,
+          "citations": [
+            "jetro-jit"
+          ]
+        },
+        "customs": {
+          "value": 3.4,
+          "display": {
+            "en": "3.4 days",
+            "ja": "3.4日"
+          },
+          "illustrative": true,
+          "citations": [
+            "cbic-ntrs",
+            "customs-act-46"
+          ]
+        }
+      }
+    },
+    {
+      "id": "mandal",
+      "jit": {
+        "en": "Mandal-Becharaji SIR",
+        "ja": "マンダル・ベチャラジ特別投資地域"
+      },
+      "state": {
+        "en": "Gujarat",
+        "ja": "グジャラート州"
+      },
+      "gateway": {
+        "en": "Mundra / Pipavav ports",
+        "ja": "ムンドラ港・ピパバブ港"
+      },
+      "metrics": {
+        "pli": {
+          "value": null,
+          "display": {
+            "en": "National PLI (sector-based)",
+            "ja": "国のPLI（業種別）"
+          },
+          "illustrative": false,
+          "citations": [
+            "pli-auto-2021",
+            "pli-food-2021"
+          ]
+        },
+        "stateIncentive": {
+          "value": null,
+          "display": {
+            "en": "Gujarat IP 2020",
+            "ja": "グジャラート州産業政策2020"
+          },
+          "illustrative": false,
+          "citations": [
+            "gujarat-ip-2020"
+          ]
+        },
+        "land": {
+          "value": 38,
+          "display": {
+            "en": "$38 / m²",
+            "ja": "38ドル／㎡"
+          },
+          "illustrative": true,
+          "citations": [
+            "jetro-jit"
+          ]
+        },
+        "power": {
+          "value": 99.2,
+          "display": {
+            "en": "99.2%",
+            "ja": "99.2％"
+          },
+          "illustrative": true,
+          "citations": [
+            "elec-consumer-rules-2020"
+          ]
+        },
+        "water": {
+          "value": 97.1,
+          "display": {
+            "en": "97.1%",
+            "ja": "97.1％"
+          },
+          "illustrative": true,
+          "citations": [
+            "jetro-jit"
+          ]
+        },
+        "customs": {
+          "value": 2.6,
+          "display": {
+            "en": "2.6 days",
+            "ja": "2.6日"
+          },
+          "illustrative": true,
+          "citations": [
+            "cbic-ntrs",
+            "customs-act-46"
+          ]
+        }
+      }
+    },
+    {
+      "id": "sricity",
+      "jit": {
+        "en": "Sri City",
+        "ja": "スリシティ"
+      },
+      "state": {
+        "en": "Andhra Pradesh",
+        "ja": "アーンドラ・プラデーシュ州"
+      },
+      "gateway": {
+        "en": "Chennai / Krishnapatnam ports",
+        "ja": "チェンナイ港・クリシュナパトナム港"
+      },
+      "metrics": {
+        "pli": {
+          "value": null,
+          "display": {
+            "en": "National PLI (sector-based)",
+            "ja": "国のPLI（業種別）"
+          },
+          "illustrative": false,
+          "citations": [
+            "pli-auto-2021",
+            "pli-food-2021"
+          ]
+        },
+        "stateIncentive": {
+          "value": null,
+          "display": {
+            "en": "AP IDP 2023–27",
+            "ja": "AP州産業開発政策2023–27"
+          },
+          "illustrative": false,
+          "citations": [
+            "ap-idp-2023"
+          ]
+        },
+        "land": {
+          "value": 31,
+          "display": {
+            "en": "$31 / m²",
+            "ja": "31ドル／㎡"
+          },
+          "illustrative": true,
+          "citations": [
+            "jetro-jit"
+          ]
+        },
+        "power": {
+          "value": 98.9,
+          "display": {
+            "en": "98.9%",
+            "ja": "98.9％"
+          },
+          "illustrative": true,
+          "citations": [
+            "elec-consumer-rules-2020",
+            "ap-idp-2023"
+          ]
+        },
+        "water": {
+          "value": 97.6,
+          "display": {
+            "en": "97.6%",
+            "ja": "97.6％"
+          },
+          "illustrative": true,
+          "citations": [
+            "jetro-jit"
+          ]
+        },
+        "customs": {
+          "value": 2.9,
+          "display": {
+            "en": "2.9 days",
+            "ja": "2.9日"
+          },
+          "illustrative": true,
+          "citations": [
+            "cbic-ntrs",
+            "customs-act-46"
+          ]
+        }
+      }
+    }
+  ]
+}
