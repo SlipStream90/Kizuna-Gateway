@@ -9,5 +9,9 @@ psycopg-pool==3.3.0
 PyJWT[crypto]==2.11.0
 pytest==9.1.1
 httpx==0.28.1
+# Liquid AI speech-to-speech pipeline (LFM2.5-Audio-1.5B-JP)
+liquid-audio>=0.1.0
+soundfile>=0.12.1
+torch>=2.7.0
 # Test-only: RS256/ES256 fixtures for the OIDC verifier.
 cryptography==46.0.1

@@ -24,6 +24,12 @@ services:
       - "9000:9000"
     volumes:
       - ./infra/keycloak/realm-export.json:/opt/keycloak/data/import/kizuna-realm.json:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/realms/kizuna/.well-known/openid-configuration"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
 
   postgres:
     image: postgres:18
@@ -34,6 +40,57 @@ services:
       - "5432:5432"
     volumes:
       - kizuna-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d kizuna"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgresql://kizuna_app:app-password@localhost:5432/kizuna
+      CORS_ORIGINS: http://localhost:3000
+      OIDC_ISSUER: http://localhost:8080/realms/kizuna
+      OIDC_AUDIENCE: kizuna-pilot
+      OIDC_JWT_ALGORITHM: RS256
+      OIDC_JWKS_URL: http://localhost:8080/realms/kizuna/protocol/openid-connect/certs
+      OIDC_ORG_CLAIM: org_id
+      OIDC_ROLES_CLAIM: roles
+      DEV_AUTH_ENABLED: "0"
+      LFM_MODEL_ID: LiquidAI/LFM2.5-Audio-1.5B-JP
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: /api/v1
+      APP_URL: http://localhost:3000
+      OIDC_ISSUER: http://localhost:8080/realms/kizuna
+      OIDC_CLIENT_ID: kizuna-web
+      OIDC_CLIENT_SECRET: kizuna-web-dev-secret
+      AUTH_SESSION_SECRET: ${AUTH_SESSION_SECRET}
+      API_ORIGIN: http://backend:8000
+      DEV_AUTH_FALLBACK: "0"
+      COOKIE_SECURE: "0"
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_started
+    restart: unless-stopped
 
 volumes:
   kizuna-db:

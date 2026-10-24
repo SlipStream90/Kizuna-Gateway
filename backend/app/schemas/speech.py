@@ -2,10 +2,10 @@
 
 Audio is accepted as a base64-encoded WAV/PCM blob (client captures via the
 MediaRecorder API and forwards through the BFF proxy). The backend delegates
-speech-to-speech translation to a local llama.cpp server running the
-LiquidAI/LFM2.5-Audio-1.5B-JP-GGUF model (OpenAI-compatible chat endpoint).
-When the local endpoint is unavailable, a deterministic illustrative fallback
-is returned so the endpoint stays functional offline.
+speech-to-speech translation to Liquid AI's liquid-audio pipeline running
+LiquidAI/LFM2.5-Audio-1.5B-JP natively. When the model is unavailable, a
+deterministic illustrative fallback is returned so the endpoint stays
+functional offline.
 """
 
 from __future__ import annotations
@@ -27,5 +27,5 @@ class SpeechTranslateResponse(BaseModel):
     source_lang: str
     target_lang: str
     provider: str
-    endpoint: str | None
+    output_audio_base64: str | None
     deterministic_fallback: bool
