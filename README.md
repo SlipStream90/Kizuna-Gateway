@@ -1,29 +1,30 @@
-ï»¿# Kizuna Gateway
+# Kizuna Gateway
 
 Kizuna Gateway is a demo-safe market-entry decision-support platform for Japanese SMEs evaluating expansion into India. It brings together four connected engines:
 
-- **Market Intelligence** Ã¢â‚¬â€ deterministic region scoring with explicit evidence coverage
-- **Partner Trust Engine** Ã¢â‚¬â€ fictional, clearly-labelled partner scorecards
-- **Compliance Copilot** Ã¢â‚¬â€ curated source passages requiring human review
-- **GTM Simulator** Ã¢â‚¬â€ cost/scenario modelling with visible assumptions
+- **Market Intelligence** — deterministic region scoring with explicit evidence coverage
+- **Partner Trust Engine** — fictional, clearly-labelled partner scorecards
+- **Compliance Copilot** — curated source passages requiring human review
+- **GTM Simulator** — cost/scenario modelling with visible assumptions
 
 All regions, partners and results are deterministic offline seeds. The platform does not claim live government integrations, legal advice, or verified partner trustworthiness.
-
----
 
 ## Contents
 
 1. [Repository layout](#repository-layout)
-2. [Prerequisites](#prerequisites)
-3. [Backend setup](#backend-setup)
-4. [Frontend setup](#frontend-setup)
-5. [Running the stack](#running-the-stack)
-6. [Authentication](#authentication)
-7. [Verifying the API](#verifying-the-api)
-8. [Tests and checks](#tests-and-checks)
-9. [Environment variable reference](#environment-variable-reference)
-10. [Troubleshooting](#troubleshooting)
-11. [Known limitations](#known-limitations)
+2. [AI features in use](#ai-features-in-use)
+3. [Prerequisites](#prerequisites)
+4. [Backend setup](#backend-setup)
+5. [Frontend setup](#frontend-setup)
+6. [Running the stack](#running-the-stack)
+7. [Authentication](#authentication)
+8. [AI/STS speech-to-speech endpoint](#ai-sts-speech-to-speech-endpoint)
+9. [Verifying the API](#verifying-the-api)
+10. [Tests and checks](#tests-and-checks)
+11. [Environment variable reference](#environment-variable-reference)
+12. [Deployment (DigitalOcean + Vercel)](#deployment-digitalocean--vercel)
+13. [Troubleshooting](#troubleshooting)
+14. [Known limitations](#known-limitations)
 
 ---
 
@@ -32,23 +33,25 @@ All regions, partners and results are deterministic offline seeds. The platform 
 ```
 backend/                 FastAPI service (Python 3.10+)
   app/
-    api/                 Route modules (assessments, market, partners, compliance, gtm, reports, dev)
+    api/                 Route modules (assessments, market, partners, compliance, gtm, reports, dev, translate, speech)
     auth/                OIDC bearer verification, key resolution, role checks
     domain/              Pure scoring / MCDA / GTM logic
     repositories/        PostgreSQL access, tenant-scoped transactions
     schemas/             Pydantic request/response models
+    services/            Business services (speech_service: liquid-audio LFM2.5-Audio-JP)
     seed/                Deterministic region, partner, source data
     main.py              App factory, CORS, router wiring
   migrations/            SQL migrations, applied in order with psql
   scripts/               Operational scripts (Postgres integration check)
   tests/                 pytest suite
   requirements.lock      Pinned runtime + test dependencies
+  Dockerfile             Backend container image
 frontend/                Next.js 16 / React 19 web client
   app/
     api/auth/            Login, callback, logout and read-only session routes
     api/v1/[...]         BFF proxy that attaches the bearer token server-side
-    app/                 App-router dashboard and report pages
-  components/            UI controls and views
+    page.tsx             App-router home page with translation and speech sections
+  components/            UI controls and views (translation-controls, speech-controls)
   lib/api.ts             Typed fetch wrapper around the API
   auth.ts                PKCE, token exchange, session cookie sealing
   public/videos/         Background video assets (mp4 + webm + posters)
@@ -56,6 +59,50 @@ docs/                    PRD, implementation plan, setup notes, limitations
 infra/keycloak/          Realm export imported by docker compose
 audit/                   Product and technology review reports
 .github/workflows/       CI: backend pilot tests + frontend build
+compose.yaml             Local Docker Compose (Keycloak, Postgres, backend)
+DEPLOY.md                Production deployment guide
+```
+
+---
+
+## AI features in use
+
+Kizuna Gateway includes two AI/STS capabilities behind bearer-protected endpoints. Both degrade to a clearly-labelled deterministic illustrative fallback when no model is available, so nothing is ever presented as verified business content.
+
+### 1. Japanese ↔ English text translation
+
+`POST /api/v1/translate`
+
+Accepts `{ text, source_lang, target_lang }` (only `ja`/`en` pairs). The backend optionally lazy-loads Meta's **NLLB-200 distilled-600M** model via `transformers`. When the model or `torch` are unavailable, it returns a deterministic illustrative placeholder prefixed with `[ja->en::illustrative]`. Every response states the provider (`nllb-200` or `deterministic-fallback`) and whether fallback was used.
+
+### 2. Japanese speech → English speech-to-speech (STS)
+
+`POST /api/v1/speech/translate`
+
+Accepts a base64-encoded audio blob captured from the browser microphone. Delegates to **LiquidAI's `LFM2.5-Audio-1.5B-JP`** run through the `liquid-audio` Python pipeline (`LFM2AudioModel`, `LFM2AudioProcessor`, `ChatState`, `generate_interleaved`). The model natively performs end-to-end speech-to-speech — Japanese audio in, interleaved English text and English audio out — with no separate ASR/TTS components.
+
+The response includes `transcript`, `translated_text`, and `output_audio_base64` (WAV-encoded English audio) when the model is active. Falls back to an illustrative placeholder when `torch`, `liquid-audio`, or the model weights are not installed.
+
+**Installing the optional model stack:**
+
+```bash
+# CPU
+pip install liquid-audio soundfile torch
+
+# CUDA (faster inference on NVIDIA GPUs)
+pip install liquid-audio soundfile torch --index-url https://download.pytorch.org/whl/cu118
+```
+
+Set `LFM_MODEL_ID` in `backend/.env` to override the model ID. Nothing reaches the public internet by default; model loading requires an HF download on first run.
+
+### How AI flows through auth
+
+Both AI endpoints are behind the same bearer flow as the rest of the API:
+
+1. User signs in via OIDC (Authorization Code + PKCE).
+2. Tokens are sealed in an encrypted HttpOnly session cookie — **the access token never reaches the browser**.
+3. The Next.js BFF proxy forwards `/api/v1/translate` and `/api/v1/speech/translate` with `Authorization: Bearer <token>` server-side.
+4. FastAPI verifies the JWT (iss, aud, exp, sub, org_id) before the AI service runs.
 
 ---
 
@@ -63,13 +110,14 @@ audit/                   Product and technology review reports
 
 | Tool | Version | Notes |
 | --- | --- | --- |
-| Python | 3.10 Ã¢â‚¬â€œ 3.13 | CI runs 3.13 |
-| Node.js | Ã¢â€°Â¥ 20.9 | CI runs 22; `npm` ships with Node |
+| Python | 3.10 – 3.13 | CI runs 3.13 |
+| Node.js | ≥ 20.9 | CI runs 22; `npm` ships with Node |
 | PostgreSQL | 16+ | CI runs `postgres:18`; RLS policies are required |
 | `psql` | matching server | Used to apply migrations |
 | Git | any recent | |
 
-Optional: Docker, if you would rather not install PostgreSQL locally.
+Optional: Docker, if you would rather not install PostgreSQL locally.  
+Optional AI stack: `liquid-audio`, `soundfile`, `torch` (see [AI features in use](#ai-features-in-use)).
 
 ---
 
@@ -155,11 +203,12 @@ OIDC_SIGNING_KEY=01234567890123456789012345678901
 OIDC_JWT_ALGORITHM=HS256
 DEV_AUTH_ENABLED=1
 DEV_ORG_ID=11111111-1111-1111-1111-111111111111
+LFM_MODEL_ID=LiquidAI/LFM2.5-Audio-1.5B-JP
 ```
 
 `OIDC_SIGNING_KEY` must be **at least 32 characters** when using HS256, or every request fails with `401 OIDC verifier is not configured`. `DEV_AUTH_ENABLED=1` lets the web client mint its own token; see [Authentication](#authentication).
 
-The backend does not load `.env` automatically Ã¢â‚¬â€ export the values in your shell or use your process manager. For example:
+The backend does not load `.env` automatically — export the values in your shell or use your process manager. For example:
 
 ```powershell
 # Windows PowerShell
@@ -213,6 +262,7 @@ Useful scripts:
 | `npm run build` | Typecheck, then production build |
 | `npm test` | Vitest (jsdom) |
 | `npm run test:coverage` | Vitest with coverage |
+| `npm run test:e2e` | Playwright end-to-end tests (requires dev server on port 3000) |
 
 Node **20.9 or newer** is required by `package.json` engines; Node 22 matches CI.
 
@@ -235,7 +285,7 @@ Every `/api/v1` route except `/api/v1/dev/session` requires a bearer JWT whose c
 
 ### Real login (Keycloak, or any OIDC issuer)
 
-The product flow uses Authorization Code + PKCE, and the access token never touches the browser. The Next.js BFF proxy seals the tokens in an encrypted HttpOnly cookie and forwards each `/api/v1` request with `Authorization: Bearer Ã¢â‚¬Â¦` server-side.
+The product flow uses Authorization Code + PKCE, and the access token never touches the browser. The Next.js BFF proxy seals the tokens in an encrypted HttpOnly cookie and forwards each `/api/v1` request with `Authorization: Bearer <token>` server-side.
 
 1. Start Keycloak (and Postgres if you have not installed it locally):
 
@@ -243,8 +293,7 @@ The product flow uses Authorization Code + PKCE, and the access token never touc
    docker compose up -d
    ```
 
-   This imports the `kizuna` realm, the `kizuna-web` client and the demo user `demo / kizuna-demo-2026` from `infra/keycloak/realm-export.json`. The realm maps
-   realm roles onto a flat `roles` claim, the tenant onto `org_id`, and the audience `kizuna-pilot` onto access tokens.
+   This imports the `kizuna` realm, the `kizuna-web` client and the demo user `demo / kizuna-demo-2026` from `infra/keycloak/realm-export.json`. The realm maps realm roles onto a flat `roles` claim, the tenant onto `org_id`, and the audience `kizuna-pilot` onto access tokens.
 
 2. Point the two stacks at the issuer:
 
@@ -260,7 +309,7 @@ The product flow uses Authorization Code + PKCE, and the access token never touc
    | frontend   | `OIDC_CLIENT_ID/SECRET`| `kizuna-web` / `kizuna-web-dev-secret`    |
    | frontend   | `AUTH_SESSION_SECRET`  | `openssl rand -base64 32` (not committed) |
 
-   Copy `frontend/.env.example` to `frontend/.env.local` Ã¢â‚¬â€ the checked-in example already carries these values.
+   Copy `frontend/.env.example` to `frontend/.env.local` — the checked-in example already carries these values.
 
 3. Sign in: open http://localhost:3000, click **Sign in**, log in as `demo / kizuna-demo-2026`. The nav shows the email and a **Sign out** link. Sessions expose only name/roles/expiry at `GET /api/auth/session`; tokens stay in the encrypted `kizuna_session` cookie.
 
@@ -272,7 +321,7 @@ Backend behaviour worth knowing:
 
 ### No provider locally
 
-Set `DEV_AUTH_ENABLED=1` on the backend Ã¢â‚¬â€ that exposes `POST /api/v1/dev/session`, which mints a short-lived HS256 token:
+Set `DEV_AUTH_ENABLED=1` on the backend — that exposes `POST /api/v1/dev/session`, which mints a short-lived HS256 token:
 
 ```bash
 TOKEN=$(curl -s -X POST http://localhost:8000/api/v1/dev/session | python -c "import sys,json;print(json.load(sys.stdin)['access_token'])")
@@ -286,6 +335,37 @@ Guards built into the endpoint:
 - token lifetime is capped at 24 hours; tokens default to `admin` on `DEV_ORG_ID`
 
 The BFF proxy consumes it automatically when `DEV_AUTH_FALLBACK=1` in the Next.js environment: UI calls keep working without a login, because the proxy mints a dev token server-side. This is the pre-OIDC behaviour kept for quick demos, not a production mode. Never enable `DEV_AUTH_ENABLED` where real users authenticate.
+
+---
+
+## AI/STS speech-to-speech endpoint
+
+The speech-to-speech endpoint accepts microphone audio captured by the frontend `SpeechControls` component:
+
+1. User clicks **Record Japanese audio** in the browser.
+2. `MediaRecorder` captures WebM audio; the blob is base64-encoded and POSTed to `/api/v1/speech/translate` through the BFF proxy (token stays server-side).
+3. The backend calls `LiquidAI/LFM2.5-Audio-1.5B-JP` via `liquid-audio`'s interleaved generation.
+4. The response returns English transcript, translated text, and base64-encoded WAV audio for playback.
+5. If no local model is running and `torch`/`liquid-audio` are absent, the endpoint returns a deterministic illustrative placeholder.
+
+### Local STS with tunnel (dev only)
+
+If you want to run STS on your PC and have the Droplet backend call it:
+
+```bash
+# On your PC
+cd backend
+uvicorn app.main:app --port 8001
+
+# Expose locally
+ngrok http 8001
+# or: cloudflared tunnel --url http://localhost:8001
+```
+
+Then set on the Droplet backend:
+```env
+LFM_ENDPOINT=https://<tunnel-url>
+```
 
 ---
 
@@ -332,6 +412,19 @@ curl -X POST http://localhost:8000/api/v1/assessments \
 ```
 
 `PATCH /api/v1/assessments/{id}` additionally requires an `If-Match: <version>` header.
+
+### Translate smoke test
+
+```bash
+curl -X POST http://localhost:8000/api/v1/translate \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"text":"こんにちは","source_lang":"ja","target_lang":"en"}'
+```
+
+### Speech smoke test
+
+POST a base64-encoded WAV blob to `/api/v1/speech/translate` with the same bearer header.
 
 ---
 
@@ -387,8 +480,8 @@ npm run build
 
 `.github/workflows/pilot.yml` runs both jobs on every push and pull request:
 
-- **backend-pilot** Ã¢â‚¬â€ PostgreSQL 18 service, migrations, non-owner app role, full `pytest`
-- **frontend-build** Ã¢â‚¬â€ `npm ci` then `npm run build`
+- **backend-pilot** — PostgreSQL 18 service, migrations, non-owner app role, full `pytest`
+- **frontend-build** — `npm ci` then `npm run build`
 
 Reproduce that job locally before opening a PR.
 
@@ -398,32 +491,62 @@ Reproduce that job locally before opening a PR.
 
 | Variable | Where | Required | Default | Purpose |
 | --- | --- | --- | --- | --- |
-| `DATABASE_URL` | backend | yes | Ã¢â‚¬â€ | PostgreSQL connection string for the **app role** |
+| `DATABASE_URL` | backend | yes | — | PostgreSQL connection string for the **app role** |
 | `CORS_ORIGINS` | backend | no | `http://localhost:3000` | Comma-separated allowed origins |
-| `OIDC_ISSUER` | backend | yes | Ã¢â‚¬â€ | Expected JWT `iss` |
-| `OIDC_AUDIENCE` | backend | yes | Ã¢â‚¬â€ | Expected JWT `aud` |
-| `OIDC_SIGNING_KEY` | backend | yes | Ã¢â‚¬â€ | Verification key (Ã¢â€°Â¥ 32 chars for HS256) |
+| `OIDC_ISSUER` | backend | yes | — | Expected JWT `iss` |
+| `OIDC_AUDIENCE` | backend | yes | — | Expected JWT `aud` |
+| `OIDC_SIGNING_KEY` | backend | yes | — | Verification key (≥ 32 chars for HS256) |
 | `OIDC_JWT_ALGORITHM` | backend | no | `HS256` | One of `HS256`, `RS256`, `ES256` |
-| `PILOT_TEST_DATABASE_URL` | tests | for tests | Ã¢â‚¬â€ | Database used by pilot integration tests |
-| `POSTGRES_MAINTENANCE_URL` | script | for script | Ã¢â‚¬â€ | Privileged URL used to create/drop the temp database |
+| `PILOT_TEST_DATABASE_URL` | tests | for tests | — | Database used by pilot integration tests |
+| `POSTGRES_MAINTENANCE_URL` | script | for script | — | Privileged URL used to create/drop the temp database |
 | `DEV_AUTH_ENABLED` | backend | for local UI | unset (`404`) | Enables `POST /api/v1/dev/session` |
-| `DEV_ORG_ID` | backend | no | `11111111-Ã¢â‚¬Â¦-1111` | Organisation the dev token is scoped to |
-| `DEV_TOKEN_TTL_SECONDS` | backend | no | `3600` | Dev token lifetime, clamped to 60Ã¢â‚¬â€œ86400 |
+| `DEV_ORG_ID` | backend | no | `11111111-1111-1111-1111-111111111111` | Organisation the dev token is scoped to |
+| `DEV_TOKEN_TTL_SECONDS` | backend | no | `3600` | Dev token lifetime, clamped to 60–86400 |
 | `OIDC_JWKS_URL` | backend | no | discovered | Public keys endpoint for `RS256`/`ES256` |
 | `OIDC_ORG_CLAIM` | backend | no | `org_id` | Org claim; supports dotted paths |
 | `OIDC_ROLES_CLAIM` | backend | no | `roles` | Roles claim; supports dotted paths |
 | `OIDC_LEEWAY_SECONDS` | backend | no | `60` | Clock-skew tolerance for `exp` |
+| `LFM_MODEL_ID` | backend | no | `LiquidAI/LFM2.5-Audio-1.5B-JP` | Liquid AI speech model ID |
 | `NEXT_PUBLIC_API_BASE_URL` | frontend | no | `/api/v1` | Same-origin BFF proxy, or an absolute origin to call the API directly |
 | `OIDC_ISSUER` | frontend | for login | `http://localhost:8080/realms/kizuna` | Issuer for redirect and refresh calls |
 | `OIDC_CLIENT_ID` | frontend | for login | `kizuna-web` | Client used by the BFF redirect |
-| `OIDC_CLIENT_SECRET` | frontend | for login | Ã¢â‚¬â€ | BFF only; never sent to the browser |
+| `OIDC_CLIENT_SECRET` | frontend | for login | — | BFF only; never sent to the browser |
 | `APP_URL` | frontend | for login | `http://localhost:3000` | Origin for redirect and callback URLs |
-| `AUTH_SESSION_SECRET` | frontend | for login | Ã¢â‚¬â€ | Ã¢â€°Â¥32 chars; seals the session cookie |
+| `AUTH_SESSION_SECRET` | frontend | for login | — | ≥32 chars; seals the session cookie |
 | `API_ORIGIN` | frontend | no | `http://localhost:8000` | Where the BFF proxy forwards requests |
 | `DEV_AUTH_FALLBACK` | frontend | no | `0` | `1` lets the proxy mint a dev token when no session exists |
 | `COOKIE_SECURE` | frontend | no | `0` | Set `1` when terminating TLS locally |
 
 JWT claims required: `exp`, `iss`, `aud`, `sub` (user UUID), the org claim (`org_id` by default), optional `roles` (`member`, `advisor`, `reviewer`, `admin`). The realm maps those claims for you.
+
+---
+
+## Deployment (DigitalOcean + Vercel)
+
+### Frontend → Vercel
+
+1. Go to [vercel.com](https://vercel.com), sign in with GitHub.
+2. Add New → Project → import `SlipStream90/Kizuna-Gateway`.
+3. Framework preset: **Next.js**. Build command: `npm run build`. Root directory: `.`.
+4. Add environment variables from `frontend/.env.local` (`NEXT_PUBLIC_API_BASE_URL`, `APP_URL`, `OIDC_*`, `AUTH_SESSION_SECRET`, `API_ORIGIN`, `DEV_AUTH_FALLBACK`, `COOKIE_SECURE`).
+5. Deploy. Note the URL (e.g. `https://kizuna-gateway.vercel.app`).
+
+### Backend → DigitalOcean Droplet
+
+1. Create a Droplet (Ubuntu 22.04, s-2vcpu-4gb or larger, your region) with your SSH key.
+2. SSH in: `ssh root@<droplet-ip>`.
+3. Install Docker: `curl -fsSL https://get.docker.com | sh && usermod -aG docker $USER && newgrp docker`.
+4. Clone the repo: `git clone https://github.com/SlipStream90/Kizuna-Gateway.git && cd Kizuna-Gateway`.
+5. Create `backend/.env` on the Droplet (see [Environment variable reference](#environment-variable-reference)); set `CORS_ORIGINS` to your Vercel URL.
+6. Run `docker compose up -d` (Keycloak, Postgres, Backend).
+7. Apply migrations and create the `kizuna_app` role (see [Backend setup](#backend-setup), steps 3–6).
+8. Set `NEXT_PUBLIC_API_BASE_URL` on Vercel to `https://<droplet-ip>:8000/api/v1` and redeploy.
+
+### STS on the Droplet (recommended)
+
+Add a `sts` service to `compose.yaml` running `liquid-audio` with a persistent HF cache volume, or run STS on your PC and expose it via Cloudflare Tunnel / ngrok, setting `LFM_ENDPOINT` on the Droplet backend.
+
+See `DEPLOY.md` for the full deployment guide.
 
 ---
 
@@ -436,12 +559,12 @@ JWT claims required: `exp`, `iss`, `aud`, `sub` (user UUID), the org claim (`org
 | UI shows `401` while `curl` works | `DEV_AUTH_ENABLED` unset, so `/dev/session` returns `404`, or `NEXT_PUBLIC_DEV_AUTH=0` | Enable dev sessions and restart uvicorn |
 | UI shows `401` after signing in | `API_ORIGIN` points at the wrong API, or `DEV_AUTH_FALLBACK=0` with no session | Set `API_ORIGIN=http://localhost:8000` |
 | `503 Signing keys unavailable` | Keycloak is not running, or discovery returned no `jwks_uri` | `docker compose up -d`, or set `OIDC_JWKS_URL` |
-| Callback redirects to `/` with `State mismatchÃ¢â‚¬Â¦` | Login was started on a different `APP_URL`, or cookies were dropped | Keep `APP_URL` identical in the browser and the callback |
+| Callback redirects to `/` with `State mismatch` | Login was started on a different `APP_URL`, or cookies were dropped | Keep `APP_URL` identical in the browser and the callback |
 | Backend returns `401 Invalid bearer token` right after login | Issuer, audience, or algorithm differs between frontend and backend | Mirror the `OIDC_*` values on both sides |
 | `401 Invalid bearer token` only for the UI | Access token audience is missing the API audience | Confirm the realm emits `kizuna-pilot` (the `kizuna` scope) |
 | Refresh loops / repeated logins | Refresh token rejected or expired | Sign out and in again; check the realm `offline_access` scope is off |
 | `KeyError: 'DATABASE_URL'` at startup | Environment not loaded into the uvicorn process | Export variables in the same shell |
-| Queries return empty lists unexpectedly | Connected as table owner or superuser, so RLS is bypassed/misapplied Ã¢â‚¬â€ or `app.org_id` is unset | Connect as `kizuna_app`; keep `transaction_for_org` usage |
+| Queries return empty lists unexpectedly | Connected as table owner or superuser, so RLS is bypassed/misapplied — or `app.org_id` is unset | Connect as `kizuna_app`; keep `transaction_for_org` usage |
 | `002_pilot_foundation requires empty legacy assessment/report tables` | Legacy rows from `001_initial.sql` | Recreate the database and re-apply migrations |
 | `relation "organizations" does not exist` | Migrations not applied | Run both migration files in order |
 | CORS error in the browser | Frontend origin not allowed | Add it to `CORS_ORIGINS` |
@@ -453,10 +576,11 @@ JWT claims required: `exp`, `iss`, `aud`, `sub` (user UUID), the org claim (`org
 
 ## Known limitations
 
-- Login is Authorization Code + PKCE, with tokens held only in an encrypted server-side session cookie Ã¢â‚¬â€ access tokens never reach the browser.
+- Login is Authorization Code + PKCE, with tokens held only in an encrypted server-side session cookie — access tokens never reach the browser.
 - The assessment form still posts the legacy payload shape, so creating an assessment from the UI may fail until it is updated to `product / sector / buyer / budget / horizon_months / modes`.
 - `GET /api/auth/session` publishes only name, roles and expiry; it never returns tokens.
 - All partner, compliance and market data is deterministic seed data. Partners are fictional and never verified; compliance passages require human review and do not establish legal, customs, tariff, origin, CEPA or classification outcomes.
 - No live government integrations or external credentials are required or used.
 - Background video files (~33 MB) are **not committed**; see `frontend/public/videos/README.md` to restore them. The UI renders a gradient fallback without them.
 - `docs/SETUP.md` holds the shorter operational notes; this README is the full setup guide.
+- AI translation and speech-to-speech are illustrative unless the respective models are installed and reachable; fallbacks are clearly marked and not verified content.
