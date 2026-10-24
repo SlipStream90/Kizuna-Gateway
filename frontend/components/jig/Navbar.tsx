@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'motion/react'
-import { FileSignature, Grid3x3, Handshake, Network, ScrollText } from 'lucide-react'
+import { FileSignature, Grid3x3, Handshake, KeyRound, Network, ScrollText } from 'lucide-react'
 import { LanguageToggle } from '../../lib/i18n'
 import { useL } from '../../lib/jig/useL'
 import { cn } from '../../lib/utils'
@@ -65,6 +65,10 @@ export function Navbar({ screen, onScreen }: { screen: ScreenId; onScreen: (s: S
             <span className="size-1.5 rounded-full bg-bamboo" aria-hidden />
             {lang === 'ja' ? 'デモデータ · ローカル実行' : 'Demo data · runs locally'}
           </span>
+          <a href="/settings/ai-keys" className="inline-flex items-center gap-1.5 text-xs text-white/70 transition-colors hover:text-white">
+            <KeyRound className="size-3.5" aria-hidden />
+            {lang === 'ja' ? 'AIキー' : 'AI keys'}
+          </a>
           <LanguageToggle tone="dark" />
         </div>
       </div>

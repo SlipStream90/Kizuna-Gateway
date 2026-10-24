@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from 'vitest'
 
 import { audit, directory, toRecord } from '../lib/server/partnerTrust'
