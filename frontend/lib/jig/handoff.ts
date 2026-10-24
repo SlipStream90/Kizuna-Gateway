@@ -3,11 +3,11 @@
 
 import type { RingiInput, Sector, StateId } from './types'
 
-export type JigScreen = 'matrix' | 'ringi' | 'evidence'
+export type JigScreen = 'matrix' | 'ringi' | 'evidence' | 'ask' | 'partners'
 
 const STATES: StateId[] = ['neemrana', 'mandal', 'sricity']
 const SECTORS: Sector[] = ['auto', 'fmcg', 'robotics']
-const SCREENS: JigScreen[] = ['matrix', 'ringi', 'evidence']
+const SCREENS: JigScreen[] = ['matrix', 'ringi', 'evidence', 'ask', 'partners']
 
 /** Maps free-text sector descriptions (from the Nishi Link assessment form) onto JIG-OS sectors. */
 export function inferSector(text: string): Sector {

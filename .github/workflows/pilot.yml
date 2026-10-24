@@ -7,7 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:18
+        # Official postgres:18 plus the pgvector extension (needed by migration 003).
+        image: pgvector/pgvector:pg18
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: kizuna_test
@@ -22,17 +23,22 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: '3.13' }
-      - run: python -m pip install -r requirements.lock
-      - name: Apply tenant migration as owner and create non-owner app role
+      - run: python -m pip install -r requirements.lock "pypdf>=5.0"
+      - name: Apply migrations as owner and create non-owner app role
         env: { PGPASSWORD: postgres }
         run: |
           psql -h localhost -U postgres -d kizuna_test -f migrations/001_initial.sql
           psql -h localhost -U postgres -d kizuna_test -f migrations/002_pilot_foundation.sql
+          psql -h localhost -U postgres -d kizuna_test -f migrations/003_statutory_chunks.sql
+          psql -h localhost -U postgres -d kizuna_test -f migrations/004_partner_registry.sql
           psql -h localhost -U postgres -d kizuna_test -c "CREATE ROLE kizuna_app LOGIN PASSWORD 'app-password' NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS; GRANT USAGE ON SCHEMA public TO kizuna_app; GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA public TO kizuna_app;"
       - run: python -m pytest -q
         env:
           DATABASE_URL: postgresql://kizuna_app:app-password@localhost:5432/kizuna_test
           PILOT_TEST_DATABASE_URL: postgresql://kizuna_app:app-password@localhost:5432/kizuna_test
+          # The RAG round-trip test creates and drops a throwaway schema, so it needs the owner.
+          RAG_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kizuna_test
+          RAG_EMBEDDING_BACKEND: hashing
           OIDC_ISSUER: https://issuer.example.test
           OIDC_AUDIENCE: kizuna-pilot
           OIDC_SIGNING_KEY: 01234567890123456789012345678901

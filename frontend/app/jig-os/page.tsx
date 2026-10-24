@@ -6,6 +6,8 @@ import { Navbar, type ScreenId } from '../../components/jig/Navbar';
 import { StateComparison } from '../../components/jig/StateComparison';
 import { RingiGenerator } from '../../components/jig/RingiGenerator';
 import { EvidenceViewer } from '../../components/jig/EvidenceViewer';
+import { StatuteAsk } from '../../components/jig/StatuteAsk';
+import { PartnerTrustView } from '../../components/jig/PartnerTrustView';
 import { useL } from '../../lib/jig/useL';
 import { parseJigQuery } from '../../lib/jig/handoff';
 import type { RingiInput } from '../../lib/jig/types';
@@ -38,6 +40,8 @@ export default function JigOsPage() {
             {screen === 'matrix' && <StateComparison />}
             {screen === 'ringi' && <RingiGenerator preset={preset} />}
             {screen === 'evidence' && <EvidenceViewer />}
+            {screen === 'ask' && <StatuteAsk />}
+            {screen === 'partners' && <PartnerTrustView />}
           </motion.div>
         </AnimatePresence>
       </div>

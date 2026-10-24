@@ -134,10 +134,10 @@ docker run --name kizuna-pg \
   -e POSTGRES_PASSWORD=postgres \
   -e POSTGRES_DB=kizuna \
   -p 5432:5432 \
-  -d postgres:18
+  -d pgvector/pgvector:pg18
 ```
 
-Or use an existing local server and create a database named `kizuna`.
+`pgvector/pgvector:pg18` is the official `postgres:18` image plus the [pgvector](https://github.com/pgvector/pgvector) extension, which migration 003 (statutory search) needs. Or use an existing local server with pgvector installed and create a database named `kizuna`.
 
 ### 2. Install Python dependencies
 
@@ -172,7 +172,11 @@ Migrations must run **as the database owner**, in order. The second migration en
 ```bash
 psql "postgresql://postgres:postgres@localhost:5432/kizuna" -f backend/migrations/001_initial.sql
 psql "postgresql://postgres:postgres@localhost:5432/kizuna" -f backend/migrations/002_pilot_foundation.sql
+psql "postgresql://postgres:postgres@localhost:5432/kizuna" -f backend/migrations/003_statutory_chunks.sql
+psql "postgresql://postgres:postgres@localhost:5432/kizuna" -f backend/migrations/004_partner_registry.sql
 ```
+
+003 creates `statutory_chunks` (public statutory text with `vector(384)` embeddings). It is shared by all tenants, so it is deliberately not row-level-security scoped; the application role needs only `SELECT` on it. See [Statutory search (RAG)](#statutory-search-rag).
 
 On Windows without `psql` on `PATH`, use the full path, e.g. `"C:\Program Files\PostgreSQL\18\bin\psql.exe"`.
 
@@ -368,6 +372,43 @@ LFM_ENDPOINT=https://<tunnel-url>
 ```
 
 ---
+
+## Statutory search (RAG)
+
+Clause-level semantic search over official statutory PDFs (RBI Master Directions, DPIIT FDI Policy, FEMA NDI Rules, Companies Act, PLI guidelines), returning exact clause references for Ringi-sho citations. Code lives in `backend/app/rag/`.
+
+1. **Install** the optional dependencies: `pip install -r backend/requirements-rag.txt` (pypdf, sentence-transformers).
+2. **Add documents**: put PDFs in `backend/data/documents/` and copy `manifest.example.json` to `manifest.json` (title, code, citation style, source URL, verification date). PDFs are git-ignored.
+3. **Check parsing**: `python -m app.rag.ingest --dry-run --show 10` (from `backend/`) prints the detected clauses and page ranges, without a model or database.
+4. **Ingest**: `python -m app.rag.ingest` embeds every chunk and atomically replaces that document's rows. Writes use `RAG_INGEST_DATABASE_URL` (a role with INSERT/DELETE), falling back to `DATABASE_URL`.
+5. **Search**: `POST /api/v1/compliance/search` (bearer auth)
+
+```json
+{ "query": "FC-GPR filing timeline for auto components", "k": 5, "document_codes": ["RBI-MD-FI"], "lang": "en" }
+```
+
+Each result carries `clause_reference` (e.g. `Paragraph 4.2`), `citation_id` (`RBI-MD-FI/Paragraph 4.2`), the formatted `citation` (`[RBI Master Direction (FI), Paragraph 4.2]`; `lang: "ja"` gives `［…、パラグラフ4.2］`), cosine `similarity`, page range, and a `badge` payload for the JIG-OS citation component; `citation_index` is ready for the Ringi-sho. The existing `GET /api/v1/compliance/search` (assessment-scoped curated passages) is unchanged.
+
+- **Embeddings** run locally with `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` (384-d), so Japanese questions retrieve English clauses and no text leaves the server. `RAG_EMBEDDING_BACKEND=hashing` swaps in a deterministic lexical embedder for tests/offline use; responses then report `"semantic": false`.
+- **Chunking** follows the document's own numbering (Chapter / Part / Schedule, `149.` or `4.2`), splitting long units at sub-clause markers so references stay exact (`Section 149(3)(a)`). Scanned PDFs without a text layer are rejected; OCR them first.
+- Search results are retrieval only: every response is `review_required` and nothing is presented as legal advice.
+
+**Grounded answers (RAG generation)**: `POST /api/v1/compliance/answer` takes the same body and returns an answer written only from the retrieved clauses, used by JIG-OS's *Ask the Statutes* screen and the Ringi-sho's *Regulatory Analysis* section.
+
+- Weak retrieval (top cosine similarity below `RAG_MIN_EVIDENCE_SIMILARITY`, default `0.35`) returns `insufficient_evidence` without calling the model.
+- A Groq-hosted model (`RAG_GENERATION_MODEL`, default `openai/gpt-oss-120b`; strict JSON-schema output) receives only the retrieved clauses and must cite them per paragraph; the server drops paragraphs citing nothing retrieved and flags any figure not found in the cited text (`figures_verified: false`).
+- Needs `GROQ_API_KEY` in the API's environment. Without it the endpoint still returns the retrieved clauses with `status: "generation_unavailable"`; refusals, timeouts and malformed output likewise never produce an answer. Keep the key in `backend/.env` (git-ignored) and export it before starting uvicorn.
+
+## Partner Trust & Verification
+
+A screened directory of Indian distributors, suppliers and JV partners with a deterministic **Japan-Readiness & Trust Score** (0–100), shown in JIG-OS screen 05 (`/jig-os?screen=partners`). Code: `backend/app/domain/partner_trust.py` (scoring), `backend/app/seed/partner_registry.py` (fixtures), migration `004_partner_registry.sql`.
+
+- **Load fixtures:** `python -m app.seed.load_partner_registry` (from `backend/`, idempotent).
+- **`GET /api/v1/partners`**: the directory, filterable by `sector`, `state`, `min_otd` and `min_trust_score`. With `assessment_id` it keeps its previous behaviour (partners shortlisted for that assessment, tenant-scoped).
+- **`POST /api/v1/partners/{id}/audit-score`**: component breakdown, flags, evidence links, the source record, `scoring_version` and an `inputs_hash` (same hash → same score).
+- **Weights:** MCA compliance & filing 15 · GSTN regularity 15 · litigation 10 · ISO 9001/14001 10 · creditworthiness 15 · on-time delivery & fulfilment 20 · cross-border record & principal satisfaction 15. Decimal arithmetic, half-up rounding per component.
+- **Hard gates:** a struck-off/liquidating company or cancelled GST registration is `blocked` (score capped at 25); pending major tax/corporate litigation is `not_recommended` (capped at 49); a high credit-risk rating can never be labelled `japan_ready`. Strong operational metrics never lift a partner over a gate.
+- **Data:** every shipped record is a **simulated fixture** (`record_source = simulated_fixture`), with identifiers no real entity can hold (CIN state code `ZZ`, GSTIN state code `00`, names marked "(fictional)"). No MCA or GSTN registry is integrated; evidence links point to the public portals and say the record will not be found there.
 
 ## Verifying the API
 
