@@ -1,4 +1,208 @@
 @import "tailwindcss";
-body { background: #f8fafc; color: #172033; } button { cursor: pointer; }
-.report { margin-top: 1.5rem; background: white; border: 1px solid #cbd5e1; border-radius: .75rem; overflow: hidden; }.report > section, .report-header { padding: 1.25rem; border-bottom: 1px solid #e2e8f0; }.report > section:last-child { border-bottom: 0; }.report h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .75rem; }.report h4 { font-weight: 650; }.report h4 span { font-size: .8rem; font-weight: 500; color: #9f1239; }.eyebrow { color: #0369a1; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }.report-meta, .report-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: .75rem; margin-top: .75rem; }.report dt { font-size: .78rem; color: #475569; }.report dd { margin: 0; overflow-wrap: anywhere; }.table-scroll { overflow-x: auto; }.report table { width: 100%; min-width: 38rem; border-collapse: collapse; font-size: .9rem; }.report th, .report td { text-align: left; padding: .55rem; vertical-align: top; border-bottom: 1px solid #e2e8f0; }.report th { color: #334155; background: #f8fafc; }.report-card { margin: .65rem 0; padding: .8rem; background: #f8fafc; border-radius: .4rem; overflow-wrap: anywhere; }.report-card p { margin: .35rem 0; }.source-list { overflow-wrap: anywhere; }
-@media print { body { background: white; } button { display:none } main { max-width:none; padding:0 } .report { border: 0; } .report > section, .report-header { break-inside: avoid; } a { color: black; text-decoration: none; } }
+
+@theme {
+  /* Japanese color palette */
+  --color-sumi: #1a1a1a;
+  --color-aijiro: #2e4057;
+  --color-akaneiro: #e63946;
+  --color-washi: #f4f1de;
+  --color-sakura: #f8e1e1;
+  --color-bamboo: #8ab17d;
+  --color-gold: #d4af37;
+  --color-indigo-deep: #1e3a5f;
+
+  /* Glassmorphism */
+  --glass-bg: rgba(244, 241, 222, 0.75);
+  --glass-border: rgba(46, 64, 87, 0.15);
+  --glass-shadow: 0 8px 32px 0 rgba(26, 26, 26, 0.15);
+
+  /* Animations */
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-drift: drift 8s ease-in-out infinite;
+  --animate-sakura-fall: sakura-fall 10s linear infinite;
+  --animate-wave-pulse: wave-pulse 4s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  @keyframes drift {
+    0%, 100% { transform: translateX(0) translateY(0); }
+    33% { transform: translateX(-15px) translateY(-10px); }
+    66% { transform: translateX(15px) translateY(10px); }
+  }
+
+  @keyframes sakura-fall {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  @keyframes wave-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(1.05); opacity: 0.7; }
+  }
+}
+
+body {
+  background: var(--color-washi);
+  color: var(--color-sumi);
+  font-feature-settings: "cv01", "cv02", "cv03";
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Washi paper texture overlay */
+.washi-overlay {
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(212, 175, 55, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 30% at 20% 80%, rgba(46, 64, 87, 0.03) 0%, transparent 55%),
+    linear-gradient(135deg, transparent 0%, rgba(230, 57, 70, 0.02) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Seigaiha wave pattern */
+.seigaiha {
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(230, 57, 70, 0.08) 0%, transparent 20%),
+    radial-gradient(circle at 75% 75%, rgba(46, 64, 87, 0.08) 0%, transparent 20%);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* Sakura falling petals */
+.sakura-petal {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #f8e1e1;
+  border-radius: 50% 50% 50% 0;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 1.25rem;
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(46, 64, 87, 0.15);
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: var(--color-aijiro);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(46, 64, 87, 0.1);
+}
+
+.glass-button {
+  background: linear-gradient(135deg, var(--color-aijiro), var(--color-indigo-deep));
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px 0 rgba(46, 64, 87, 0.25);
+}
+
+.glass-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px 0 rgba(46, 64, 87, 0.35);
+  background: linear-gradient(135deg, var(--color-indigo-deep), var(--color-aijiro));
+}
+
+.glass-button:active {
+  transform: translateY(0);
+}
+
+.glass-button.secondary {
+  background: rgba(230, 57, 70, 0.1);
+  color: var(--color-akaneiro);
+  border: 1px solid rgba(230, 57, 70, 0.2);
+}
+
+.glass-button.secondary:hover {
+  background: rgba(230, 57, 70, 0.15);
+  box-shadow: 0 4px 12px 0 rgba(230, 57, 70, 0.15);
+}
+
+.text-sakura {
+  color: var(--color-akaneiro);
+}
+
+.text-aijiro {
+  color: var(--color-aijiro);
+}
+
+.text-bamboo {
+  color: var(--color-bamboo);
+}
+
+.bg-sakura {
+  background-color: var(--color-sakura);
+}
+
+.border-aijiro {
+  border-color: var(--color-aijiro);
+}
+
+/* Typography - Japanese inspired */
+.jp-heading {
+  font-feature-settings: "palt";
+  letter-spacing: -0.02em;
+}
+
+.jp-body {
+  line-height: 1.7;
+  font-feature-settings: "proportional-width";
+}
+
+/* Section divider - kumiko style */
+.kumiko-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-aijiro), transparent);
+  margin: 2rem 0;
+}
+
+/* Card hover lift */
+.card-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px -8px rgba(26, 26, 26, 0.12);
+}
+
+/* Focus visible */
+*:focus-visible {
+  outline: 2px solid var(--color-aijiro);
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .washi-overlay, .seigaiha, .sakura-petal, .bg-video-layer { display: none; }
+  body { background: white; color: black; }
+  .glass-panel { background: white; border: none; box-shadow: none; }
+}

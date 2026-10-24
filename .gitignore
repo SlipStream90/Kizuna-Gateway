@@ -22,3 +22,9 @@ postgres-data/
 uploads/
 data/documents/
 *.log
+
+# Tooling artifacts
+.playwright-mcp/
+
+# Obsidian workspace state
+docs/.obsidian/
