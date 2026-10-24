@@ -6,7 +6,9 @@ from fastapi import HTTPException
 from fastapi.security import HTTPAuthorizationCredentials
 
 from app.api import dev
-from app.auth import dependencies
+from app.auth.dependencies import require_principal
+from app.auth.keys import clear_caches
+from app.auth.settings import settings
 from app.schemas.pilot import Role
 
 KEY = "01234567890123456789012345678901"
@@ -20,9 +22,11 @@ def oidc_env(monkeypatch):
     monkeypatch.setenv("OIDC_SIGNING_KEY", KEY)
     monkeypatch.setenv("OIDC_JWT_ALGORITHM", "HS256")
     monkeypatch.setenv("DEV_ORG_ID", ORG)
-    dependencies._settings.cache_clear()
+    settings.cache_clear()
+    clear_caches()
     yield
-    dependencies._settings.cache_clear()
+    settings.cache_clear()
+    clear_caches()
 
 
 def test_disabled_endpoint_is_invisible(monkeypatch):
@@ -35,7 +39,7 @@ def test_disabled_endpoint_is_invisible(monkeypatch):
 def test_enabled_session_is_accepted_by_the_bearer_verifier(monkeypatch):
     monkeypatch.setenv("DEV_AUTH_ENABLED", "1")
     session = dev.create_dev_session()
-    principal = dependencies.require_principal(
+    principal = require_principal(
         HTTPAuthorizationCredentials(scheme="Bearer", credentials=session.access_token)
     )
     assert principal.org_id == session.org_id
@@ -61,7 +65,7 @@ def test_token_claims_match_the_configured_issuer_and_audience(monkeypatch):
 def test_asymmetric_configuration_refuses_to_mint(monkeypatch):
     monkeypatch.setenv("DEV_AUTH_ENABLED", "1")
     monkeypatch.setenv("OIDC_JWT_ALGORITHM", "RS256")
-    dependencies._settings.cache_clear()
+    settings.cache_clear()
     with pytest.raises(HTTPException) as error:
         dev.create_dev_session()
     assert error.value.status_code == 503
@@ -70,7 +74,7 @@ def test_asymmetric_configuration_refuses_to_mint(monkeypatch):
 def test_short_signing_key_refuses_to_mint(monkeypatch):
     monkeypatch.setenv("DEV_AUTH_ENABLED", "1")
     monkeypatch.setenv("OIDC_SIGNING_KEY", "too-short")
-    dependencies._settings.cache_clear()
+    settings.cache_clear()
     with pytest.raises(HTTPException) as error:
         dev.create_dev_session()
     assert error.value.status_code == 503

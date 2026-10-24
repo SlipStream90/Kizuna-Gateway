@@ -1,31 +1,44 @@
 """Server-side OIDC bearer authentication and organization role checks."""
 
-import os
 from collections.abc import Callable
-from functools import lru_cache
+from typing import Any
 from uuid import UUID
 
 import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
+from app.auth import keys
+from app.auth.settings import OidcConfig, settings
 from app.schemas.pilot import Principal, Role
 
 _bearer = HTTPBearer(auto_error=False)
 
 
-@lru_cache
-def _settings() -> tuple[str, str, str, str]:
-    issuer = os.getenv("OIDC_ISSUER", "")
-    audience = os.getenv("OIDC_AUDIENCE", "")
-    key = os.getenv("OIDC_SIGNING_KEY", "")
-    algorithm = os.getenv("OIDC_JWT_ALGORITHM", "HS256")
-    return issuer, audience, key, algorithm
+def resolve_claim(claims: dict[str, Any], path: str) -> Any:
+    """Read a claim by dotted path, e.g. ``realm_access.roles``."""
+    value: Any = claims
+    for part in path.split("."):
+        if not isinstance(value, dict) or part not in value:
+            return None
+        value = value[part]
+    return value
 
 
-def oidc_settings() -> tuple[str, str, str, str]:
-    """Return the configured issuer, audience, signing key and algorithm."""
-    return _settings()
+def _roles(claims: dict[str, Any], config: OidcConfig) -> frozenset[Role]:
+    """Map the configured roles claim onto known roles, ignoring anything else."""
+    raw = resolve_claim(claims, config.roles_claim)
+    if isinstance(raw, str):
+        raw = [raw]
+    if not isinstance(raw, list):
+        return frozenset()
+    roles = set()
+    for candidate in raw:
+        try:
+            roles.add(Role(candidate))
+        except (TypeError, ValueError):
+            continue
+    return frozenset(roles)
 
 
 def require_principal(
@@ -33,27 +46,40 @@ def require_principal(
 ) -> Principal:
     """Verify a bearer JWT and return its tenant-scoped identity.
 
-    Production configuration must provide issuer, audience, signing key, and
-    an explicitly permitted algorithm.  The implementation deliberately does
-    not accept an algorithm selected by the untrusted JWT header.
+    The algorithm always comes from configuration, never from the untrusted
+    token header, and the key is either the configured shared secret or one
+    published by the issuer's JWKS endpoint.
     """
     if credentials is None or credentials.scheme.lower() != "bearer":
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Missing bearer token")
-    issuer, audience, key, algorithm = _settings()
-    if (not issuer or not audience or not key or algorithm not in {"HS256", "RS256", "ES256"}
-            or (algorithm == "HS256" and len(key.encode("utf-8")) < 32)):
+
+    config = settings()
+    if not config.is_configured():
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "OIDC verifier is not configured")
+
+    try:
+        key = keys.signing_key(credentials.credentials, config)
+    except keys.SigningKeyUnavailable:
+        # A well-formed token with no reachable key is an IdP outage, not a bad
+        # credential; surfacing 503 keeps clients from discarding valid tokens.
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Signing keys unavailable") from None
+
     try:
         claims = jwt.decode(
-            credentials.credentials, key, algorithms=[algorithm], issuer=issuer, audience=audience,
-            options={"require": ["exp", "iss", "aud", "sub", "org_id"]},
+            credentials.credentials,
+            key,
+            algorithms=[config.algorithm],
+            issuer=config.issuer,
+            audience=config.audience,
+            leeway=config.leeway_seconds,
+            options={"require": ["exp", "iss", "aud", "sub"]},
         )
-        raw_roles = claims.get("roles", [])
-        if not isinstance(raw_roles, list):
-            raise ValueError("roles must be a list")
-        return Principal(user_id=UUID(claims["sub"]), org_id=UUID(claims["org_id"]), roles=frozenset(Role(role) for role in raw_roles))
-    except (jwt.PyJWTError, ValueError, TypeError):
+        org_id = UUID(str(resolve_claim(claims, config.org_claim)))
+        user_id = UUID(str(claims["sub"]))
+    except (jwt.PyJWTError, ValueError, TypeError, KeyError):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid bearer token") from None
+
+    return Principal(user_id=user_id, org_id=org_id, roles=_roles(claims, config))
 
 
 def require_role(*roles: Role) -> Callable[[Principal], Principal]:

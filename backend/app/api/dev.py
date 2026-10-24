@@ -19,7 +19,7 @@ from uuid import UUID
 import jwt
 from fastapi import APIRouter, HTTPException, status
 
-from app.auth.dependencies import oidc_settings
+from app.auth.settings import settings
 from app.schemas.dev import DevSession
 
 router = APIRouter(prefix="/dev", tags=["dev"])
@@ -51,10 +51,10 @@ def create_dev_session() -> DevSession:
     if not enabled():
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Not Found")
 
-    issuer, audience, key, algorithm = oidc_settings()
-    if algorithm != "HS256":
+    config = settings()
+    if config.algorithm != "HS256":
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Dev sessions require HS256 signing")
-    if not issuer or not audience or len(key.encode("utf-8")) < 32:
+    if not config.is_configured():
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "OIDC verifier is not configured")
 
     try:
@@ -66,15 +66,15 @@ def create_dev_session() -> DevSession:
     issued_at = int(time.time())
     token = jwt.encode(
         {
-            "iss": issuer,
-            "aud": audience,
+            "iss": config.issuer,
+            "aud": config.audience,
             "sub": str(DEV_USER_ID),
-            "org_id": str(org_id),
+            config.org_claim: str(org_id),
             "roles": ["admin"],
             "iat": issued_at,
             "exp": issued_at + ttl,
         },
-        key,
+        config.signing_key,
         algorithm="HS256",
     )
     return DevSession(access_token=token, expires_in=ttl, user_id=DEV_USER_ID, org_id=org_id)
