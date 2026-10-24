@@ -111,7 +111,7 @@ def _litigation(p: PartnerRecord, flags: list[TrustFlag]) -> ScoreComponent:
     if major:
         for c in major:
             flags.append(TrustFlag(level="block", code="litigation_major", message=f"Pending major {c.case_type} matter: {c.summary} ({c.reference})."))
-        return ScoreComponent(key="litigation", label="Litigation exposure", points=ZERO, max_points=D(10),
+        return ScoreComponent(key="litigation", label="Litigation exposure", points=_q(ZERO), max_points=D(10),
                               reasons=[f"{len(major)} pending major tax/corporate matter(s) (0 pts)"])
     deduction = min(D(2) * len(pending), D(6))
     if pending:

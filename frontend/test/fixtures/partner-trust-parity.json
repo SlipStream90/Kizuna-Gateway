@@ -1,0 +1,2014 @@
+[
+ {
+  "row": {
+   "id": "5ba607b2-6cdd-5e2f-8d23-b3622a1cdeeb",
+   "partner_name": "Hikari Precision Components (fictional)",
+   "record_source": "simulated_fixture",
+   "sector": "auto",
+   "state": "Gujarat",
+   "city": "Becharaji",
+   "partner_type": "supplier",
+   "mca_registration_no": "U29301ZZ2008PTC000001",
+   "gstin": "00ZZZCF0001A1Z1",
+   "registered_address": "Plot 7, Industrial Area, Becharaji, Gujarat (fictional address)",
+   "incorporated_on": "2008-04-01",
+   "mca_compliance": {
+    "status": "active",
+    "annual_filings_on_time_last3": 3,
+    "last_annual_return_fy": "2025-26"
+   },
+   "gst_compliance": {
+    "status": "active",
+    "returns_on_time_last12": 12,
+    "last_return_period": "2026-09"
+   },
+   "director_history": [
+    {
+     "name": "A. Desai (fictional)",
+     "din": "SIM-0001-1",
+     "role": "Managing Director",
+     "appointed_on": "2008-04-01",
+     "ceased_on": null
+    },
+    {
+     "name": "K. Shah (fictional)",
+     "din": "SIM-0001-2",
+     "role": "Director",
+     "appointed_on": "2012-06-01",
+     "ceased_on": null
+    }
+   ],
+   "litigation": [],
+   "financial_solvency_score": "86",
+   "credit_rating": {
+    "agency": "D&B-equivalent rating (simulated)",
+    "band": "low",
+    "as_of": "2026-09-30"
+   },
+   "iso_certifications": [
+    {
+     "standard": "ISO 9001",
+     "status": "verified",
+     "certificate_no": "SIM-9001-0001",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    },
+    {
+     "standard": "ISO 14001",
+     "status": "verified",
+     "certificate_no": "SIM-14001-0001",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    }
+   ],
+   "operations": {
+    "otd_monthly_pct": [
+     "96.1",
+     "97.0",
+     "96.4",
+     "97.2",
+     "96.8",
+     "97.5",
+     "96.9",
+     "97.1",
+     "97.6",
+     "96.7",
+     "97.3",
+     "97.8"
+    ],
+    "fulfillment_accuracy_pct": "99.2",
+    "client_retention_pct": "93",
+    "foreign_principal_satisfaction_pct": "92",
+    "sla_compliance_pct": "97"
+   },
+   "cross_border": {
+    "contracts_total": 19,
+    "contracts_fulfilled": 18,
+    "japanese_principals": 3
+   },
+   "data_as_of": "2026-09-30"
+  },
+  "expected": {
+   "partner_id": "5ba607b2-6cdd-5e2f-8d23-b3622a1cdeeb",
+   "partner_name": "Hikari Precision Components (fictional)",
+   "record_source": "simulated_fixture",
+   "simulated": true,
+   "score": "97.4",
+   "uncapped_score": "97.4",
+   "tier": "japan_ready",
+   "components": [
+    {
+     "key": "mca",
+     "label": "MCA compliance & filing status",
+     "points": "15.0",
+     "max_points": "15",
+     "reasons": [
+      "MCA status: active (9 pts)",
+      "Annual filings on time in 3/3 recent years (6 pts)"
+     ]
+    },
+    {
+     "key": "gst",
+     "label": "GSTN filing regularity",
+     "points": "15.0",
+     "max_points": "15",
+     "reasons": [
+      "GST registration active (5 pts)",
+      "12/12 returns on time (10.0 pts)"
+     ]
+    },
+    {
+     "key": "litigation",
+     "label": "Litigation exposure",
+     "points": "10.0",
+     "max_points": "10",
+     "reasons": [
+      "No pending litigation (10 pts)"
+     ]
+    },
+    {
+     "key": "iso",
+     "label": "ISO quality & environmental certification",
+     "points": "10.0",
+     "max_points": "10",
+     "reasons": [
+      "ISO 9001: verified (6.0 pts)",
+      "ISO 14001: verified (4.0 pts)"
+     ]
+    },
+    {
+     "key": "credit",
+     "label": "Creditworthiness",
+     "points": "14.3",
+     "max_points": "15",
+     "reasons": [
+      "Credit risk low (10 pts)",
+      "Financial solvency 86/100 (4.3 pts)"
+     ]
+    },
+    {
+     "key": "delivery",
+     "label": "On-time delivery & fulfilment",
+     "points": "19.0",
+     "max_points": "20",
+     "reasons": [
+      "OTD trailing 12 months 97.0% (13.2 pts; full marks at 98%)",
+      "Order fulfilment accuracy 99.2% (5.8 pts; full marks at 99.5%)"
+     ]
+    },
+    {
+     "key": "cross_border",
+     "label": "Cross-border record & principal satisfaction",
+     "points": "14.1",
+     "max_points": "15",
+     "reasons": [
+      "18/19 foreign contracts fulfilled, 3 Japanese principal(s) (6.7 pts)",
+      "Client retention 93% (2.8 pts)",
+      "Foreign principal satisfaction 92% (2.7 pts)",
+      "Communication SLA compliance 97% (1.9 pts)"
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "level": "info",
+     "code": "simulated_record",
+     "message": "Simulated fixture: identifiers and metrics are illustrative, not registry data."
+    }
+   ],
+   "otd_trailing_pct": "97.0",
+   "evidence": [
+    {
+     "label": "MCA company master data · CIN U29301ZZ2008PTC000001",
+     "url": "https://www.mca.gov.in/",
+     "note": "Search by CIN (simulated record — it will not be found on the portal)"
+    },
+    {
+     "label": "GST taxpayer search · GSTIN 00ZZZCF0001A1Z1",
+     "url": "https://services.gst.gov.in/services/searchtp",
+     "note": "Search by GSTIN (simulated record — it will not be found on the portal)"
+    }
+   ],
+   "scoring_version": "trust-v1",
+   "inputs_hash": "a8f2b81896425178168a186fc7ae55d29e1c9fafcf10369bfa92641f87eead49",
+   "disclosure": "Advisory screening only. Simulated fixture data is not a registry verification; confirm MCA, GSTN, litigation and credit status against primary sources before any commitment."
+  }
+ },
+ {
+  "row": {
+   "id": "d8e568ae-d3de-590f-bf44-349dfa87c570",
+   "partner_name": "Sindhu Auto Systems (fictional)",
+   "record_source": "simulated_fixture",
+   "sector": "auto",
+   "state": "Rajasthan",
+   "city": "Neemrana",
+   "partner_type": "jv_partner",
+   "mca_registration_no": "U29302ZZ2011PTC000002",
+   "gstin": "00ZZZCF0002A1Z2",
+   "registered_address": "Plot 14, Industrial Area, Neemrana, Rajasthan (fictional address)",
+   "incorporated_on": "2011-04-01",
+   "mca_compliance": {
+    "status": "active",
+    "annual_filings_on_time_last3": 3,
+    "last_annual_return_fy": "2025-26"
+   },
+   "gst_compliance": {
+    "status": "active",
+    "returns_on_time_last12": 11,
+    "last_return_period": "2026-09"
+   },
+   "director_history": [
+    {
+     "name": "R. Agarwal (fictional)",
+     "din": "SIM-0002-1",
+     "role": "Managing Director",
+     "appointed_on": "2011-07-01",
+     "ceased_on": null
+    },
+    {
+     "name": "S. Rathore (fictional)",
+     "din": "SIM-0002-2",
+     "role": "Director",
+     "appointed_on": "2015-01-01",
+     "ceased_on": "2023-03-31"
+    },
+    {
+     "name": "M. Jain (fictional)",
+     "din": "SIM-0002-3",
+     "role": "Director",
+     "appointed_on": "2023-04-01",
+     "ceased_on": null
+    }
+   ],
+   "litigation": [],
+   "financial_solvency_score": "71",
+   "credit_rating": {
+    "agency": "D&B-equivalent rating (simulated)",
+    "band": "moderate",
+    "as_of": "2026-09-30"
+   },
+   "iso_certifications": [
+    {
+     "standard": "ISO 9001",
+     "status": "verified",
+     "certificate_no": "SIM-9001-0002",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    },
+    {
+     "standard": "ISO 14001",
+     "status": "claimed_unverified",
+     "certificate_no": "SIM-14001-0002",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    }
+   ],
+   "operations": {
+    "otd_monthly_pct": [
+     "92.0",
+     "93.4",
+     "91.8",
+     "93.0",
+     "94.1",
+     "92.6",
+     "93.8",
+     "94.0",
+     "92.9",
+     "93.5",
+     "94.4",
+     "93.9"
+    ],
+    "fulfillment_accuracy_pct": "98.1",
+    "client_retention_pct": "88",
+    "foreign_principal_satisfaction_pct": "85",
+    "sla_compliance_pct": "93"
+   },
+   "cross_border": {
+    "contracts_total": 9,
+    "contracts_fulfilled": 8,
+    "japanese_principals": 2
+   },
+   "data_as_of": "2026-09-30"
+  },
+  "expected": {
+   "partner_id": "d8e568ae-d3de-590f-bf44-349dfa87c570",
+   "partner_name": "Sindhu Auto Systems (fictional)",
+   "record_source": "simulated_fixture",
+   "simulated": true,
+   "score": "82.8",
+   "uncapped_score": "82.8",
+   "tier": "japan_ready",
+   "components": [
+    {
+     "key": "mca",
+     "label": "MCA compliance & filing status",
+     "points": "15.0",
+     "max_points": "15",
+     "reasons": [
+      "MCA status: active (9 pts)",
+      "Annual filings on time in 3/3 recent years (6 pts)"
+     ]
+    },
+    {
+     "key": "gst",
+     "label": "GSTN filing regularity",
+     "points": "14.2",
+     "max_points": "15",
+     "reasons": [
+      "GST registration active (5 pts)",
+      "11/12 returns on time (9.2 pts)"
+     ]
+    },
+    {
+     "key": "litigation",
+     "label": "Litigation exposure",
+     "points": "10.0",
+     "max_points": "10",
+     "reasons": [
+      "No pending litigation (10 pts)"
+     ]
+    },
+    {
+     "key": "iso",
+     "label": "ISO quality & environmental certification",
+     "points": "7.2",
+     "max_points": "10",
+     "reasons": [
+      "ISO 9001: verified (6.0 pts)",
+      "ISO 14001: claimed unverified (1.2 pts)"
+     ]
+    },
+    {
+     "key": "credit",
+     "label": "Creditworthiness",
+     "points": "8.6",
+     "max_points": "15",
+     "reasons": [
+      "Credit risk moderate (5 pts)",
+      "Financial solvency 71/100 (3.6 pts)"
+     ]
+    },
+    {
+     "key": "delivery",
+     "label": "On-time delivery & fulfilment",
+     "points": "15.5",
+     "max_points": "20",
+     "reasons": [
+      "OTD trailing 12 months 93.3% (10.3 pts; full marks at 98%)",
+      "Order fulfilment accuracy 98.1% (5.1 pts; full marks at 99.5%)"
+     ]
+    },
+    {
+     "key": "cross_border",
+     "label": "Cross-border record & principal satisfaction",
+     "points": "12.3",
+     "max_points": "15",
+     "reasons": [
+      "8/9 foreign contracts fulfilled, 2 Japanese principal(s) (6.3 pts)",
+      "Client retention 88% (2.4 pts)",
+      "Foreign principal satisfaction 85% (2.1 pts)",
+      "Communication SLA compliance 93% (1.4 pts)"
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "level": "info",
+     "code": "iso_14001_claimed_unverified",
+     "message": "ISO 14001 is claimed unverified."
+    },
+    {
+     "level": "info",
+     "code": "simulated_record",
+     "message": "Simulated fixture: identifiers and metrics are illustrative, not registry data."
+    }
+   ],
+   "otd_trailing_pct": "93.3",
+   "evidence": [
+    {
+     "label": "MCA company master data · CIN U29302ZZ2011PTC000002",
+     "url": "https://www.mca.gov.in/",
+     "note": "Search by CIN (simulated record — it will not be found on the portal)"
+    },
+    {
+     "label": "GST taxpayer search · GSTIN 00ZZZCF0002A1Z2",
+     "url": "https://services.gst.gov.in/services/searchtp",
+     "note": "Search by GSTIN (simulated record — it will not be found on the portal)"
+    }
+   ],
+   "scoring_version": "trust-v1",
+   "inputs_hash": "932c3895339ada33431017f74e4e58790af9c8a9f24a2c26a86c8d2c206dd18a",
+   "disclosure": "Advisory screening only. Simulated fixture data is not a registry verification; confirm MCA, GSTN, litigation and credit status against primary sources before any commitment."
+  }
+ },
+ {
+  "row": {
+   "id": "e63e6c74-4609-50ff-85a3-b283150d9ddc",
+   "partner_name": "Kaveri Electro Assemblies (fictional)",
+   "record_source": "simulated_fixture",
+   "sector": "electronics",
+   "state": "Tamil Nadu",
+   "city": "Sriperumbudur",
+   "partner_type": "contract_manufacturer",
+   "mca_registration_no": "U29303ZZ2006PTC000003",
+   "gstin": "00ZZZCF0003A1Z3",
+   "registered_address": "Plot 21, Industrial Area, Sriperumbudur, Tamil Nadu (fictional address)",
+   "incorporated_on": "2006-04-01",
+   "mca_compliance": {
+    "status": "active",
+    "annual_filings_on_time_last3": 3,
+    "last_annual_return_fy": "2025-26"
+   },
+   "gst_compliance": {
+    "status": "active",
+    "returns_on_time_last12": 12,
+    "last_return_period": "2026-09"
+   },
+   "director_history": [
+    {
+     "name": "V. Raman (fictional)",
+     "din": "SIM-0003-1",
+     "role": "Managing Director",
+     "appointed_on": "2006-09-01",
+     "ceased_on": null
+    },
+    {
+     "name": "L. Iyer (fictional)",
+     "din": "SIM-0003-2",
+     "role": "Director",
+     "appointed_on": "2010-02-01",
+     "ceased_on": null
+    }
+   ],
+   "litigation": [
+    {
+     "forum": "Civil Court (simulated)",
+     "case_type": "commercial",
+     "status": "disposed",
+     "severity": "minor",
+     "summary": "Payment dispute with a logistics vendor, settled",
+     "reference": "SIM-CS-2021-0003"
+    }
+   ],
+   "financial_solvency_score": "82",
+   "credit_rating": {
+    "agency": "D&B-equivalent rating (simulated)",
+    "band": "low",
+    "as_of": "2026-09-30"
+   },
+   "iso_certifications": [
+    {
+     "standard": "ISO 9001",
+     "status": "verified",
+     "certificate_no": "SIM-9001-0003",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    },
+    {
+     "standard": "ISO 14001",
+     "status": "verified",
+     "certificate_no": "SIM-14001-0003",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    }
+   ],
+   "operations": {
+    "otd_monthly_pct": [
+     "94.0",
+     "95.2",
+     "95.8",
+     "94.9",
+     "95.5",
+     "96.1",
+     "95.0",
+     "95.7",
+     "96.3",
+     "95.4",
+     "96.0",
+     "96.2"
+    ],
+    "fulfillment_accuracy_pct": "98.9",
+    "client_retention_pct": "91",
+    "foreign_principal_satisfaction_pct": "89",
+    "sla_compliance_pct": "95"
+   },
+   "cross_border": {
+    "contracts_total": 14,
+    "contracts_fulfilled": 13,
+    "japanese_principals": 1
+   },
+   "data_as_of": "2026-09-30"
+  },
+  "expected": {
+   "partner_id": "e63e6c74-4609-50ff-85a3-b283150d9ddc",
+   "partner_name": "Kaveri Electro Assemblies (fictional)",
+   "record_source": "simulated_fixture",
+   "simulated": true,
+   "score": "95.2",
+   "uncapped_score": "95.2",
+   "tier": "japan_ready",
+   "components": [
+    {
+     "key": "mca",
+     "label": "MCA compliance & filing status",
+     "points": "15.0",
+     "max_points": "15",
+     "reasons": [
+      "MCA status: active (9 pts)",
+      "Annual filings on time in 3/3 recent years (6 pts)"
+     ]
+    },
+    {
+     "key": "gst",
+     "label": "GSTN filing regularity",
+     "points": "15.0",
+     "max_points": "15",
+     "reasons": [
+      "GST registration active (5 pts)",
+      "12/12 returns on time (10.0 pts)"
+     ]
+    },
+    {
+     "key": "litigation",
+     "label": "Litigation exposure",
+     "points": "10.0",
+     "max_points": "10",
+     "reasons": [
+      "No pending litigation (10 pts)"
+     ]
+    },
+    {
+     "key": "iso",
+     "label": "ISO quality & environmental certification",
+     "points": "10.0",
+     "max_points": "10",
+     "reasons": [
+      "ISO 9001: verified (6.0 pts)",
+      "ISO 14001: verified (4.0 pts)"
+     ]
+    },
+    {
+     "key": "credit",
+     "label": "Creditworthiness",
+     "points": "14.1",
+     "max_points": "15",
+     "reasons": [
+      "Credit risk low (10 pts)",
+      "Financial solvency 82/100 (4.1 pts)"
+     ]
+    },
+    {
+     "key": "delivery",
+     "label": "On-time delivery & fulfilment",
+     "points": "17.7",
+     "max_points": "20",
+     "reasons": [
+      "OTD trailing 12 months 95.5% (12.1 pts; full marks at 98%)",
+      "Order fulfilment accuracy 98.9% (5.6 pts; full marks at 99.5%)"
+     ]
+    },
+    {
+     "key": "cross_border",
+     "label": "Cross-border record & principal satisfaction",
+     "points": "13.4",
+     "max_points": "15",
+     "reasons": [
+      "13/14 foreign contracts fulfilled, 1 Japanese principal(s) (6.6 pts)",
+      "Client retention 91% (2.7 pts)",
+      "Foreign principal satisfaction 89% (2.5 pts)",
+      "Communication SLA compliance 95% (1.7 pts)"
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "level": "info",
+     "code": "simulated_record",
+     "message": "Simulated fixture: identifiers and metrics are illustrative, not registry data."
+    }
+   ],
+   "otd_trailing_pct": "95.5",
+   "evidence": [
+    {
+     "label": "MCA company master data · CIN U29303ZZ2006PTC000003",
+     "url": "https://www.mca.gov.in/",
+     "note": "Search by CIN (simulated record — it will not be found on the portal)"
+    },
+    {
+     "label": "GST taxpayer search · GSTIN 00ZZZCF0003A1Z3",
+     "url": "https://services.gst.gov.in/services/searchtp",
+     "note": "Search by GSTIN (simulated record — it will not be found on the portal)"
+    }
+   ],
+   "scoring_version": "trust-v1",
+   "inputs_hash": "fb7a750e1a40e517ad2ca1c3413dc7559c429dc06f30cfad9eb18369e6831b4c",
+   "disclosure": "Advisory screening only. Simulated fixture data is not a registry verification; confirm MCA, GSTN, litigation and credit status against primary sources before any commitment."
+  }
+ },
+ {
+  "row": {
+   "id": "6d92a803-025a-5620-aadf-2db26852a290",
+   "partner_name": "Godavari Robotics Integration (fictional)",
+   "record_source": "simulated_fixture",
+   "sector": "robotics",
+   "state": "Andhra Pradesh",
+   "city": "Sri City",
+   "partner_type": "distributor",
+   "mca_registration_no": "U29304ZZ2022PTC000004",
+   "gstin": "00ZZZCF0004A1Z4",
+   "registered_address": "Plot 28, Industrial Area, Sri City, Andhra Pradesh (fictional address)",
+   "incorporated_on": "2022-04-01",
+   "mca_compliance": {
+    "status": "active",
+    "annual_filings_on_time_last3": 2,
+    "last_annual_return_fy": "2025-26"
+   },
+   "gst_compliance": {
+    "status": "active",
+    "returns_on_time_last12": 11,
+    "last_return_period": "2026-09"
+   },
+   "director_history": [
+    {
+     "name": "P. Reddy (fictional)",
+     "din": "SIM-0004-1",
+     "role": "Managing Director",
+     "appointed_on": "2022-04-01",
+     "ceased_on": null
+    }
+   ],
+   "litigation": [],
+   "financial_solvency_score": "58",
+   "credit_rating": {
+    "agency": "D&B-equivalent rating (simulated)",
+    "band": "unrated",
+    "as_of": "2026-09-30"
+   },
+   "iso_certifications": [
+    {
+     "standard": "ISO 9001",
+     "status": "claimed_unverified",
+     "certificate_no": "SIM-9001-0004",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    }
+   ],
+   "operations": {
+    "otd_monthly_pct": [
+     "89.0",
+     "90.5",
+     "91.2",
+     "92.0",
+     "91.6",
+     "92.8",
+     "93.0",
+     "92.4",
+     "93.5",
+     "93.1",
+     "94.0",
+     "93.6"
+    ],
+    "fulfillment_accuracy_pct": "97.0",
+    "client_retention_pct": "80",
+    "foreign_principal_satisfaction_pct": "82",
+    "sla_compliance_pct": "91"
+   },
+   "cross_border": {
+    "contracts_total": 2,
+    "contracts_fulfilled": 2,
+    "japanese_principals": 1
+   },
+   "data_as_of": "2026-09-30"
+  },
+  "expected": {
+   "partner_id": "6d92a803-025a-5620-aadf-2db26852a290",
+   "partner_name": "Godavari Robotics Integration (fictional)",
+   "record_source": "simulated_fixture",
+   "simulated": true,
+   "score": "64.0",
+   "uncapped_score": "64.0",
+   "tier": "high_friction",
+   "components": [
+    {
+     "key": "mca",
+     "label": "MCA compliance & filing status",
+     "points": "13.0",
+     "max_points": "15",
+     "reasons": [
+      "MCA status: active (9 pts)",
+      "Annual filings on time in 2/3 recent years (4 pts)"
+     ]
+    },
+    {
+     "key": "gst",
+     "label": "GSTN filing regularity",
+     "points": "14.2",
+     "max_points": "15",
+     "reasons": [
+      "GST registration active (5 pts)",
+      "11/12 returns on time (9.2 pts)"
+     ]
+    },
+    {
+     "key": "litigation",
+     "label": "Litigation exposure",
+     "points": "10.0",
+     "max_points": "10",
+     "reasons": [
+      "No pending litigation (10 pts)"
+     ]
+    },
+    {
+     "key": "iso",
+     "label": "ISO quality & environmental certification",
+     "points": "1.8",
+     "max_points": "10",
+     "reasons": [
+      "ISO 9001: claimed unverified (1.8 pts)",
+      "ISO 14001: none (0 pts)"
+     ]
+    },
+    {
+     "key": "credit",
+     "label": "Creditworthiness",
+     "points": "2.9",
+     "max_points": "15",
+     "reasons": [
+      "Credit risk unrated (0 pts)",
+      "Financial solvency 58/100 (2.9 pts)"
+     ]
+    },
+    {
+     "key": "delivery",
+     "label": "On-time delivery & fulfilment",
+     "points": "13.9",
+     "max_points": "20",
+     "reasons": [
+      "OTD trailing 12 months 92.2% (9.5 pts; full marks at 98%)",
+      "Order fulfilment accuracy 97.0% (4.4 pts; full marks at 99.5%)"
+     ]
+    },
+    {
+     "key": "cross_border",
+     "label": "Cross-border record & principal satisfaction",
+     "points": "8.2",
+     "max_points": "15",
+     "reasons": [
+      "2/2 foreign contracts fulfilled, 1 Japanese principal(s) (3.4 pts)",
+      "Client retention 80% (1.7 pts)",
+      "Foreign principal satisfaction 82% (1.9 pts)",
+      "Communication SLA compliance 91% (1.2 pts)"
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "level": "warn",
+     "code": "credit_unrated",
+     "message": "No credit rating available."
+    },
+    {
+     "level": "info",
+     "code": "iso_9001_claimed_unverified",
+     "message": "ISO 9001 is claimed unverified."
+    },
+    {
+     "level": "info",
+     "code": "simulated_record",
+     "message": "Simulated fixture: identifiers and metrics are illustrative, not registry data."
+    }
+   ],
+   "otd_trailing_pct": "92.2",
+   "evidence": [
+    {
+     "label": "MCA company master data · CIN U29304ZZ2022PTC000004",
+     "url": "https://www.mca.gov.in/",
+     "note": "Search by CIN (simulated record — it will not be found on the portal)"
+    },
+    {
+     "label": "GST taxpayer search · GSTIN 00ZZZCF0004A1Z4",
+     "url": "https://services.gst.gov.in/services/searchtp",
+     "note": "Search by GSTIN (simulated record — it will not be found on the portal)"
+    }
+   ],
+   "scoring_version": "trust-v1",
+   "inputs_hash": "328295e4afe7314628010ae67fd34e4d9e2fa88b7bf0510771105f800d565cc4",
+   "disclosure": "Advisory screening only. Simulated fixture data is not a registry verification; confirm MCA, GSTN, litigation and credit status against primary sources before any commitment."
+  }
+ },
+ {
+  "row": {
+   "id": "36fdca56-ffab-51cd-9064-b78bf10de59e",
+   "partner_name": "Narmada Consumer Distribution (fictional)",
+   "record_source": "simulated_fixture",
+   "sector": "fmcg",
+   "state": "Maharashtra",
+   "city": "Pune",
+   "partner_type": "distributor",
+   "mca_registration_no": "U29305ZZ2009PTC000005",
+   "gstin": "00ZZZCF0005A1Z5",
+   "registered_address": "Plot 35, Industrial Area, Pune, Maharashtra (fictional address)",
+   "incorporated_on": "2009-04-01",
+   "mca_compliance": {
+    "status": "active",
+    "annual_filings_on_time_last3": 3,
+    "last_annual_return_fy": "2025-26"
+   },
+   "gst_compliance": {
+    "status": "active",
+    "returns_on_time_last12": 10,
+    "last_return_period": "2026-09"
+   },
+   "director_history": [
+    {
+     "name": "N. Kulkarni (fictional)",
+     "din": "SIM-0005-1",
+     "role": "Managing Director",
+     "appointed_on": "2009-05-01",
+     "ceased_on": null
+    },
+    {
+     "name": "D. Patil (fictional)",
+     "din": "SIM-0005-2",
+     "role": "Director",
+     "appointed_on": "2016-08-01",
+     "ceased_on": null
+    }
+   ],
+   "litigation": [
+    {
+     "forum": "Commercial Court (simulated)",
+     "case_type": "commercial",
+     "status": "pending",
+     "severity": "minor",
+     "summary": "Claim over a terminated sub-distributor agreement",
+     "reference": "SIM-CC-2025-0017"
+    }
+   ],
+   "financial_solvency_score": "64",
+   "credit_rating": {
+    "agency": "D&B-equivalent rating (simulated)",
+    "band": "moderate",
+    "as_of": "2026-09-30"
+   },
+   "iso_certifications": [
+    {
+     "standard": "ISO 9001",
+     "status": "expired",
+     "certificate_no": "SIM-9001-0005",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2025-12-31"
+    }
+   ],
+   "operations": {
+    "otd_monthly_pct": [
+     "87.5",
+     "88.9",
+     "86.2",
+     "89.4",
+     "88.0",
+     "87.1",
+     "88.8",
+     "89.9",
+     "87.6",
+     "88.4",
+     "89.1",
+     "88.3"
+    ],
+    "fulfillment_accuracy_pct": "96.4",
+    "client_retention_pct": "84",
+    "foreign_principal_satisfaction_pct": "78",
+    "sla_compliance_pct": "88"
+   },
+   "cross_border": {
+    "contracts_total": 6,
+    "contracts_fulfilled": 5,
+    "japanese_principals": 0
+   },
+   "data_as_of": "2026-09-30"
+  },
+  "expected": {
+   "partner_id": "36fdca56-ffab-51cd-9064-b78bf10de59e",
+   "partner_name": "Narmada Consumer Distribution (fictional)",
+   "record_source": "simulated_fixture",
+   "simulated": true,
+   "score": "65.4",
+   "uncapped_score": "65.4",
+   "tier": "conditional",
+   "components": [
+    {
+     "key": "mca",
+     "label": "MCA compliance & filing status",
+     "points": "15.0",
+     "max_points": "15",
+     "reasons": [
+      "MCA status: active (9 pts)",
+      "Annual filings on time in 3/3 recent years (6 pts)"
+     ]
+    },
+    {
+     "key": "gst",
+     "label": "GSTN filing regularity",
+     "points": "13.3",
+     "max_points": "15",
+     "reasons": [
+      "GST registration active (5 pts)",
+      "10/12 returns on time (8.3 pts)"
+     ]
+    },
+    {
+     "key": "litigation",
+     "label": "Litigation exposure",
+     "points": "8.0",
+     "max_points": "10",
+     "reasons": [
+      "1 pending minor matter(s) (−2 pts)"
+     ]
+    },
+    {
+     "key": "iso",
+     "label": "ISO quality & environmental certification",
+     "points": "0.9",
+     "max_points": "10",
+     "reasons": [
+      "ISO 9001: expired (0.9 pts)",
+      "ISO 14001: none (0 pts)"
+     ]
+    },
+    {
+     "key": "credit",
+     "label": "Creditworthiness",
+     "points": "8.2",
+     "max_points": "15",
+     "reasons": [
+      "Credit risk moderate (5 pts)",
+      "Financial solvency 64/100 (3.2 pts)"
+     ]
+    },
+    {
+     "key": "delivery",
+     "label": "On-time delivery & fulfilment",
+     "points": "10.5",
+     "max_points": "20",
+     "reasons": [
+      "OTD trailing 12 months 88.3% (6.5 pts; full marks at 98%)",
+      "Order fulfilment accuracy 96.4% (4.0 pts; full marks at 99.5%)"
+     ]
+    },
+    {
+     "key": "cross_border",
+     "label": "Cross-border record & principal satisfaction",
+     "points": "9.5",
+     "max_points": "15",
+     "reasons": [
+      "5/6 foreign contracts fulfilled, 0 Japanese principal(s) (5.0 pts)",
+      "Client retention 84% (2.1 pts)",
+      "Foreign principal satisfaction 78% (1.5 pts)",
+      "Communication SLA compliance 88% (0.9 pts)"
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "level": "warn",
+     "code": "litigation_pending",
+     "message": "1 pending minor/commercial matter(s)."
+    },
+    {
+     "level": "warn",
+     "code": "otd_low",
+     "message": "Trailing 12-month on-time delivery 88.3% (< 90%)."
+    },
+    {
+     "level": "info",
+     "code": "iso_9001_expired",
+     "message": "ISO 9001 is expired."
+    },
+    {
+     "level": "info",
+     "code": "simulated_record",
+     "message": "Simulated fixture: identifiers and metrics are illustrative, not registry data."
+    }
+   ],
+   "otd_trailing_pct": "88.3",
+   "evidence": [
+    {
+     "label": "MCA company master data · CIN U29305ZZ2009PTC000005",
+     "url": "https://www.mca.gov.in/",
+     "note": "Search by CIN (simulated record — it will not be found on the portal)"
+    },
+    {
+     "label": "GST taxpayer search · GSTIN 00ZZZCF0005A1Z5",
+     "url": "https://services.gst.gov.in/services/searchtp",
+     "note": "Search by GSTIN (simulated record — it will not be found on the portal)"
+    }
+   ],
+   "scoring_version": "trust-v1",
+   "inputs_hash": "2b3d25be5df7cd6dbe09fb51953612e71d2f86361e8c4bdf782c8a25696874f6",
+   "disclosure": "Advisory screening only. Simulated fixture data is not a registry verification; confirm MCA, GSTN, litigation and credit status against primary sources before any commitment."
+  }
+ },
+ {
+  "row": {
+   "id": "96b77e58-9fb2-50f5-8d6d-539e1dadeefc",
+   "partner_name": "Yamuna FMCG Logistics (fictional)",
+   "record_source": "simulated_fixture",
+   "sector": "fmcg",
+   "state": "Haryana",
+   "city": "Gurugram",
+   "partner_type": "distributor",
+   "mca_registration_no": "U29306ZZ2004PTC000006",
+   "gstin": "00ZZZCF0006A1Z6",
+   "registered_address": "Plot 42, Industrial Area, Gurugram, Haryana (fictional address)",
+   "incorporated_on": "2004-04-01",
+   "mca_compliance": {
+    "status": "active",
+    "annual_filings_on_time_last3": 3,
+    "last_annual_return_fy": "2025-26"
+   },
+   "gst_compliance": {
+    "status": "active",
+    "returns_on_time_last12": 12,
+    "last_return_period": "2026-09"
+   },
+   "director_history": [
+    {
+     "name": "H. Malhotra (fictional)",
+     "din": "SIM-0006-1",
+     "role": "Managing Director",
+     "appointed_on": "2004-01-01",
+     "ceased_on": null
+    },
+    {
+     "name": "T. Arora (fictional)",
+     "din": "SIM-0006-2",
+     "role": "Director",
+     "appointed_on": "2019-10-01",
+     "ceased_on": null
+    }
+   ],
+   "litigation": [
+    {
+     "forum": "Income Tax Appellate Tribunal (simulated)",
+     "case_type": "tax",
+     "status": "pending",
+     "severity": "major",
+     "summary": "Disputed transfer-pricing demand under appeal",
+     "reference": "SIM-ITA-2024-0412"
+    }
+   ],
+   "financial_solvency_score": "79",
+   "credit_rating": {
+    "agency": "D&B-equivalent rating (simulated)",
+    "band": "low",
+    "as_of": "2026-09-30"
+   },
+   "iso_certifications": [
+    {
+     "standard": "ISO 9001",
+     "status": "verified",
+     "certificate_no": "SIM-9001-0006",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    },
+    {
+     "standard": "ISO 14001",
+     "status": "verified",
+     "certificate_no": "SIM-14001-0006",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    }
+   ],
+   "operations": {
+    "otd_monthly_pct": [
+     "95.0",
+     "96.2",
+     "95.8",
+     "96.4",
+     "95.9",
+     "96.8",
+     "96.1",
+     "96.5",
+     "97.0",
+     "96.2",
+     "96.7",
+     "96.9"
+    ],
+    "fulfillment_accuracy_pct": "98.8",
+    "client_retention_pct": "90",
+    "foreign_principal_satisfaction_pct": "88",
+    "sla_compliance_pct": "96"
+   },
+   "cross_border": {
+    "contracts_total": 11,
+    "contracts_fulfilled": 11,
+    "japanese_principals": 2
+   },
+   "data_as_of": "2026-09-30"
+  },
+  "expected": {
+   "partner_id": "96b77e58-9fb2-50f5-8d6d-539e1dadeefc",
+   "partner_name": "Yamuna FMCG Logistics (fictional)",
+   "record_source": "simulated_fixture",
+   "simulated": true,
+   "score": "49.0",
+   "uncapped_score": "85.9",
+   "tier": "not_recommended",
+   "components": [
+    {
+     "key": "mca",
+     "label": "MCA compliance & filing status",
+     "points": "15.0",
+     "max_points": "15",
+     "reasons": [
+      "MCA status: active (9 pts)",
+      "Annual filings on time in 3/3 recent years (6 pts)"
+     ]
+    },
+    {
+     "key": "gst",
+     "label": "GSTN filing regularity",
+     "points": "15.0",
+     "max_points": "15",
+     "reasons": [
+      "GST registration active (5 pts)",
+      "12/12 returns on time (10.0 pts)"
+     ]
+    },
+    {
+     "key": "litigation",
+     "label": "Litigation exposure",
+     "points": "0.0",
+     "max_points": "10",
+     "reasons": [
+      "1 pending major tax/corporate matter(s) (0 pts)"
+     ]
+    },
+    {
+     "key": "iso",
+     "label": "ISO quality & environmental certification",
+     "points": "10.0",
+     "max_points": "10",
+     "reasons": [
+      "ISO 9001: verified (6.0 pts)",
+      "ISO 14001: verified (4.0 pts)"
+     ]
+    },
+    {
+     "key": "credit",
+     "label": "Creditworthiness",
+     "points": "14.0",
+     "max_points": "15",
+     "reasons": [
+      "Credit risk low (10 pts)",
+      "Financial solvency 79/100 (4.0 pts)"
+     ]
+    },
+    {
+     "key": "delivery",
+     "label": "On-time delivery & fulfilment",
+     "points": "18.2",
+     "max_points": "20",
+     "reasons": [
+      "OTD trailing 12 months 96.3% (12.7 pts; full marks at 98%)",
+      "Order fulfilment accuracy 98.8% (5.6 pts; full marks at 99.5%)"
+     ]
+    },
+    {
+     "key": "cross_border",
+     "label": "Cross-border record & principal satisfaction",
+     "points": "13.7",
+     "max_points": "15",
+     "reasons": [
+      "11/11 foreign contracts fulfilled, 2 Japanese principal(s) (7.0 pts)",
+      "Client retention 90% (2.6 pts)",
+      "Foreign principal satisfaction 88% (2.4 pts)",
+      "Communication SLA compliance 96% (1.8 pts)"
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "level": "block",
+     "code": "litigation_major",
+     "message": "Pending major tax matter: Disputed transfer-pricing demand under appeal (SIM-ITA-2024-0412)."
+    },
+    {
+     "level": "info",
+     "code": "simulated_record",
+     "message": "Simulated fixture: identifiers and metrics are illustrative, not registry data."
+    }
+   ],
+   "otd_trailing_pct": "96.3",
+   "evidence": [
+    {
+     "label": "MCA company master data · CIN U29306ZZ2004PTC000006",
+     "url": "https://www.mca.gov.in/",
+     "note": "Search by CIN (simulated record — it will not be found on the portal)"
+    },
+    {
+     "label": "GST taxpayer search · GSTIN 00ZZZCF0006A1Z6",
+     "url": "https://services.gst.gov.in/services/searchtp",
+     "note": "Search by GSTIN (simulated record — it will not be found on the portal)"
+    }
+   ],
+   "scoring_version": "trust-v1",
+   "inputs_hash": "9402a10ea3a55e3882f81266dd357e7d6bce0aebb001f27dee070ff8af1e507d",
+   "disclosure": "Advisory screening only. Simulated fixture data is not a registry verification; confirm MCA, GSTN, litigation and credit status against primary sources before any commitment."
+  }
+ },
+ {
+  "row": {
+   "id": "36cb19ae-415c-5c69-9c65-cdf97c129ced",
+   "partner_name": "Deccan Polymer Chemicals (fictional)",
+   "record_source": "simulated_fixture",
+   "sector": "chemicals",
+   "state": "Gujarat",
+   "city": "Dahej",
+   "partner_type": "supplier",
+   "mca_registration_no": "U29307ZZ2013PTC000007",
+   "gstin": "00ZZZCF0007A1Z7",
+   "registered_address": "Plot 49, Industrial Area, Dahej, Gujarat (fictional address)",
+   "incorporated_on": "2013-04-01",
+   "mca_compliance": {
+    "status": "active",
+    "annual_filings_on_time_last3": 3,
+    "last_annual_return_fy": "2025-26"
+   },
+   "gst_compliance": {
+    "status": "active",
+    "returns_on_time_last12": 11,
+    "last_return_period": "2026-09"
+   },
+   "director_history": [
+    {
+     "name": "B. Mehta (fictional)",
+     "din": "SIM-0007-1",
+     "role": "Managing Director",
+     "appointed_on": "2013-03-01",
+     "ceased_on": null
+    },
+    {
+     "name": "C. Vora (fictional)",
+     "din": "SIM-0007-2",
+     "role": "Director",
+     "appointed_on": "2013-03-01",
+     "ceased_on": null
+    }
+   ],
+   "litigation": [],
+   "financial_solvency_score": "74",
+   "credit_rating": {
+    "agency": "D&B-equivalent rating (simulated)",
+    "band": "moderate",
+    "as_of": "2026-09-30"
+   },
+   "iso_certifications": [
+    {
+     "standard": "ISO 9001",
+     "status": "verified",
+     "certificate_no": "SIM-9001-0007",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    },
+    {
+     "standard": "ISO 14001",
+     "status": "verified",
+     "certificate_no": "SIM-14001-0007",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    }
+   ],
+   "operations": {
+    "otd_monthly_pct": [
+     "90.2",
+     "91.5",
+     "90.8",
+     "92.0",
+     "91.1",
+     "92.4",
+     "91.9",
+     "92.6",
+     "91.7",
+     "92.2",
+     "92.9",
+     "92.5"
+    ],
+    "fulfillment_accuracy_pct": "97.8",
+    "client_retention_pct": "86",
+    "foreign_principal_satisfaction_pct": "83",
+    "sla_compliance_pct": "92"
+   },
+   "cross_border": {
+    "contracts_total": 7,
+    "contracts_fulfilled": 6,
+    "japanese_principals": 1
+   },
+   "data_as_of": "2026-09-30"
+  },
+  "expected": {
+   "partner_id": "36cb19ae-415c-5c69-9c65-cdf97c129ced",
+   "partner_name": "Deccan Polymer Chemicals (fictional)",
+   "record_source": "simulated_fixture",
+   "simulated": true,
+   "score": "83.7",
+   "uncapped_score": "83.7",
+   "tier": "japan_ready",
+   "components": [
+    {
+     "key": "mca",
+     "label": "MCA compliance & filing status",
+     "points": "15.0",
+     "max_points": "15",
+     "reasons": [
+      "MCA status: active (9 pts)",
+      "Annual filings on time in 3/3 recent years (6 pts)"
+     ]
+    },
+    {
+     "key": "gst",
+     "label": "GSTN filing regularity",
+     "points": "14.2",
+     "max_points": "15",
+     "reasons": [
+      "GST registration active (5 pts)",
+      "11/12 returns on time (9.2 pts)"
+     ]
+    },
+    {
+     "key": "litigation",
+     "label": "Litigation exposure",
+     "points": "10.0",
+     "max_points": "10",
+     "reasons": [
+      "No pending litigation (10 pts)"
+     ]
+    },
+    {
+     "key": "iso",
+     "label": "ISO quality & environmental certification",
+     "points": "10.0",
+     "max_points": "10",
+     "reasons": [
+      "ISO 9001: verified (6.0 pts)",
+      "ISO 14001: verified (4.0 pts)"
+     ]
+    },
+    {
+     "key": "credit",
+     "label": "Creditworthiness",
+     "points": "8.7",
+     "max_points": "15",
+     "reasons": [
+      "Credit risk moderate (5 pts)",
+      "Financial solvency 74/100 (3.7 pts)"
+     ]
+    },
+    {
+     "key": "delivery",
+     "label": "On-time delivery & fulfilment",
+     "points": "14.1",
+     "max_points": "20",
+     "reasons": [
+      "OTD trailing 12 months 91.8% (9.2 pts; full marks at 98%)",
+      "Order fulfilment accuracy 97.8% (4.9 pts; full marks at 99.5%)"
+     ]
+    },
+    {
+     "key": "cross_border",
+     "label": "Cross-border record & principal satisfaction",
+     "points": "11.7",
+     "max_points": "15",
+     "reasons": [
+      "6/7 foreign contracts fulfilled, 1 Japanese principal(s) (6.1 pts)",
+      "Client retention 86% (2.2 pts)",
+      "Foreign principal satisfaction 83% (2.0 pts)",
+      "Communication SLA compliance 92% (1.3 pts)"
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "level": "info",
+     "code": "simulated_record",
+     "message": "Simulated fixture: identifiers and metrics are illustrative, not registry data."
+    }
+   ],
+   "otd_trailing_pct": "91.8",
+   "evidence": [
+    {
+     "label": "MCA company master data · CIN U29307ZZ2013PTC000007",
+     "url": "https://www.mca.gov.in/",
+     "note": "Search by CIN (simulated record — it will not be found on the portal)"
+    },
+    {
+     "label": "GST taxpayer search · GSTIN 00ZZZCF0007A1Z7",
+     "url": "https://services.gst.gov.in/services/searchtp",
+     "note": "Search by GSTIN (simulated record — it will not be found on the portal)"
+    }
+   ],
+   "scoring_version": "trust-v1",
+   "inputs_hash": "64e2f26d63219b83070a20127ecb78b2714a355d3d58be1e4699d042d4791105",
+   "disclosure": "Advisory screening only. Simulated fixture data is not a registry verification; confirm MCA, GSTN, litigation and credit status against primary sources before any commitment."
+  }
+ },
+ {
+  "row": {
+   "id": "35a9fd91-3859-5f7d-847b-1001c8fececd",
+   "partner_name": "Tapti Fasteners (fictional)",
+   "record_source": "simulated_fixture",
+   "sector": "auto",
+   "state": "Maharashtra",
+   "city": "Chakan",
+   "partner_type": "supplier",
+   "mca_registration_no": "U29308ZZ2010PTC000008",
+   "gstin": "00ZZZCF0008A1Z8",
+   "registered_address": "Plot 56, Industrial Area, Chakan, Maharashtra (fictional address)",
+   "incorporated_on": "2010-04-01",
+   "mca_compliance": {
+    "status": "active_non_compliant",
+    "annual_filings_on_time_last3": 1,
+    "last_annual_return_fy": "2023-24"
+   },
+   "gst_compliance": {
+    "status": "active",
+    "returns_on_time_last12": 7,
+    "last_return_period": "2026-07"
+   },
+   "director_history": [
+    {
+     "name": "G. Joshi (fictional)",
+     "din": "SIM-0008-1",
+     "role": "Managing Director",
+     "appointed_on": "2010-06-01",
+     "ceased_on": null
+    },
+    {
+     "name": "U. Pawar (fictional)",
+     "din": "SIM-0008-2",
+     "role": "Director",
+     "appointed_on": "2014-06-01",
+     "ceased_on": "2024-12-31"
+    }
+   ],
+   "litigation": [],
+   "financial_solvency_score": "49",
+   "credit_rating": {
+    "agency": "D&B-equivalent rating (simulated)",
+    "band": "high",
+    "as_of": "2026-09-30"
+   },
+   "iso_certifications": [
+    {
+     "standard": "ISO 9001",
+     "status": "verified",
+     "certificate_no": "SIM-9001-0008",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    }
+   ],
+   "operations": {
+    "otd_monthly_pct": [
+     "84.0",
+     "86.5",
+     "83.2",
+     "85.9",
+     "84.7",
+     "86.0",
+     "82.8",
+     "85.1",
+     "84.4",
+     "86.2",
+     "83.9",
+     "85.6"
+    ],
+    "fulfillment_accuracy_pct": "95.1",
+    "client_retention_pct": "74",
+    "foreign_principal_satisfaction_pct": "70",
+    "sla_compliance_pct": "84"
+   },
+   "cross_border": {
+    "contracts_total": 4,
+    "contracts_fulfilled": 3,
+    "japanese_principals": 0
+   },
+   "data_as_of": "2026-09-30"
+  },
+  "expected": {
+   "partner_id": "35a9fd91-3859-5f7d-847b-1001c8fececd",
+   "partner_name": "Tapti Fasteners (fictional)",
+   "record_source": "simulated_fixture",
+   "simulated": true,
+   "score": "47.4",
+   "uncapped_score": "47.4",
+   "tier": "not_recommended",
+   "components": [
+    {
+     "key": "mca",
+     "label": "MCA compliance & filing status",
+     "points": "5.0",
+     "max_points": "15",
+     "reasons": [
+      "MCA status: active non compliant (3 pts)",
+      "Annual filings on time in 1/3 recent years (2 pts)"
+     ]
+    },
+    {
+     "key": "gst",
+     "label": "GSTN filing regularity",
+     "points": "10.8",
+     "max_points": "15",
+     "reasons": [
+      "GST registration active (5 pts)",
+      "7/12 returns on time (5.8 pts)"
+     ]
+    },
+    {
+     "key": "litigation",
+     "label": "Litigation exposure",
+     "points": "10.0",
+     "max_points": "10",
+     "reasons": [
+      "No pending litigation (10 pts)"
+     ]
+    },
+    {
+     "key": "iso",
+     "label": "ISO quality & environmental certification",
+     "points": "6.0",
+     "max_points": "10",
+     "reasons": [
+      "ISO 9001: verified (6.0 pts)",
+      "ISO 14001: none (0 pts)"
+     ]
+    },
+    {
+     "key": "credit",
+     "label": "Creditworthiness",
+     "points": "2.5",
+     "max_points": "15",
+     "reasons": [
+      "Credit risk high (0 pts)",
+      "Financial solvency 49/100 (2.5 pts)"
+     ]
+    },
+    {
+     "key": "delivery",
+     "label": "On-time delivery & fulfilment",
+     "points": "7.0",
+     "max_points": "20",
+     "reasons": [
+      "OTD trailing 12 months 84.9% (3.8 pts; full marks at 98%)",
+      "Order fulfilment accuracy 95.1% (3.2 pts; full marks at 99.5%)"
+     ]
+    },
+    {
+     "key": "cross_border",
+     "label": "Cross-border record & principal satisfaction",
+     "points": "6.1",
+     "max_points": "15",
+     "reasons": [
+      "3/4 foreign contracts fulfilled, 0 Japanese principal(s) (3.6 pts)",
+      "Client retention 74% (1.2 pts)",
+      "Foreign principal satisfaction 70% (0.9 pts)",
+      "Communication SLA compliance 84% (0.4 pts)"
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "level": "warn",
+     "code": "mca_non_compliant",
+     "message": "Active but non-compliant with MCA annual filings."
+    },
+    {
+     "level": "warn",
+     "code": "gst_irregular",
+     "message": "Only 7/12 GST returns filed on time."
+    },
+    {
+     "level": "warn",
+     "code": "credit_high_risk",
+     "message": "D&B-equivalent rating (simulated): high credit risk."
+    },
+    {
+     "level": "warn",
+     "code": "otd_low",
+     "message": "Trailing 12-month on-time delivery 84.9% (< 90%)."
+    },
+    {
+     "level": "info",
+     "code": "simulated_record",
+     "message": "Simulated fixture: identifiers and metrics are illustrative, not registry data."
+    }
+   ],
+   "otd_trailing_pct": "84.9",
+   "evidence": [
+    {
+     "label": "MCA company master data · CIN U29308ZZ2010PTC000008",
+     "url": "https://www.mca.gov.in/",
+     "note": "Search by CIN (simulated record — it will not be found on the portal)"
+    },
+    {
+     "label": "GST taxpayer search · GSTIN 00ZZZCF0008A1Z8",
+     "url": "https://services.gst.gov.in/services/searchtp",
+     "note": "Search by GSTIN (simulated record — it will not be found on the portal)"
+    }
+   ],
+   "scoring_version": "trust-v1",
+   "inputs_hash": "edc69eaa659a8151a62920b0814c4d965c7c72a798114a0302f3e9d9a9377cf1",
+   "disclosure": "Advisory screening only. Simulated fixture data is not a registry verification; confirm MCA, GSTN, litigation and credit status against primary sources before any commitment."
+  }
+ },
+ {
+  "row": {
+   "id": "bb11a1b6-7788-53a6-99e0-d9a4f6b14042",
+   "partner_name": "Brahmaputra Components (fictional)",
+   "record_source": "simulated_fixture",
+   "sector": "electronics",
+   "state": "Uttar Pradesh",
+   "city": "Noida",
+   "partner_type": "supplier",
+   "mca_registration_no": "U29309ZZ2015PTC000009",
+   "gstin": "00ZZZCF0009A1Z9",
+   "registered_address": "Plot 63, Industrial Area, Noida, Uttar Pradesh (fictional address)",
+   "incorporated_on": "2015-04-01",
+   "mca_compliance": {
+    "status": "active",
+    "annual_filings_on_time_last3": 3,
+    "last_annual_return_fy": "2025-26"
+   },
+   "gst_compliance": {
+    "status": "cancelled",
+    "returns_on_time_last12": 0,
+    "last_return_period": "2025-11"
+   },
+   "director_history": [
+    {
+     "name": "J. Saikia (fictional)",
+     "din": "SIM-0009-1",
+     "role": "Managing Director",
+     "appointed_on": "2015-02-01",
+     "ceased_on": null
+    }
+   ],
+   "litigation": [],
+   "financial_solvency_score": "52",
+   "credit_rating": {
+    "agency": "D&B-equivalent rating (simulated)",
+    "band": "moderate",
+    "as_of": "2026-09-30"
+   },
+   "iso_certifications": [
+    {
+     "standard": "ISO 9001",
+     "status": "verified",
+     "certificate_no": "SIM-9001-0009",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    }
+   ],
+   "operations": {
+    "otd_monthly_pct": [
+     "93.0",
+     "94.2",
+     "93.6",
+     "94.8",
+     "93.9",
+     "94.4",
+     "95.0",
+     "94.1",
+     "94.7",
+     "93.8",
+     "94.5",
+     "94.9"
+    ],
+    "fulfillment_accuracy_pct": "97.6",
+    "client_retention_pct": "85",
+    "foreign_principal_satisfaction_pct": "84",
+    "sla_compliance_pct": "92"
+   },
+   "cross_border": {
+    "contracts_total": 8,
+    "contracts_fulfilled": 7,
+    "japanese_principals": 1
+   },
+   "data_as_of": "2026-09-30"
+  },
+  "expected": {
+   "partner_id": "bb11a1b6-7788-53a6-99e0-d9a4f6b14042",
+   "partner_name": "Brahmaputra Components (fictional)",
+   "record_source": "simulated_fixture",
+   "simulated": true,
+   "score": "25.0",
+   "uncapped_score": "66.2",
+   "tier": "blocked",
+   "components": [
+    {
+     "key": "mca",
+     "label": "MCA compliance & filing status",
+     "points": "15.0",
+     "max_points": "15",
+     "reasons": [
+      "MCA status: active (9 pts)",
+      "Annual filings on time in 3/3 recent years (6 pts)"
+     ]
+    },
+    {
+     "key": "gst",
+     "label": "GSTN filing regularity",
+     "points": "0.0",
+     "max_points": "15",
+     "reasons": [
+      "GST registration cancelled (0 pts)",
+      "0/12 returns on time (0.0 pts)"
+     ]
+    },
+    {
+     "key": "litigation",
+     "label": "Litigation exposure",
+     "points": "10.0",
+     "max_points": "10",
+     "reasons": [
+      "No pending litigation (10 pts)"
+     ]
+    },
+    {
+     "key": "iso",
+     "label": "ISO quality & environmental certification",
+     "points": "6.0",
+     "max_points": "10",
+     "reasons": [
+      "ISO 9001: verified (6.0 pts)",
+      "ISO 14001: none (0 pts)"
+     ]
+    },
+    {
+     "key": "credit",
+     "label": "Creditworthiness",
+     "points": "7.6",
+     "max_points": "15",
+     "reasons": [
+      "Credit risk moderate (5 pts)",
+      "Financial solvency 52/100 (2.6 pts)"
+     ]
+    },
+    {
+     "key": "delivery",
+     "label": "On-time delivery & fulfilment",
+     "points": "15.8",
+     "max_points": "20",
+     "reasons": [
+      "OTD trailing 12 months 94.2% (11.0 pts; full marks at 98%)",
+      "Order fulfilment accuracy 97.6% (4.8 pts; full marks at 99.5%)"
+     ]
+    },
+    {
+     "key": "cross_border",
+     "label": "Cross-border record & principal satisfaction",
+     "points": "11.8",
+     "max_points": "15",
+     "reasons": [
+      "7/8 foreign contracts fulfilled, 1 Japanese principal(s) (6.3 pts)",
+      "Client retention 85% (2.1 pts)",
+      "Foreign principal satisfaction 84% (2.1 pts)",
+      "Communication SLA compliance 92% (1.3 pts)"
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "level": "block",
+     "code": "gst_cancelled",
+     "message": "GST registration is cancelled."
+    },
+    {
+     "level": "warn",
+     "code": "gst_irregular",
+     "message": "Only 0/12 GST returns filed on time."
+    },
+    {
+     "level": "info",
+     "code": "simulated_record",
+     "message": "Simulated fixture: identifiers and metrics are illustrative, not registry data."
+    }
+   ],
+   "otd_trailing_pct": "94.2",
+   "evidence": [
+    {
+     "label": "MCA company master data · CIN U29309ZZ2015PTC000009",
+     "url": "https://www.mca.gov.in/",
+     "note": "Search by CIN (simulated record — it will not be found on the portal)"
+    },
+    {
+     "label": "GST taxpayer search · GSTIN 00ZZZCF0009A1Z9",
+     "url": "https://services.gst.gov.in/services/searchtp",
+     "note": "Search by GSTIN (simulated record — it will not be found on the portal)"
+    }
+   ],
+   "scoring_version": "trust-v1",
+   "inputs_hash": "e84c04b0048a4d935b6b71aea220db0db9bd4010a6644c96d7fee26358d19ed4",
+   "disclosure": "Advisory screening only. Simulated fixture data is not a registry verification; confirm MCA, GSTN, litigation and credit status against primary sources before any commitment."
+  }
+ },
+ {
+  "row": {
+   "id": "36125351-52ea-50f4-804a-cb15a5a87862",
+   "partner_name": "Mahanadi Industrial Automation (fictional)",
+   "record_source": "simulated_fixture",
+   "sector": "robotics",
+   "state": "Karnataka",
+   "city": "Bengaluru",
+   "partner_type": "jv_partner",
+   "mca_registration_no": "U29310ZZ2012PTC000010",
+   "gstin": "00ZZZCF0010A1Z0",
+   "registered_address": "Plot 70, Industrial Area, Bengaluru, Karnataka (fictional address)",
+   "incorporated_on": "2012-04-01",
+   "mca_compliance": {
+    "status": "active",
+    "annual_filings_on_time_last3": 3,
+    "last_annual_return_fy": "2025-26"
+   },
+   "gst_compliance": {
+    "status": "active",
+    "returns_on_time_last12": 12,
+    "last_return_period": "2026-09"
+   },
+   "director_history": [
+    {
+     "name": "K. Gowda (fictional)",
+     "din": "SIM-0010-1",
+     "role": "Managing Director",
+     "appointed_on": "2012-08-01",
+     "ceased_on": null
+    },
+    {
+     "name": "A. Nair (fictional)",
+     "din": "SIM-0010-2",
+     "role": "Director",
+     "appointed_on": "2018-05-01",
+     "ceased_on": null
+    }
+   ],
+   "litigation": [],
+   "financial_solvency_score": "55",
+   "credit_rating": {
+    "agency": "D&B-equivalent rating (simulated)",
+    "band": "high",
+    "as_of": "2026-09-30"
+   },
+   "iso_certifications": [
+    {
+     "standard": "ISO 9001",
+     "status": "verified",
+     "certificate_no": "SIM-9001-0010",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    },
+    {
+     "standard": "ISO 14001",
+     "status": "verified",
+     "certificate_no": "SIM-14001-0010",
+     "certification_body": "Accredited certification body (simulated)",
+     "valid_until": "2028-03-31"
+    }
+   ],
+   "operations": {
+    "otd_monthly_pct": [
+     "92.8",
+     "93.6",
+     "94.0",
+     "93.2",
+     "94.5",
+     "93.9",
+     "94.8",
+     "94.2",
+     "95.1",
+     "94.6",
+     "95.0",
+     "94.7"
+    ],
+    "fulfillment_accuracy_pct": "98.4",
+    "client_retention_pct": "87",
+    "foreign_principal_satisfaction_pct": "86",
+    "sla_compliance_pct": "94"
+   },
+   "cross_border": {
+    "contracts_total": 10,
+    "contracts_fulfilled": 9,
+    "japanese_principals": 2
+   },
+   "data_as_of": "2026-09-30"
+  },
+  "expected": {
+   "partner_id": "36125351-52ea-50f4-804a-cb15a5a87862",
+   "partner_name": "Mahanadi Industrial Automation (fictional)",
+   "record_source": "simulated_fixture",
+   "simulated": true,
+   "score": "81.6",
+   "uncapped_score": "81.6",
+   "tier": "conditional",
+   "components": [
+    {
+     "key": "mca",
+     "label": "MCA compliance & filing status",
+     "points": "15.0",
+     "max_points": "15",
+     "reasons": [
+      "MCA status: active (9 pts)",
+      "Annual filings on time in 3/3 recent years (6 pts)"
+     ]
+    },
+    {
+     "key": "gst",
+     "label": "GSTN filing regularity",
+     "points": "15.0",
+     "max_points": "15",
+     "reasons": [
+      "GST registration active (5 pts)",
+      "12/12 returns on time (10.0 pts)"
+     ]
+    },
+    {
+     "key": "litigation",
+     "label": "Litigation exposure",
+     "points": "10.0",
+     "max_points": "10",
+     "reasons": [
+      "No pending litigation (10 pts)"
+     ]
+    },
+    {
+     "key": "iso",
+     "label": "ISO quality & environmental certification",
+     "points": "10.0",
+     "max_points": "10",
+     "reasons": [
+      "ISO 9001: verified (6.0 pts)",
+      "ISO 14001: verified (4.0 pts)"
+     ]
+    },
+    {
+     "key": "credit",
+     "label": "Creditworthiness",
+     "points": "2.8",
+     "max_points": "15",
+     "reasons": [
+      "Credit risk high (0 pts)",
+      "Financial solvency 55/100 (2.8 pts)"
+     ]
+    },
+    {
+     "key": "delivery",
+     "label": "On-time delivery & fulfilment",
+     "points": "16.3",
+     "max_points": "20",
+     "reasons": [
+      "OTD trailing 12 months 94.2% (11.0 pts; full marks at 98%)",
+      "Order fulfilment accuracy 98.4% (5.3 pts; full marks at 99.5%)"
+     ]
+    },
+    {
+     "key": "cross_border",
+     "label": "Cross-border record & principal satisfaction",
+     "points": "12.5",
+     "max_points": "15",
+     "reasons": [
+      "9/10 foreign contracts fulfilled, 2 Japanese principal(s) (6.4 pts)",
+      "Client retention 87% (2.3 pts)",
+      "Foreign principal satisfaction 86% (2.2 pts)",
+      "Communication SLA compliance 94% (1.6 pts)"
+     ]
+    }
+   ],
+   "flags": [
+    {
+     "level": "warn",
+     "code": "credit_high_risk",
+     "message": "D&B-equivalent rating (simulated): high credit risk."
+    },
+    {
+     "level": "info",
+     "code": "simulated_record",
+     "message": "Simulated fixture: identifiers and metrics are illustrative, not registry data."
+    }
+   ],
+   "otd_trailing_pct": "94.2",
+   "evidence": [
+    {
+     "label": "MCA company master data · CIN U29310ZZ2012PTC000010",
+     "url": "https://www.mca.gov.in/",
+     "note": "Search by CIN (simulated record — it will not be found on the portal)"
+    },
+    {
+     "label": "GST taxpayer search · GSTIN 00ZZZCF0010A1Z0",
+     "url": "https://services.gst.gov.in/services/searchtp",
+     "note": "Search by GSTIN (simulated record — it will not be found on the portal)"
+    }
+   ],
+   "scoring_version": "trust-v1",
+   "inputs_hash": "26ba10370cec5bb926d9bc67fd78900f6314cf1df443819fc470c57b43338d17",
+   "disclosure": "Advisory screening only. Simulated fixture data is not a registry verification; confirm MCA, GSTN, litigation and credit status against primary sources before any commitment."
+  }
+ }
+]

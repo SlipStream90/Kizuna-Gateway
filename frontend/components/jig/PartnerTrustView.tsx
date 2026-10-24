@@ -224,9 +224,14 @@ export function PartnerTrustView() {
             {failure === 'offline' && (
               <p className="mt-1 text-xs text-sumi/55">
                 {lang === 'ja'
-                  ? 'APIを起動し、マイグレーション004の適用とフィクスチャの投入（python -m app.seed.load_partner_registry）を行ってください。'
-                  : 'Start the API with migration 004 applied and fixtures loaded (python -m app.seed.load_partner_registry).'}
+                  ? 'パートナー情報はSupabaseから取得します。NEXT_PUBLIC_SUPABASE_URLの設定と、supabase/migrationsの適用を確認してください。'
+                  : 'Partner data is read from Supabase. Check NEXT_PUBLIC_SUPABASE_URL and that supabase/migrations are applied.'}
               </p>
+            )}
+            {failure === 'signed_out' && (
+              <a href={`/login?next=${encodeURIComponent('/jig-os?screen=partners')}`} className="glass-button mt-3 px-3 py-1.5 text-xs">
+                {lang === 'ja' ? 'ログイン' : 'Sign in'}
+              </a>
             )}
           </div>
         </div>

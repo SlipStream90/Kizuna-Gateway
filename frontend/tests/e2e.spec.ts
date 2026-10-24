@@ -204,6 +204,12 @@ test.describe('JIG-OS Partner Trust & Verification', () => {
   test('explains when the partner API is unreachable', async ({ page }) => {
     await page.route('**/api/v1/partners**', (route) => route.fulfill({ status: 500, body: '' }))
     await page.goto('/jig-os?screen=partners', { waitUntil: 'domcontentloaded' })
-    await expect(page.getByText('migration 004', { exact: false })).toBeVisible()
+    await expect(page.getByText('Partner data is read from Supabase', { exact: false })).toBeVisible()
   })
+})
+
+test('partner screen asks signed-out users to sign in', async ({ page }) => {
+  await page.route('**/api/v1/partners**', (route) => route.fulfill({ status: 401, json: { detail: 'Not signed in' } }))
+  await page.goto('/jig-os?screen=partners', { waitUntil: 'domcontentloaded' })
+  await expect(page.getByRole('link', { name: 'Sign in' })).toHaveAttribute('href', /^\/login\?next=/)
 })
