@@ -368,4 +368,5 @@ JWT claims required: `exp`, `iss`, `aud`, `sub` (user UUID), `org_id` (organisat
 - The web client (`frontend/lib/api.ts`) does **not** attach a bearer token yet, so UI calls against the authenticated API return `401`. Use the minted token with `curl` or `/docs` until auth wiring lands.
 - All partner, compliance and market data is deterministic seed data. Partners are fictional and never verified; compliance passages require human review and do not establish legal, customs, tariff, origin, CEPA or classification outcomes.
 - No live government integrations or external credentials are required or used.
-- The repo ships ~33 MB of background video assets under `frontend/public/videos/`; `docs/SETUP.md` holds the shorter operational notes.
+- Background video files (~33 MB) are **not committed**; see `frontend/public/videos/README.md` to restore them. The UI renders a gradient fallback without them.
+- `docs/SETUP.md` holds the shorter operational notes; this README is the full setup guide.
